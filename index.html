@@ -1,1 +1,145 @@
-Hello World
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Matthew Bierman</title>
+        
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding 0;
+            }
+            #gameOfLife {
+                position: fixed;
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- jQuery -->
+        <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> -->
+        <script src="jquery-3.2.1.min.js"></script>
+
+        <canvas id="gameOfLife"></canvas>
+        
+        <script type="text/javascript">
+            function displayGrid(canvas, gridSize, cellColor) {
+                canvas.height = $(document).height();
+                canvas.width = $(document).width();
+                $("body").height(canvas.height + 1000);
+                $("body").width(canvas.width);
+                
+                /*
+                if (canvas.getContext)
+                {
+                    var ctx = canvas.getContext("2d");
+                    ctx.strokeStyle = cellColor;
+                    ctx.lineWidth = 1;
+                    
+                    for (var i = 1; i <= (canvas.height / gridSize); i++)
+                    {
+                        ctx.beginPath();
+                        ctx.moveTo(0, i * gridSize);
+                        ctx.lineTo(canvas.width, i * gridSize);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                    
+                    for (var i = 1; i <= (canvas.width / gridSize); i++)
+                    {
+                        ctx.beginPath();
+                        ctx.moveTo(i * gridSize, 0);
+                        ctx.lineTo(i * gridSize, canvas.height);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                }
+                */
+            }
+            function drawCell(canvas, x, y, gridSize, cellColor) {
+                if (canvas.getContext)
+                {
+                    var ctx = canvas.getContext("2d");
+                    ctx.fillStyle = cellColor;
+                    
+                    // cell at (0, 0)
+                    if (x == 0 && y == 0)
+                        ctx.fillRect(x, y, gridSize - 1, gridSize - 1);
+                    
+                    // first row
+                    else if (y == 0)
+                        ctx.fillRect((x * gridSize) + 1, (y * gridSize), gridSize - 2, gridSize - 1);
+                    
+                    // first column
+                    else if (x == 0)
+                        ctx.fillRect((x * gridSize), (y * gridSize) + 1, gridSize - 1, gridSize - 2);
+                    
+                    // all other cells
+                    else
+                        ctx.fillRect((x * gridSize) + 1, (y * gridSize) + 1, gridSize - 2, gridSize - 2);
+                }
+            }
+            function createCells(arr) {
+                arr[0][0] = 1;
+                arr[5][0] = 1;
+                arr[0][1] = 1;
+                arr[1][1] = 1;
+            }
+            function displayCells(canvas, gridSize) {
+                // Get maximum number of cells for rows and columns
+                var xCoordCells = Math.ceil(canvas.width / gridSize);
+                var yCoordCells = Math.ceil(canvas.height / gridSize);
+                
+                // Create 2D array for cells
+                var arr = new Array(xCoordCells);
+                for (var i = 0; i < xCoordCells; i++)
+                {
+                    arr[i] = new Array(yCoordCells);
+                    for (var j = 0; j < yCoordCells; j++)
+                        arr[i][j] = 0;
+                }
+                
+                createCells(arr);
+                
+                // Print cells array on console log
+                /*
+                for (var i = 0; i < xCoordCells; i++)
+                {
+                    var str = i + ": ";
+                    for (var j = 0; j < yCoordCells; j++)
+                    {
+                        if (j == yCoordCells - 1)
+                            str += arr[i][j];
+                        else
+                            str += arr[i][j] + ", ";
+                    }
+                    console.log(str);
+                }
+                */
+                
+                // Draw cells
+                for (var i = 0; i < xCoordCells; i++)
+                {
+                    for (var j = 0; j < yCoordCells; j++)
+                    {
+                        if (arr[i][j] == 1)
+                            drawCell(canvas, i, j, gridSize, 'white');
+                        else
+                            drawCell(canvas, i, j, gridSize, 'black');
+                    }
+                }
+            }
+            
+            var gridSize = 100;
+            var canvas = document.getElementById("gameOfLife");
+            
+            displayGrid(canvas, gridSize, 'black');
+            displayCells(canvas, gridSize);
+            
+            // Grid is redrawn after every time the window is resized
+            $(window).resize(function() {
+                displayGrid(canvas, gridSize, '#000000');
+                displayCells(canvas, gridSize);
+            });
+        </script>
+    </body>
+</html>
