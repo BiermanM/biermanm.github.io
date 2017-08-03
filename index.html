@@ -22,38 +22,57 @@
         <canvas id="gameOfLife"></canvas>
         
         <script type="text/javascript">
-            function displayGrid(canvas, gridSize, cellColor) {
+            function print2dArray(arr) {
+                var str = "";
+                for (var i = 0; i < arr[0].length; i++)
+                {
+                    str += "[ ";
+                    for (var j = 0; j < arr.length; j++)
+                    {
+                        if (j == arr.length - 1)
+                            str += arr[j][i] + " ";
+                        else
+                            str += arr[j][i] + ", ";
+                    }
+                    str += "]\n";
+                }
+                console.log(str);
+            }
+            function clone(arr) {
+                var xCoordCells = arr.length;
+                var yCoordCells = arr[0].length;                
+                
+                var newArr = new Array(xCoordCells);
+                for (var i = 0; i < xCoordCells; i++)
+                {
+                    newArr[i] = new Array(yCoordCells);
+                    for (var j = 0; j < yCoordCells; j++)
+                        newArr[i][j] = arr[i][j];
+                }
+                
+                return newArr;
+            }
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            async function demo(cells) {
+                print2dArray(cells);
+                
+                await sleep(2000);
+                cells = lifeCycle(gridSize, cells);
+                print2dArray(cells);
+                
+                await sleep(2000);
+                cells = lifeCycle(gridSize, cells);
+                print2dArray(cells);
+                
+                return cells;
+            }
+            function setCanvasSize(canvas, gridSize, cellColor) {
                 canvas.height = $(document).height();
                 canvas.width = $(document).width();
                 $("body").height(canvas.height + 1000);
                 $("body").width(canvas.width);
-                
-                /*
-                if (canvas.getContext)
-                {
-                    var ctx = canvas.getContext("2d");
-                    ctx.strokeStyle = cellColor;
-                    ctx.lineWidth = 1;
-                    
-                    for (var i = 1; i <= (canvas.height / gridSize); i++)
-                    {
-                        ctx.beginPath();
-                        ctx.moveTo(0, i * gridSize);
-                        ctx.lineTo(canvas.width, i * gridSize);
-                        ctx.closePath();
-                        ctx.stroke();
-                    }
-                    
-                    for (var i = 1; i <= (canvas.width / gridSize); i++)
-                    {
-                        ctx.beginPath();
-                        ctx.moveTo(i * gridSize, 0);
-                        ctx.lineTo(i * gridSize, canvas.height);
-                        ctx.closePath();
-                        ctx.stroke();
-                    }
-                }
-                */
             }
             function drawCell(canvas, x, y, gridSize, cellColor) {
                 if (canvas.getContext)
@@ -78,67 +97,263 @@
                         ctx.fillRect((x * gridSize) + 1, (y * gridSize) + 1, gridSize - 2, gridSize - 2);
                 }
             }
-            function createCells(arr) {
-                arr[0][0] = 1;
-                arr[5][0] = 1;
-                arr[0][1] = 1;
-                arr[1][1] = 1;
+            // TESTING //
+            function createCells(cells) {
+                cells[2][2] = 1;
+                cells[3][3] = 1;
+                cells[3][4] = 1;
+                cells[2][4] = 1;
+                cells[1][4] = 1;
             }
+            /////////////
             function displayCells(canvas, gridSize) {
                 // Get maximum number of cells for rows and columns
                 var xCoordCells = Math.ceil(canvas.width / gridSize);
                 var yCoordCells = Math.ceil(canvas.height / gridSize);
-                
+
                 // Create 2D array for cells
-                var arr = new Array(xCoordCells);
+                var cells = new Array(xCoordCells);
                 for (var i = 0; i < xCoordCells; i++)
                 {
-                    arr[i] = new Array(yCoordCells);
+                    cells[i] = new Array(yCoordCells);
                     for (var j = 0; j < yCoordCells; j++)
-                        arr[i][j] = 0;
+                        cells[i][j] = 0;
                 }
                 
-                createCells(arr);
-                
-                // Print cells array on console log
-                /*
-                for (var i = 0; i < xCoordCells; i++)
-                {
-                    var str = i + ": ";
-                    for (var j = 0; j < yCoordCells; j++)
-                    {
-                        if (j == yCoordCells - 1)
-                            str += arr[i][j];
-                        else
-                            str += arr[i][j] + ", ";
-                    }
-                    console.log(str);
-                }
-                */
+                createCells(cells);                
                 
                 // Draw cells
-                for (var i = 0; i < xCoordCells; i++)
-                {
+                for (var i = 0; i < xCoordCells; i++) {
                     for (var j = 0; j < yCoordCells; j++)
                     {
-                        if (arr[i][j] == 1)
+                        if (cells[i][j] == 1)
                             drawCell(canvas, i, j, gridSize, 'white');
                         else
                             drawCell(canvas, i, j, gridSize, 'black');
                     }
                 }
+                
+                return cells;
+            }
+            function lifeCycle(gridSize, cells) {
+                console.log("Before:");
+                print2dArray(cells);
+                var nextGeneration = clone(cells);
+                
+                // for every cell in the grid
+                for (var i = 0; i < cells.length; i++)
+                {
+                    for (var j = 0; j < cells[0].length; j++)
+                    {
+                        var liveNeighbors = 0;
+                        
+                        // create 3x3 array for neighboring cells
+                        var neighborCells = new Array(3);
+                        for (var k = 0; k < 3; k++)
+                        {
+                            neighborCells[k] = new Array(3);
+                            for (var l = 0; l < 3; l++)
+                                neighborCells[k][l] = -1;
+                        }
+                        
+                        // center is the cell itself
+                        neighborCells[1][1] = "*";
+                        
+                        // if no cells exist on its left
+                        if (i == 0)
+                        {
+                            neighborCells[0][0] = "N";
+                            neighborCells[1][0] = "N";
+                            neighborCells[2][0] = "N";
+                        }
+                        
+                        // if no cells exist above it
+                        if (j == 0)
+                        {
+                            neighborCells[0][0] = "N";
+                            neighborCells[0][1] = "N";
+                            neighborCells[0][2] = "N";
+                        }
+                        
+                        // if no cells exist on its right
+                        if (i == cells.length - 1)
+                        {
+                            neighborCells[0][2] = "N";
+                            neighborCells[1][2] = "N";
+                            neighborCells[2][2] = "N";
+                        }
+                        
+                        // if no cells exist below it
+                        if (j == cells[0].length - 1)
+                        {
+                            neighborCells[2][0] = "N";
+                            neighborCells[2][1] = "N";
+                            neighborCells[2][2] = "N";
+                        }
+                        
+                        // check if neighboring cells are occupied
+                        for (var k = 0; k < 3; k++)
+                        {
+                            for (var l = 0; l < 3; l++)
+                            {
+                                // if not an out-of-bounds neighbor or if not itself
+                                if (neighborCells[k][l] != "N" && neighborCells[k][l] != "*")
+                                {
+                                    if (k == 0 && l == 0 && cells[i - 1][j - 1] != 0)
+                                        liveNeighbors++;
+                                    else if (k == 1 && l == 0 && cells[i - 1][j] != 0)
+                                        liveNeighbors++;
+                                    else if (k == 2 && l == 0 && cells[i - 1][j + 1] != 0)
+                                        liveNeighbors++;
+                                    else if (k == 0 && l == 1 && cells[i][j - 1] != 0)
+                                        liveNeighbors++;
+                                    else if (k == 2 && l == 1 && cells[i][j + 1] != 0)
+                                        liveNeighbors++;
+                                    else if (k == 0 && l == 2 && cells[i + 1][j - 1] != 0)
+                                        liveNeighbors++;
+                                    else if (k == 1 && l == 2 && cells[i + 1][j] != 0)
+                                        liveNeighbors++;
+                                    else if (k == 2 && l == 2 && cells[i + 1][j + 1] != 0)
+                                        liveNeighbors++;
+                                }
+                            }
+                        }
+                        
+                        //console.log("(" + i + ", " + j + "):\t" + liveNeighbors);
+                        
+                        // same as above, but with visual display of neighbors in console log
+                        /*
+                        // check if neighboring cells are occupied
+                        for (var k = 0; k < 3; k++)
+                        {
+                            for (var l = 0; l < 3; l++)
+                            {
+                                // if not an out-of-bounds neighbor or if not itself
+                                if (neighborCells[k][l] != "N" && neighborCells[k][l] != "*")
+                                {
+                                    if (k == 0 && l == 0)
+                                    {
+                                        if (cells[i - 1][j - 1] != 0)
+                                        {
+                                            neighborCells[0][0] = 1;
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[0][0] = 0;
+                                    }
+                                    else if (k == 1 && l == 0)
+                                    {
+                                        if (cells[i - 1][j] != 0)
+                                        {
+                                            neighborCells[1][0] = 1;
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[1][0] = 0;
+                                    }
+                                    else if (k == 2 && l == 0)
+                                    {
+                                        if (cells[i - 1][j + 1] != 0)
+                                        {
+                                            neighborCells[2][0] = 1;   
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[2][0] = 0;
+                                    }
+                                    else if (k == 0 && l == 1)
+                                    {
+                                        if (cells[i][j - 1] != 0)
+                                        {
+                                            neighborCells[0][1] = 1;
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[0][1] = 0;
+                                    }
+                                    else if (k == 2 && l == 1)
+                                    {
+                                        if (cells[i][j + 1] != 0)
+                                        {
+                                            neighborCells[2][1] = 1;
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[2][1] = 0;
+                                    }
+                                    else if (k == 0 && l == 2)
+                                    {
+                                        if (cells[i + 1][j - 1] != 0)
+                                        {
+                                            neighborCells[0][2] = 1;
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[0][2] = 0;
+                                    }
+                                    else if (k == 1 && l == 2)
+                                    {
+                                        if (cells[i + 1][j] != 0)
+                                        {
+                                            neighborCells[1][2] = 1;
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[1][2] = 0;
+                                    }
+                                    else if (k == 2 && l == 2)
+                                    {
+                                        if (cells[i + 1][j + 1] != 0)
+                                        {
+                                            neighborCells[2][2] = 1;
+                                            liveNeighbors++;
+                                        }
+                                        else
+                                            neighborCells[2][2] = 0;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        console.log("(" + i + ", " + j + "):\n\t" + neighborCells[0][0] + ", " + neighborCells[0][1] + ", " + neighborCells[0][2] + "\n\t" + neighborCells[1][0] + ", " + neighborCells[1][1] + ", " + neighborCells[1][2] + "\n\t" + neighborCells[2][0] + ", " + neighborCells[2][1] + ", " + neighborCells[2][2] + "\n\tLive Neighbors: " + liveNeighbors);
+                        */
+                        
+                        // any dead cell with exactly three live neighbours becomes a live cell
+                        if (cells[i][j] == 0 && liveNeighbors == 3)
+                        {
+                            drawCell(canvas, i, j, gridSize, 'white');
+                            nextGeneration[i][j] = 1;
+                        }
+                    
+                        // any live cell with two or three live neighbours stays alive, any live cell with fewer than two live neighbours or more than three live neighbours dies
+                        else if (cells[i][j] == 1 && (liveNeighbors < 2 || liveNeighbors > 3))
+                        {
+                            drawCell(canvas, i, j, gridSize, 'black');
+                            nextGeneration[i][j] = 0;
+                        }
+                    }
+                }
+                console.log("After:");
+                print2dArray(nextGeneration);
+                return nextGeneration;
             }
             
-            var gridSize = 100;
+            var gridSize = 50;
             var canvas = document.getElementById("gameOfLife");
             
-            displayGrid(canvas, gridSize, 'black');
-            displayCells(canvas, gridSize);
+            setCanvasSize(canvas, gridSize, '#000000');
+            
+            var cells = displayCells(canvas, gridSize);
+            
+            displayCells(canvas, gridSize, cells);
+            
+            cells = demo(cells);
+            
             
             // Grid is redrawn after every time the window is resized
             $(window).resize(function() {
-                displayGrid(canvas, gridSize, '#000000');
-                displayCells(canvas, gridSize);
+                setCanvasSize(canvas, gridSize, '#000000');
+                cells = displayCells(canvas, gridSize);
             });
         </script>
     </body>
