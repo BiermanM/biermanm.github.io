@@ -8,6 +8,9 @@
                 margin: 0;
                 padding 0;
             }
+            #colorWall {
+                background-color: red;
+            }
             #gameOfLife {
                 position: fixed;
                 background-color: black;
@@ -16,12 +19,15 @@
     </head>
     <body>
         <!-- jQuery -->
-        <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> -->
         <script src="jquery-3.2.1.min.js"></script>
 
+        
         <canvas id="gameOfLife"></canvas>
+        <div id="colorWall" style="width: 500px; height: 550px;"></div>
         
         <script type="text/javascript">
+            
+            
             function print2dArray(arr) {
                 var str = "";
                 for (var i = 0; i < arr[0].length; i++)
@@ -55,23 +61,33 @@
             function sleep(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
-            async function demo(cells) {
-                print2dArray(cells);
+            
+            async function run(cells, ms) {
+                var currWindowHeight = $(window).height();
+                var currWindowWidth = $(window).width();
+                var prevWindowHeight = currWindowHeight;
+                var prevWindowWidth = currWindowWidth;
                 
-                await sleep(2000);
-                cells = lifeCycle(gridSize, cells);
                 print2dArray(cells);
-                
-                await sleep(2000);
-                cells = lifeCycle(gridSize, cells);
-                print2dArray(cells);
-                
-                return cells;
+                // while the window size doesn't change while the game is running
+                while (currWindowHeight == prevWindowHeight && currWindowWidth == prevWindowWidth)
+                {
+                    await sleep(ms);
+                    cells = lifeCycle(gridSize, cells);
+                    drawAllCells(canvas, gridSize, cells);
+                    print2dArray(cells);
+                    
+                    prevWindowHeight = currWindowHeight;
+                    prevWindowWidth = currWindowWidth;
+                    currWindowHeight = $(window).height();
+                    currWindowWidth = $(window).width();
+                }
             }
-            function setCanvasSize(canvas, gridSize, cellColor) {
-                canvas.height = $(document).height();
-                canvas.width = $(document).width();
-                $("body").height(canvas.height + 1000);
+            function setCanvasSize(canvas, gridSize, cellColor, addHeight) {
+                canvas.height = $(window).height();
+                canvas.width = $(window).width();
+                
+                $("body").height(canvas.height + addHeight);
                 $("body").width(canvas.width);
             }
             function drawCell(canvas, x, y, gridSize, cellColor) {
@@ -97,20 +113,23 @@
                         ctx.fillRect((x * gridSize) + 1, (y * gridSize) + 1, gridSize - 2, gridSize - 2);
                 }
             }
-            // TESTING //
-            function createCells(cells) {
-                cells[2][2] = 1;
-                cells[3][3] = 1;
-                cells[3][4] = 1;
-                cells[2][4] = 1;
-                cells[1][4] = 1;
+            function drawAllCells(canvas, gridSize, cells) {
+                for (var i = 0; i < cells.length; i++)
+                {
+                    for (var j = 0; j < cells[0].length; j++)
+                    {
+                        if (cells[i][j] == 0)
+                            drawCell(canvas, i, j, gridSize, 'black');
+                        else
+                            drawCell(canvas, i, j, gridSize, 'white');
+                    }
+                }
             }
-            /////////////
             function displayCells(canvas, gridSize) {
                 // Get maximum number of cells for rows and columns
                 var xCoordCells = Math.ceil(canvas.width / gridSize);
                 var yCoordCells = Math.ceil(canvas.height / gridSize);
-
+                
                 // Create 2D array for cells
                 var cells = new Array(xCoordCells);
                 for (var i = 0; i < xCoordCells; i++)
@@ -120,9 +139,14 @@
                         cells[i][j] = 0;
                 }
                 
-                createCells(cells);                
+                // Initial state
+                cells[2][2] = 1;
+                cells[3][3] = 1;
+                cells[3][4] = 1;
+                cells[2][4] = 1;
+                cells[1][4] = 1;               
                 
-                // Draw cells
+                // Draw cells at their initial state
                 for (var i = 0; i < xCoordCells; i++) {
                     for (var j = 0; j < yCoordCells; j++)
                     {
@@ -136,8 +160,6 @@
                 return cells;
             }
             function lifeCycle(gridSize, cells) {
-                console.log("Before:");
-                print2dArray(cells);
                 var nextGeneration = clone(cells);
                 
                 // for every cell in the grid
@@ -320,40 +342,32 @@
                         
                         // any dead cell with exactly three live neighbours becomes a live cell
                         if (cells[i][j] == 0 && liveNeighbors == 3)
-                        {
-                            drawCell(canvas, i, j, gridSize, 'white');
                             nextGeneration[i][j] = 1;
-                        }
                     
                         // any live cell with two or three live neighbours stays alive, any live cell with fewer than two live neighbours or more than three live neighbours dies
                         else if (cells[i][j] == 1 && (liveNeighbors < 2 || liveNeighbors > 3))
-                        {
-                            drawCell(canvas, i, j, gridSize, 'black');
                             nextGeneration[i][j] = 0;
-                        }
                     }
                 }
-                console.log("After:");
-                print2dArray(nextGeneration);
+                
                 return nextGeneration;
             }
             
             var gridSize = 50;
             var canvas = document.getElementById("gameOfLife");
+            var stepDelay = 1000; // in milliseconds
             
-            setCanvasSize(canvas, gridSize, '#000000');
-            
+            setCanvasSize(canvas, gridSize, '#000000', 1000);
             var cells = displayCells(canvas, gridSize);
-            
-            displayCells(canvas, gridSize, cells);
-            
-            cells = demo(cells);
-            
+
+            run(cells, stepDelay);
             
             // Grid is redrawn after every time the window is resized
             $(window).resize(function() {
-                setCanvasSize(canvas, gridSize, '#000000');
+                setCanvasSize(canvas, gridSize, '#000000', 0);
                 cells = displayCells(canvas, gridSize);
+                drawAllCells(canvas, gridSize, cells);
+                run(cells, stepDelay);
             });
         </script>
     </body>
