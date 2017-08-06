@@ -3,6 +3,9 @@
     <head>
         <title>Matthew Bierman</title>
         
+        <!-- Font Awesome (Icons) -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
         <style type="text/css">
             body {
                 margin: 0;
@@ -15,11 +18,45 @@
             #gameOfLife {
                 position: fixed;
             }
+            #aboutMe, #mainPage, #portfolio {
+                position: relative;
+            }
+            #name {
+                color: white;
+                display: table-cell;
+                vertical-align: middle;
+            }
+            #name, #linkToAbout, #linkToPortfolio {
+                text-align: center;
+            }
+            #aboutLinkText, #portfolioLinkText {
+                text-decoration: none;
+                color: white;
+            }
         </style>
     </head>
     <body>
         <div id="background"></div>
         <canvas id="gameOfLife"></canvas>
+        <div id="aboutMePage"></div>
+        <div id="mainPage">
+            <div id="linkToAbout">
+                <a id="aboutLinkText" href="#aboutMePage">
+                    <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                    <br>
+                    <span>About Me</span>
+                </a>
+            </div>
+            <div id="name">Matthew Bierman</div>
+            <div id="linkToPortfolio">
+                <a id="portfolioLinkText" href="#portfolioPage">
+                    <span>My Portfolio</span>
+                    <br>
+                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div id="portfolioPage"></div>
         
         <!-- jQuery -->
         <script src="jquery-3.2.1.min.js"></script>
@@ -313,14 +350,12 @@
            
             // functions for the background
             function setBackgroundColor() {                
-                if ($(this).scrollTop() >= 0 && $(this).scrollTop() < 200)
+                if ($(this).scrollTop() >= 0 && $(this).scrollTop() < $(window).height())
                     $("#background").css("background-color", "red");
-                else if ($(this).scrollTop() >= 200 && $(this).scrollTop() < 400)
-                    $("#background").css("background-color", "green");
-                else if ($(this).scrollTop() >= 400 && $(this).scrollTop() < 600)
+                else if ($(this).scrollTop() >= $(window).height() && $(this).scrollTop() < ($(window).height() * 2))
+                    $("#background").css("background-color", "#535353");
+                else if ($(this).scrollTop() >= ($(window).height() * 2) && $(this).scrollTop() < ($(window).height() * 3))
                     $("#background").css("background-color", "blue");
-                else
-                    $("#background").css("background-color", "yellow");
             }
             function setBackgroundSize() {
                 $("#background").height($(window).height());
@@ -336,17 +371,61 @@
                 });
             });
             
+            // functions for the pages
+            function setMainPage() {
+                //$("#mainPage").css("background-color", "rgba(0, 255, 0, 0.5)");
+                $("#mainPage").width($(window).width());
+                $("#mainPage").height($(window).height());
+                
+                $("#linkToAbout").height($(window).height() * 0.1);
+                $("#linkToPortfolio").height($(window).height() * 0.1);
+                
+                $("#linkToAbout").css("padding-top", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
+                $("#linkToAbout").css("padding-bottom", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
+                
+                $("#linkToAbout").height($("#linkToAbout").height() - (parseFloat($("#linkToAbout").css("padding-top")) * 2));
+                $("#linkToPortfolio").height($("#linkToPortfolio").height() - (parseFloat($("#linkToPortfolio").css("padding-top")) * 2));
+                
+                $("#name").width($(window).width() * 0.8);
+                $("#name").height($(window).height() * 0.6);
+                $("#name").css("padding-left", $(window).width() * 0.1);
+                $("#name").css("padding-right", $(window).width() * 0.1);
+                $("#name").css("padding-top", $(window).height() * 0.1);
+                $("#name").css("padding-bottom", $(window).height() * 0.1);
+                
+                if ($(window).width() > 500)
+                    $("#name").css("font-size", ($(window).width() * 0.1) + "px");
+                else
+                    $("#name").css("font-size", ($(window).width() * 0.2) + "px");
+            }
+            function setAboutMePage() {
+                $("#aboutMePage").css("background-color", "rgba(255, 0, 0, 1)");
+                $("#aboutMePage").width($(window).width());
+                $("#aboutMePage").height($(window).height());
+            }
+            function setPortfolioPage() {
+                $("#portfolioPage").css("background-color", "rgba(0, 0, 255, 0.5)");
+                $("#portfolioPage").width($(window).width());
+                $("#portfolioPage").height($(window).height());
+            }
+            
+            setMainPage();
+            setAboutMePage();
+            setPortfolioPage();
+            
             var gridSize = 50; // in pixels
             var stepDelay = 100; // in milliseconds
             var canvas = document.getElementById("gameOfLife");
             
             setCanvasGrid(canvas, gridSize, 1000);
             var cells = initialState(canvas, gridSize);
-
             run(cells, stepDelay);
             
             // Grid is redrawn after every time the window is resized
             $(window).resize(function() {
+                setMainPage();
+                setAboutMePage();
+                setPortfolioPage();
                 setBackgroundSize();
                 setCanvasGrid(canvas, gridSize, 0);
                 cells = initialState(canvas, gridSize);
