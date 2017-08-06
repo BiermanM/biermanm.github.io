@@ -8,26 +8,24 @@
                 margin: 0;
                 padding 0;
             }
-            #colorWall {
-                background-color: red;
+            #background {
+                position: fixed;
+                transition: 0.5s;
             }
             #gameOfLife {
                 position: fixed;
-                background-color: black;
             }
         </style>
     </head>
     <body>
+        <div id="background"></div>
+        <canvas id="gameOfLife"></canvas>
+        
         <!-- jQuery -->
         <script src="jquery-3.2.1.min.js"></script>
-
-        
-        <canvas id="gameOfLife"></canvas>
-        <div id="colorWall" style="width: 500px; height: 550px;"></div>
-        
+        <!-- JavaScript -->
         <script type="text/javascript">
-            
-            
+            // general functions
             function print2dArray(arr) {
                 var str = "";
                 for (var i = 0; i < arr[0].length; i++)
@@ -62,33 +60,44 @@
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
             
+            // functions for the canvas
             async function run(cells, ms) {
                 var currWindowHeight = $(window).height();
                 var currWindowWidth = $(window).width();
                 var prevWindowHeight = currWindowHeight;
                 var prevWindowWidth = currWindowWidth;
                 
-                print2dArray(cells);
                 // while the window size doesn't change while the game is running
                 while (currWindowHeight == prevWindowHeight && currWindowWidth == prevWindowWidth)
                 {
                     await sleep(ms);
-                    cells = lifeCycle(gridSize, cells);
+                    cells = step(gridSize, cells);
                     drawAllCells(canvas, gridSize, cells);
-                    print2dArray(cells);
-                    
+                                        
                     prevWindowHeight = currWindowHeight;
                     prevWindowWidth = currWindowWidth;
                     currWindowHeight = $(window).height();
                     currWindowWidth = $(window).width();
                 }
             }
-            function setCanvasSize(canvas, gridSize, cellColor, addHeight) {
+            function setCanvasGrid(canvas, gridSize, addHeight) {
                 canvas.height = $(window).height();
                 canvas.width = $(window).width();
                 
                 $("body").height(canvas.height + addHeight);
                 $("body").width(canvas.width);
+                
+                if (canvas.getContext)
+                {
+                    var ctx = canvas.getContext("2d");
+                    ctx.fillStyle = 'white';
+                    
+                    for (var i = 1; i <= Math.floor(canvas.width / gridSize); i++)
+                        ctx.fillRect((gridSize * i) - 1, 0, 2, canvas.height);
+                    
+                    for (var i = 1; i <= Math.floor(canvas.height / gridSize); i++)
+                        ctx.fillRect(0, (gridSize * i) - 1, canvas.width, 2);
+                }
             }
             function drawCell(canvas, x, y, gridSize, cellColor) {
                 if (canvas.getContext)
@@ -98,19 +107,31 @@
                     
                     // cell at (0, 0)
                     if (x == 0 && y == 0)
+                    {
+                        ctx.clearRect(x, y, gridSize - 1, gridSize - 1);
                         ctx.fillRect(x, y, gridSize - 1, gridSize - 1);
+                    }
                     
                     // first row
                     else if (y == 0)
+                    {
+                        ctx.clearRect((x * gridSize) + 1, (y * gridSize), gridSize - 2, gridSize - 1);
                         ctx.fillRect((x * gridSize) + 1, (y * gridSize), gridSize - 2, gridSize - 1);
+                    }
                     
                     // first column
                     else if (x == 0)
+                    {
+                        ctx.clearRect((x * gridSize), (y * gridSize) + 1, gridSize - 1, gridSize - 2);
                         ctx.fillRect((x * gridSize), (y * gridSize) + 1, gridSize - 1, gridSize - 2);
+                    }
                     
                     // all other cells
                     else
+                    {
+                        ctx.clearRect((x * gridSize) + 1, (y * gridSize) + 1, gridSize - 2, gridSize - 2);
                         ctx.fillRect((x * gridSize) + 1, (y * gridSize) + 1, gridSize - 2, gridSize - 2);
+                    }
                 }
             }
             function drawAllCells(canvas, gridSize, cells) {
@@ -121,11 +142,11 @@
                         if (cells[i][j] == 0)
                             drawCell(canvas, i, j, gridSize, 'black');
                         else
-                            drawCell(canvas, i, j, gridSize, 'white');
+                            drawCell(canvas, i, j, gridSize, 'transparent');
                     }
                 }
             }
-            function displayCells(canvas, gridSize) {
+            function initialState(canvas, gridSize) {
                 // Get maximum number of cells for rows and columns
                 var xCoordCells = Math.ceil(canvas.width / gridSize);
                 var yCoordCells = Math.ceil(canvas.height / gridSize);
@@ -150,16 +171,16 @@
                 for (var i = 0; i < xCoordCells; i++) {
                     for (var j = 0; j < yCoordCells; j++)
                     {
-                        if (cells[i][j] == 1)
-                            drawCell(canvas, i, j, gridSize, 'white');
-                        else
+                        if (cells[i][j] == 0)
                             drawCell(canvas, i, j, gridSize, 'black');
+                        else
+                            drawCell(canvas, i, j, gridSize, 'transparent');
                     }
                 }
                 
                 return cells;
             }
-            function lifeCycle(gridSize, cells) {
+            function step(gridSize, cells) {
                 var nextGeneration = clone(cells);
                 
                 // for every cell in the grid
@@ -218,127 +239,64 @@
                         {
                             for (var l = 0; l < 3; l++)
                             {
-                                // if not an out-of-bounds neighbor or if not itself
-                                if (neighborCells[k][l] != "N" && neighborCells[k][l] != "*")
+                                // if neighbor is out-of-bounds, wrap around to the opposite side of the grid
+                                if (neighborCells[k][l] == "N")
                                 {
-                                    if (k == 0 && l == 0 && cells[i - 1][j - 1] != 0)
+                                    // top left
+                                    if ((k == 0) && (l == 0) && (cells[((i - 1) == -1) ? (cells.length - 1) : (i - 1)][((j - 1) == -1) ? (cells[0].length - 1) : (j - 1)] != 0))
+                                            liveNeighbors++;
+                                    // center left
+                                    else if ((k == 1) && (l == 0) && (cells[((i - 1) == -1) ? (cells.length - 1) : (i - 1)][j] != 0))
+                                            liveNeighbors++;
+                                    // bottom left
+                                    else if ((k == 2) && (l == 0) && (cells[((i - 1) == -1) ? (cells.length - 1) : (i - 1)][((j + 1) == cells[0].length) ? 0 : (j + 1)] != 0))
+                                            liveNeighbors++;
+                                    // top middle
+                                    else if ((k == 0) && (l == 1) && (cells[i][((j - 1) == -1) ? (cells[0].length - 1) : (j - 1)] != 0))
+                                            liveNeighbors++;
+                                    // bottom middle
+                                    else if ((k == 2) && (l == 1) && (cells[i][((j + 1) == cells[0].length) ? 0 : (j + 1)] != 0))
+                                            liveNeighbors++;
+                                    // top right
+                                    else if ((k == 0) && (l == 2) && (cells[((i + 1) == cells.length) ? 0 : (i + 1)][((j - 1) == -1) ? (cells[0].length - 1) : (j - 1)] != 0))
+                                            liveNeighbors++;
+                                    // center right
+                                    else if ((k == 1) && (l == 2) && (cells[((i + 1) == cells.length) ? 0 : (i + 1)][j] != 0))
+                                            liveNeighbors++;
+                                    // bottom right
+                                    else if ((k == 2) && (l == 2) && (cells[((i + 1) == cells.length) ? 0 : (i + 1)][((j + 1) == cells[0].length) ? 0 : (j + 1)] != 0))
+                                            liveNeighbors++;
+                                }
+                                // if not itself, which is at (1, 1)
+                                else if (neighborCells[k][l] != "*")
+                                {
+                                    // top left
+                                    if ((k == 0) && (l == 0) && (cells[i - 1][j - 1] != 0))
                                         liveNeighbors++;
-                                    else if (k == 1 && l == 0 && cells[i - 1][j] != 0)
+                                    // center left
+                                    else if ((k == 1) && (l == 0) && (cells[i - 1][j] != 0))
                                         liveNeighbors++;
-                                    else if (k == 2 && l == 0 && cells[i - 1][j + 1] != 0)
+                                    // bottom left
+                                    else if ((k == 2) && (l == 0) && (cells[i - 1][j + 1] != 0))
                                         liveNeighbors++;
-                                    else if (k == 0 && l == 1 && cells[i][j - 1] != 0)
+                                    // top middle
+                                    else if ((k == 0) && (l == 1) && (cells[i][j - 1] != 0))
                                         liveNeighbors++;
-                                    else if (k == 2 && l == 1 && cells[i][j + 1] != 0)
+                                    // bottom middle
+                                    else if ((k == 2) && (l == 1) && (cells[i][j + 1] != 0))
                                         liveNeighbors++;
-                                    else if (k == 0 && l == 2 && cells[i + 1][j - 1] != 0)
+                                    // top right
+                                    else if ((k == 0) && (l == 2) && (cells[i + 1][j - 1] != 0))
                                         liveNeighbors++;
-                                    else if (k == 1 && l == 2 && cells[i + 1][j] != 0)
+                                    // center right
+                                    else if ((k == 1) && (l == 2) && (cells[i + 1][j] != 0))
                                         liveNeighbors++;
-                                    else if (k == 2 && l == 2 && cells[i + 1][j + 1] != 0)
+                                    // bottom right
+                                    else if ((k == 2) && (l == 2) && (cells[i + 1][j + 1] != 0))
                                         liveNeighbors++;
                                 }
                             }
                         }
-                        
-                        //console.log("(" + i + ", " + j + "):\t" + liveNeighbors);
-                        
-                        // same as above, but with visual display of neighbors in console log
-                        /*
-                        // check if neighboring cells are occupied
-                        for (var k = 0; k < 3; k++)
-                        {
-                            for (var l = 0; l < 3; l++)
-                            {
-                                // if not an out-of-bounds neighbor or if not itself
-                                if (neighborCells[k][l] != "N" && neighborCells[k][l] != "*")
-                                {
-                                    if (k == 0 && l == 0)
-                                    {
-                                        if (cells[i - 1][j - 1] != 0)
-                                        {
-                                            neighborCells[0][0] = 1;
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[0][0] = 0;
-                                    }
-                                    else if (k == 1 && l == 0)
-                                    {
-                                        if (cells[i - 1][j] != 0)
-                                        {
-                                            neighborCells[1][0] = 1;
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[1][0] = 0;
-                                    }
-                                    else if (k == 2 && l == 0)
-                                    {
-                                        if (cells[i - 1][j + 1] != 0)
-                                        {
-                                            neighborCells[2][0] = 1;   
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[2][0] = 0;
-                                    }
-                                    else if (k == 0 && l == 1)
-                                    {
-                                        if (cells[i][j - 1] != 0)
-                                        {
-                                            neighborCells[0][1] = 1;
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[0][1] = 0;
-                                    }
-                                    else if (k == 2 && l == 1)
-                                    {
-                                        if (cells[i][j + 1] != 0)
-                                        {
-                                            neighborCells[2][1] = 1;
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[2][1] = 0;
-                                    }
-                                    else if (k == 0 && l == 2)
-                                    {
-                                        if (cells[i + 1][j - 1] != 0)
-                                        {
-                                            neighborCells[0][2] = 1;
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[0][2] = 0;
-                                    }
-                                    else if (k == 1 && l == 2)
-                                    {
-                                        if (cells[i + 1][j] != 0)
-                                        {
-                                            neighborCells[1][2] = 1;
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[1][2] = 0;
-                                    }
-                                    else if (k == 2 && l == 2)
-                                    {
-                                        if (cells[i + 1][j + 1] != 0)
-                                        {
-                                            neighborCells[2][2] = 1;
-                                            liveNeighbors++;
-                                        }
-                                        else
-                                            neighborCells[2][2] = 0;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        console.log("(" + i + ", " + j + "):\n\t" + neighborCells[0][0] + ", " + neighborCells[0][1] + ", " + neighborCells[0][2] + "\n\t" + neighborCells[1][0] + ", " + neighborCells[1][1] + ", " + neighborCells[1][2] + "\n\t" + neighborCells[2][0] + ", " + neighborCells[2][1] + ", " + neighborCells[2][2] + "\n\tLive Neighbors: " + liveNeighbors);
-                        */
                         
                         // any dead cell with exactly three live neighbours becomes a live cell
                         if (cells[i][j] == 0 && liveNeighbors == 3)
@@ -352,20 +310,46 @@
                 
                 return nextGeneration;
             }
+           
+            // functions for the background
+            function setBackgroundColor() {                
+                if ($(this).scrollTop() >= 0 && $(this).scrollTop() < 200)
+                    $("#background").css("background-color", "red");
+                else if ($(this).scrollTop() >= 200 && $(this).scrollTop() < 400)
+                    $("#background").css("background-color", "green");
+                else if ($(this).scrollTop() >= 400 && $(this).scrollTop() < 600)
+                    $("#background").css("background-color", "blue");
+                else
+                    $("#background").css("background-color", "yellow");
+            }
+            function setBackgroundSize() {
+                $("#background").height($(window).height());
+                $("#background").width($(window).width());
+            }
+            $(document).ready(function() {
+                setBackgroundSize();
+                setBackgroundColor();
+            });
+            $(function changeColor() {
+                $(window).scroll(function() {
+                    setBackgroundColor();
+                });
+            });
             
-            var gridSize = 50;
+            var gridSize = 50; // in pixels
+            var stepDelay = 100; // in milliseconds
             var canvas = document.getElementById("gameOfLife");
-            var stepDelay = 1000; // in milliseconds
             
-            setCanvasSize(canvas, gridSize, '#000000', 1000);
-            var cells = displayCells(canvas, gridSize);
+            setCanvasGrid(canvas, gridSize, 1000);
+            var cells = initialState(canvas, gridSize);
 
             run(cells, stepDelay);
             
             // Grid is redrawn after every time the window is resized
             $(window).resize(function() {
-                setCanvasSize(canvas, gridSize, '#000000', 0);
-                cells = displayCells(canvas, gridSize);
+                setBackgroundSize();
+                setCanvasGrid(canvas, gridSize, 0);
+                cells = initialState(canvas, gridSize);
                 drawAllCells(canvas, gridSize, cells);
                 run(cells, stepDelay);
             });
