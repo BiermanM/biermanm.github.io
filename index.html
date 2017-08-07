@@ -3,6 +3,12 @@
     <head>
         <title>Matthew Bierman</title>
         
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        
         <!-- Font Awesome (Icons) -->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         
@@ -18,7 +24,7 @@
             #gameOfLife {
                 position: fixed;
             }
-            #aboutMe, #mainPage, #portfolio {
+            #aboutMePage, #mainPage, #portfolioPage {
                 position: relative;
             }
             #name {
@@ -33,12 +39,76 @@
                 text-decoration: none;
                 color: white;
             }
+            h1 {
+                text-align: center;
+                margin: 0;
+                color: white;
+            }
+            #bio {
+                text-align: justify;
+                margin: 0;
+                color: white;
+            }
+            #profile {
+                width: 180px;
+                height: 180px;
+                object-fit: cover;
+                border-radius: 50%;
+                float: left;
+                margin: 20px 20px 0px 20px;
+            }
+            #contactFormBtn {
+                padding: 10px;
+                border-radius: 10px;
+                background-color: transparent;
+                border: solid white 1px;
+                color: white;
+                text-align: center;
+                transition: 0.5s;
+            }
+            #contactFormBtn:hover {
+                background-color: white;
+                color: black;
+                transition: 0.5s;
+            }
+            #btn {
+                text-align: center;
+            }
+            #portfolioTitle {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .project {
+                margin: 10px;
+                padding: 0;
+                background-color: green;
+            }
+            .fill {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+            .fill img {
+                flex-shrink: 0;
+                min-width: 100%;
+                min-height: 100%;
+            }
         </style>
     </head>
     <body>
         <div id="background"></div>
         <canvas id="gameOfLife"></canvas>
-        <div id="aboutMePage"></div>
+        <div id="aboutMePage">
+            <h1 id="title">About Me</h1>
+            <div>
+                <img id="profile" src="profile.jpg">
+                <p id="bio">Hi, my name is Matthew Bierman! I am currently a sophomore at the University of Texas at Dallas, majoring in Computer Science. I graduated from Faith Lutheran High School in Las Vegas, Nevada, where I was born and raised. During my time in Vegas, I enjoyed various internships, from working in post production on a documentary with Iacon Pictures to working in tech support with TLC Computer Solutions. In Texas, I now plan to strengthen my computer science skills and gain industry experience. Aside from programming, I enjoy travelling, cinematography, and photography in my free time.</p>
+            </div>
+            <div id="btn">
+                <button id="contactFormBtn">want to work together?</button>
+            </div>
+        </div>
         <div id="mainPage">
             <div id="linkToAbout">
                 <a id="aboutLinkText" href="#aboutMePage">
@@ -56,10 +126,82 @@
                 </a>
             </div>
         </div>
-        <div id="portfolioPage"></div>
+        <div id="portfolioPage" class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 id="portfolioTitle">Portfolio</h1>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col">
+                    <ul class="nav nav-pills nav-fill">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#portfolioPage">all</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#portfolioPage">software</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#portfolioPage">web dev</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#portfolioPage">photography</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#portfolioPage">film</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#portfolioPage">vfx</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#portfolioPage">3d modelling</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+            </div>
+        </div>
         
         <!-- jQuery -->
-        <script src="jquery-3.2.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+        <!-- Tether -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+
+        <!-- Bootstrap -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        
         <!-- JavaScript -->
         <script type="text/javascript">
             // general functions
@@ -373,25 +515,25 @@
             
             // functions for the pages
             function setMainPage() {
-                //$("#mainPage").css("background-color", "rgba(0, 255, 0, 0.5)");
+                //$("#mainPage").css("background-color", "rgba(0, 255, 0, 0.2)");
                 $("#mainPage").width($(window).width());
                 $("#mainPage").height($(window).height());
-                
-                $("#linkToAbout").height($(window).height() * 0.1);
-                $("#linkToPortfolio").height($(window).height() * 0.1);
                 
                 $("#linkToAbout").css("padding-top", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
                 $("#linkToAbout").css("padding-bottom", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
                 
-                $("#linkToAbout").height($("#linkToAbout").height() - (parseFloat($("#linkToAbout").css("padding-top")) * 2));
-                $("#linkToPortfolio").height($("#linkToPortfolio").height() - (parseFloat($("#linkToPortfolio").css("padding-top")) * 2));
+                $("#linkToPortfolio").css("padding-top", ($("#linkToPortfolio").height() - $("#aboutLinkText").height()) / 2);
+                $("#linkToPortfolio").css("padding-bottom", ($("#linkToPortfolio").height() - $("#aboutLinkText").height()) / 2);
                 
-                $("#name").width($(window).width() * 0.8);
-                $("#name").height($(window).height() * 0.6);
+                $("#linkToAbout").height(($(window).height() * 0.1) - (parseFloat($("#linkToAbout").css("padding-top")) * 2));
+                $("#linkToPortfolio").height(($(window).height() * 0.1) - (parseFloat($("#linkToPortfolio").css("padding-top")) * 2));
+                
                 $("#name").css("padding-left", $(window).width() * 0.1);
                 $("#name").css("padding-right", $(window).width() * 0.1);
                 $("#name").css("padding-top", $(window).height() * 0.1);
                 $("#name").css("padding-bottom", $(window).height() * 0.1);
+                $("#name").width($(window).width() * 0.8);
+                $("#name").height($(window).height() * 0.6);
                 
                 if ($(window).width() > 500)
                     $("#name").css("font-size", ($(window).width() * 0.1) + "px");
@@ -399,14 +541,31 @@
                     $("#name").css("font-size", ($(window).width() * 0.2) + "px");
             }
             function setAboutMePage() {
-                $("#aboutMePage").css("background-color", "rgba(255, 0, 0, 1)");
-                $("#aboutMePage").width($(window).width());
-                $("#aboutMePage").height($(window).height());
+                //$("#aboutMePage").css("background-color", "rgba(255, 0, 0, 0.2)");
+                $("#aboutMePage").css("padding-left", $(window).width() * 0.1);
+                $("#aboutMePage").css("padding-right", $(window).width() * 0.1);
+                $("#aboutMePage").css("padding-top", $(window).height() * 0.1);
+                $("#aboutMePage").css("padding-bottom", $(window).height() * 0.1);
+                $("#aboutMePage").width($(window).width() * 0.8);
+                $("#aboutMePage").height($(window).height() * 0.8);
+                
+                $("#bio").css("padding", "20px");
+                $("#bio").css("font-size", "16px");
             }
             function setPortfolioPage() {
                 $("#portfolioPage").css("background-color", "rgba(0, 0, 255, 0.5)");
-                $("#portfolioPage").width($(window).width());
-                $("#portfolioPage").height($(window).height());
+                $("#portfolioPage").css("padding-left", $(window).width() * 0.05);
+                $("#portfolioPage").css("padding-right", $(window).width() * 0.05);
+                $("#portfolioPage").css("padding-top", $(window).height() * 0.1);
+                $("#portfolioPage").css("padding-bottom", $(window).height() * 0.1);
+                $("#portfolioPage").width($(window).width() * 0.9);
+                
+                $(".project").each(function() {
+                    $(this).height($(this).width());
+                });
+                
+                if ($("#portfolioPage").height() < ($(window).height() * 0.8))
+                    $("#portfolioPage").height($(window).height() * 0.8);
             }
             
             setMainPage();
