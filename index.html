@@ -24,7 +24,7 @@
             #gameOfLife {
                 position: fixed;
             }
-            #aboutMePage, #mainPage, #portfolioPage {
+            #aboutMe, #main, #portfolio {
                 position: relative;
             }
             #name {
@@ -101,7 +101,7 @@
     <body>
         <div id="background"></div>
         <canvas id="gameOfLife"></canvas>
-        <div id="aboutMePage">
+        <div id="aboutMe">
             <h1 id="title">About Me</h1>
             <div>
                 <img id="profile" src="profile.jpg">
@@ -111,9 +111,9 @@
                 <button id="contactFormBtn">want to work together?</button>
             </div>
         </div>
-        <div id="mainPage">
+        <div id="main">
             <div id="linkToAbout">
-                <a id="aboutLinkText" href="#aboutMePage">
+                <a id="aboutLinkText" href="#aboutMe">
                     <i class="fa fa-chevron-up" aria-hidden="true"></i>
                     <br>
                     <span>About Me</span>
@@ -121,21 +121,21 @@
             </div>
             <div id="name">Matthew Bierman</div>
             <div id="linkToPortfolio">
-                <a id="portfolioLinkText" href="#portfolioPage">
+                <a id="portfolioLinkText" href="#portfolio">
                     <span>My Portfolio</span>
                     <br>
                     <i class="fa fa-chevron-down" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
-        <div id="portfolioPage" class="container">
+        <div id="portfolio" class="container">
             <div class="row">
                 <div class="col-sm-12">
                     <h1 id="portfolioTitle">Portfolio</h1>
                 </div>
             </div>
             <div class="row justify-content-center">
-                <ul class="nav nav-pills">
+                <ul class="nav nav-pills" role="tablist">
                     <li class="nav-item" data-filter="all">
                         <a class="nav-link active" data-toggle="tab" href="#0">All</a>
                     </li>
@@ -517,9 +517,9 @@
             
             // functions for the pages
             function setMainPage() {
-                //$("#mainPage").css("background-color", "rgba(0, 255, 0, 0.2)");
-                $("#mainPage").width($(window).width());
-                $("#mainPage").height($(window).height());
+                //$("#main").css("background-color", "rgba(0, 255, 0, 0.2)");
+                $("#main").width($(window).width());
+                $("#main").height($(window).height());
                 
                 $("#linkToAbout").css("padding-top", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
                 $("#linkToAbout").css("padding-bottom", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
@@ -543,39 +543,36 @@
                     $("#name").css("font-size", ($(window).width() * 0.2) + "px");
             }
             function setAboutMePage() {
-                //$("#aboutMePage").css("background-color", "rgba(255, 0, 0, 0.2)");
-                $("#aboutMePage").css("padding-left", $(window).width() * 0.1);
-                $("#aboutMePage").css("padding-right", $(window).width() * 0.1);
-                $("#aboutMePage").css("padding-top", $(window).height() * 0.1);
-                $("#aboutMePage").css("padding-bottom", $(window).height() * 0.1);
-                $("#aboutMePage").width($(window).width() * 0.8);
-                $("#aboutMePage").height($(window).height() * 0.8);
+                //$("#aboutMe").css("background-color", "rgba(255, 0, 0, 0.2)");
+                $("#aboutMe").css("padding-left", $(window).width() * 0.1);
+                $("#aboutMe").css("padding-right", $(window).width() * 0.1);
+                $("#aboutMe").css("padding-top", $(window).height() * 0.1);
+                $("#aboutMe").css("padding-bottom", $(window).height() * 0.1);
+                $("#aboutMe").width($(window).width() * 0.8);
+                $("#aboutMe").height($(window).height() * 0.8);
                 
                 $("#bio").css("padding", "20px");
                 $("#bio").css("font-size", "16px");
             }
             function setPortfolioPage() {
-                $("#portfolioPage").css("background-color", "rgba(0, 0, 255, 0.2)");
-                $("#portfolioPage").css("padding-left", $(window).width() * 0.05);
-                $("#portfolioPage").css("padding-right", $(window).width() * 0.05);
-                $("#portfolioPage").css("padding-top", $(window).height() * 0.1);
-                $("#portfolioPage").css("padding-bottom", $(window).height() * 0.1);
-                $("#portfolioPage").width($(window).width() * 0.9);
+                $("#portfolio").css("background-color", "rgba(0, 0, 255, 0.2)");
+                $("#portfolio").css("padding-left", $(window).width() * 0.05);
+                $("#portfolio").css("padding-right", $(window).width() * 0.05);
+                $("#portfolio").css("padding-top", $(window).height() * 0.1);
+                $("#portfolio").css("padding-bottom", $(window).height() * 0.1);
+                $("#portfolio").width($(window).width() * 0.9);
                 
                 $(".project").each(function() {
                     $(this).height($(this).width());
                 });
                 
-                if ($("#portfolioPage").height() < ($(window).height() * 0.8))
-                    $("#portfolioPage").height($(window).height() * 0.8);
+                if ($("#portfolio").height() < ($(window).height() * 0.8))
+                    $("#portfolio").height($(window).height() * 0.8);
             }
             
             setMainPage();
             setAboutMePage();
             setPortfolioPage();
-            
-            var containerEl = document.querySelector('#portfolioContainer');
-            var mixer = mixitup(containerEl);
             
             var gridSize = 50; // in pixels
             var stepDelay = 100; // in milliseconds
@@ -585,7 +582,23 @@
             var cells = initialState(canvas, gridSize);
             run(cells, stepDelay);
             
-            // Grid is redrawn after every time the window is resized
+            // Portfolio gallery
+            var containerEl = document.querySelector('#portfolioContainer');
+            var mixer = mixitup(containerEl);
+            
+            // Smooth scrolling for links to About Me and Portfolio pages
+            $("#aboutLinkText").click(function() {
+                $('html, body').animate({
+                    scrollTop: $("#aboutMe").offset().top
+                }, 1000);
+            });
+            $("#portfolioLinkText").click(function() {
+                $('html, body').animate({
+                    scrollTop: $("#portfolio").offset().top
+                }, 1000);
+            });
+            
+            // Redraw grid and reset pages whenever the window is resized
             $(window).resize(function() {
                 setMainPage();
                 setAboutMePage();
