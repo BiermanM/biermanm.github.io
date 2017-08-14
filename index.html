@@ -15,7 +15,7 @@
         <style type="text/css">
             body {
                 margin: 0;
-                padding 0;
+                padding: 0;
             }
             #background {
                 position: fixed;
@@ -94,6 +94,8 @@
                 min-width: 100%;
                 min-height: 100%;
             }
+
+            
         </style>
     </head>
     <body>
@@ -133,63 +135,60 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col">
-                    <ul class="nav nav-pills nav-fill">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#portfolioPage">all</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#portfolioPage">software</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#portfolioPage">web dev</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#portfolioPage">photography</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#portfolioPage">film</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#portfolioPage">vfx</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#portfolioPage">3d modelling</a>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="nav nav-pills">
+                    <li class="nav-item" data-filter="all">
+                        <a class="nav-link active" data-toggle="tab" href="#0">All</a>
+                    </li>
+                    <li class="nav-item" data-filter=".software">
+                        <a class="nav-link" data-toggle="tab" href="#0">Software</a>
+                    </li>
+                    <li class="nav-item" data-filter=".web-dev">
+                        <a class="nav-link" data-toggle="tab" href="#0">Web Dev</a>
+                    </li>
+                    <li class="nav-item" data-filter=".photography">
+                        <a class="nav-link" data-toggle="tab" href="#0">Photography</a>
+                    </li>
+                    <li class="nav-item" data-filter=".film">
+                        <a class="nav-link" data-toggle="tab" href="#0">Film</a>
+                    </li>
+                    <li class="nav-item" data-filter=".vfx">
+                        <a class="nav-link" data-toggle="tab" href="#0">VFX</a>
+                    </li>
+                    <li class="nav-item" data-filter=".3d-modeling">
+                        <a class="nav-link" data-toggle="tab" href="#0">3D Modeling</a>
+                    </li>
+                </ul>
             </div>
-            <div class="row justify-content-center">
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+
+            <div id="portfolioContainer" class="row justify-content-center">
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix web-dev col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix film col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix 3d-modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix web-dev col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <img src="http://via.placeholder.com/1920x1080">
-                </div>
-                <div class="project fill col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <img src="http://via.placeholder.com/1920x1080">
-                </div>
+
+                <div class="gap"></div>
+                <div class="gap"></div>
+                <div class="gap"></div>
             </div>
         </div>
         
@@ -201,6 +200,9 @@
 
         <!-- Bootstrap -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        
+        <!-- MixItUp -->
+        <script src="mixitup.min.js"></script>
         
         <!-- JavaScript -->
         <script type="text/javascript">
@@ -553,7 +555,7 @@
                 $("#bio").css("font-size", "16px");
             }
             function setPortfolioPage() {
-                $("#portfolioPage").css("background-color", "rgba(0, 0, 255, 0.5)");
+                $("#portfolioPage").css("background-color", "rgba(0, 0, 255, 0.2)");
                 $("#portfolioPage").css("padding-left", $(window).width() * 0.05);
                 $("#portfolioPage").css("padding-right", $(window).width() * 0.05);
                 $("#portfolioPage").css("padding-top", $(window).height() * 0.1);
@@ -571,6 +573,9 @@
             setMainPage();
             setAboutMePage();
             setPortfolioPage();
+            
+            var containerEl = document.querySelector('#portfolioContainer');
+            var mixer = mixitup(containerEl);
             
             var gridSize = 50; // in pixels
             var stepDelay = 100; // in milliseconds
