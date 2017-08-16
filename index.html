@@ -17,6 +17,9 @@
                 margin: 0;
                 padding: 0;
             }
+            p {
+                margin: 0;
+            }
             #background {
                 position: fixed;
                 transition: 0.5s;
@@ -39,7 +42,7 @@
                 text-decoration: none;
                 color: white;
             }
-            h1 {
+            #aboutMeTitle, #portfolioTitle {
                 text-align: center;
                 margin: 0;
                 color: white;
@@ -48,6 +51,7 @@
                 text-align: justify;
                 margin: 0;
                 color: white;
+                font-size: 2vmax;
             }
             #profile {
                 width: 180px;
@@ -63,7 +67,6 @@
                 background-color: transparent;
                 border: solid white 1px;
                 color: white;
-                text-align: center;
                 transition: 0.5s;
             }
             #contactFormBtn:hover {
@@ -71,7 +74,7 @@
                 color: black;
                 transition: 0.5s;
             }
-            #btn {
+            #aboutMeBtn {
                 text-align: center;
             }
             #portfolioTitle {
@@ -81,7 +84,13 @@
             .project {
                 margin: 10px;
                 padding: 0;
-                background-color: green;
+                background-color: black;
+            }
+            .projectTitle {
+                z-index: 100;
+                position: absolute;
+                opacity: 0;
+                color: white;
             }
             .fill {
                 display: flex;
@@ -94,20 +103,51 @@
                 min-width: 100%;
                 min-height: 100%;
             }
-
-            
+            .nav-link {
+                color: white;
+                transition: 0.2s;
+            }
+            .nav-link:hover {
+                color: black;
+                background-color: white;
+                transition: 0.2s;
+            }
+            .nav-link:active {
+                color: black;
+                background-color: white;
+                transition: 0.2s;
+            }
+            #footer {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                background-color: black;
+            }
+            .fa-disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+            .icon-size {
+                width: 25px;
+                height: 25px;
+            }
+            .footer-icon {
+                margin-left: 5px;
+                margin-right: 5px;
+                font-size: 160%;
+                color: white;
+            }
         </style>
     </head>
     <body>
         <div id="background"></div>
         <canvas id="gameOfLife"></canvas>
         <div id="aboutMe">
-            <h1 id="title">About Me</h1>
-            <div>
+            <p id="aboutMeTitle">About Me</p>
+            <div id="aboutMeMainText">
                 <img id="profile" src="profile.jpg">
                 <p id="bio">Hi, my name is Matthew Bierman! I am currently a sophomore at the University of Texas at Dallas, majoring in Computer Science. I graduated from Faith Lutheran High School in Las Vegas, Nevada, where I was born and raised. During my time in Vegas, I enjoyed various internships, from working in post production on a documentary with Iacon Pictures to working in tech support with TLC Computer Solutions. In Texas, I now plan to strengthen my computer science skills and gain industry experience. Aside from programming, I enjoy travelling, cinematography, and photography in my free time.</p>
             </div>
-            <div id="btn">
+            <div id="aboutMeBtn">
                 <button id="contactFormBtn">want to work together?</button>
             </div>
         </div>
@@ -131,18 +171,17 @@
         <div id="portfolio" class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <h1 id="portfolioTitle">Portfolio</h1>
+                    <p id="portfolioTitle">Portfolio</p>
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <ul class="nav nav-pills" role="tablist">
+            <ul class="nav nav-pills nav-justified flex-column flex-sm-row" role="tablist">
                     <li class="nav-item" data-filter="all">
                         <a class="nav-link active" data-toggle="tab" href="#0">All</a>
                     </li>
                     <li class="nav-item" data-filter=".software">
                         <a class="nav-link" data-toggle="tab" href="#0">Software</a>
                     </li>
-                    <li class="nav-item" data-filter=".web-dev">
+                    <li class="nav-item" data-filter=".web">
                         <a class="nav-link" data-toggle="tab" href="#0">Web Dev</a>
                     </li>
                     <li class="nav-item" data-filter=".photography">
@@ -154,41 +193,129 @@
                     <li class="nav-item" data-filter=".vfx">
                         <a class="nav-link" data-toggle="tab" href="#0">VFX</a>
                     </li>
-                    <li class="nav-item" data-filter=".3d-modeling">
+                    <li class="nav-item" data-filter=".modeling">
                         <a class="nav-link" data-toggle="tab" href="#0">3D Modeling</a>
                     </li>
-                </ul>
-            </div>
-
+            </ul>
             <div id="portfolioContainer" class="row justify-content-center">
                 <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Smart Lock</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill mix web-dev col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">HomeVR</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Domain Name Checker</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">The Dragon's Lair CTF</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">CP Scripts</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">World Cup Simulator</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">League Table Simulator</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">ScriptEncrypt</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">TLC Computer Solutions</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
                 <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Alaska</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">California</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">University of Minnesota</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Michigan State University</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix film vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">The Scientist</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
                 <div class="project fill mix film col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Shattered Heaven</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix film col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Dark Horizon</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix film vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Holding the Wire</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
                 <div class="project fill mix vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">ASCII Intro</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill mix 3d-modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Sinister Meeting</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Sci-Fi Revolver</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
-                <div class="project fill mix web-dev col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">House</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">House (untextured)</p>
+                    <img src="http://via.placeholder.com/1920x1080">
+                </div>
+                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">Power Generator</p>
                     <img src="http://via.placeholder.com/1920x1080">
                 </div>
 
                 <div class="gap"></div>
                 <div class="gap"></div>
                 <div class="gap"></div>
+            </div>
+        </div>
+        <div id="footer" class="container-fluid">
+            <div class="row">
+                <!-- Made by -->
+                <div class="col">
+                    <p class="col" style="text-align: left; color: white">Made with <span style="color: lightpink">&hearts;</span> by Matthew Bierman</p>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="col">
+                    <p class="col" style="text-align: right">
+                        <!-- Email -->
+                        <a class="icon-size" href="mailto:matthew.bierman2@gmail.com"><i class="fa fa-envelope footer-icon"></i></a>
+                        
+                        <!-- GitHub -->
+                        <a class="icon-size" href="https://www.github.com/BiermanM"><i class="fa fa-github-square footer-icon"></i></a>
+                        
+                        <!-- LinkedIn -->
+                        <a class="icon-size"><i class="fa fa-linkedin-square footer-icon fa-disabled"></i></a>
+                    </p>
+                </div>
             </div>
         </div>
         
@@ -551,11 +678,33 @@
                 $("#aboutMe").width($(window).width() * 0.8);
                 $("#aboutMe").height($(window).height() * 0.8);
                 
+                // sets the font size of the page's title based on the window's width
+                if ($(window).width() <= 1000)
+                    $("#aboutMeTitle").css("font-size", "32px");
+                else if ($(window).width() <= 1300)
+                    $("#aboutMeTitle").css("font-size", "49px");
+                else if ($(window).width() <= 1600)
+                    $("#aboutMeTitle").css("font-size", "66px");
+                else if ($(window).width() <= 1900)
+                    $("#aboutMeTitle").css("font-size", "83px");
+                else
+                    $("#aboutMeTitle").css("font-size", "100px");
+                
                 $("#bio").css("padding", "20px");
-                $("#bio").css("font-size", "16px");
+                $("#aboutMeMainText").height($("#aboutMe").height() - $("#aboutMeTitle").height() - $("#aboutMeBtn").height());
+                
+                // sets the width & height of the profile picture as 25% of the height of the text box or 33% of the width of the text box, whichever is less
+                var profileWH = 0;
+                if (($("#aboutMeMainText").width() / 3) < ($("#aboutMeMainText").height() / 4))
+                    profileWH = Math.ceil($("#aboutMeMainText").width() / 3);
+                else
+                    profileWH = Math.ceil($("#aboutMeMainText").height() / 3);
+                
+                $("#profile").width(profileWH + "px");
+                $("#profile").height(profileWH + "px");
             }
             function setPortfolioPage() {
-                $("#portfolio").css("background-color", "rgba(0, 0, 255, 0.2)");
+                //$("#portfolio").css("background-color", "rgba(0, 0, 255, 0.2)");
                 $("#portfolio").css("padding-left", $(window).width() * 0.05);
                 $("#portfolio").css("padding-right", $(window).width() * 0.05);
                 $("#portfolio").css("padding-top", $(window).height() * 0.1);
@@ -568,6 +717,8 @@
                 
                 if ($("#portfolio").height() < ($(window).height() * 0.8))
                     $("#portfolio").height($(window).height() * 0.8);
+                
+                $("#portfolioTitle").css("font-size", $("#aboutMeTitle").css("font-size"));
             }
             
             setMainPage();
@@ -585,6 +736,28 @@
             // Portfolio gallery
             var containerEl = document.querySelector('#portfolioContainer');
             var mixer = mixitup(containerEl);
+            
+            // 
+            
+            
+            // Enable hover for text on project when project tile is hovered over
+            $(".project").hover(function () {
+                // for when hover begins
+                $(this).children('.projectTitle').css("transition", "0.5s");
+                $(this).children('.projectTitle').css("opacity", 1);
+                
+                $(this).children('img').css("transition", "0.5s");
+                $(this).children('img').css("opacity", 0.7);
+                
+            }, function () {
+                // for when hover ends
+                $(this).children('.projectTitle').css("transition", "0.5s");
+                $(this).children('.projectTitle').css("opacity", 0);
+                
+                $(this).children('img').css("transition", "0.5s");
+                $(this).children('img').css("opacity", 1);
+                
+            });
             
             // Smooth scrolling for links to About Me and Portfolio pages
             $("#aboutLinkText").click(function() {
