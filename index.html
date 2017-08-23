@@ -32,11 +32,6 @@
             }
             #name {
                 color: white;
-                display: table-cell;
-                vertical-align: middle;
-            }
-            #name {
-                text-align: center;
             }
             #linkToAbout, #linkToPortfolio {
                 text-align: center;
@@ -156,6 +151,27 @@
                 position: fixed;
                 z-index: 999;
             }
+            #resumeBtn {
+                vertical-align: middle;
+                display: block;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: transparent;
+                border: solid white 1px;
+                color: white;
+                transition: 0.5s;
+            }
+            #resumeBtn:hover {
+                background-color: white;
+                color: black;
+                transition: 0.5s;
+                transform: scale(1.05);
+            }
+            #mainBtn {
+                height: 100px;
+                width: 102px;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -241,7 +257,18 @@
                     <span>About Me</span>
                 </a>
             </div>
-            <div id="name">Matthew Bierman</div>
+            <div id="name" class="container-fluid">
+                <div class="col">
+                    <div class="row justify-content-center">
+                        <span>Matthew Bierman</span>
+                    </div>
+                    <div class="row justify-content-center">
+                        <a id="mainBtn" class="justify-content-center" href="resume.pdf">
+                            <button id="resumeBtn" type="submit">my resume</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
             <div id="linkToPortfolio">
                 <a id="portfolioLinkText" href="#portfolio">
                     <span>My Portfolio</span>
@@ -725,32 +752,6 @@
             });
             
             // functions for the pages
-            function setMainPage() {
-                //$("#main").css("background-color", "rgba(0, 255, 0, 0.2)");
-                $("#main").width($(window).width());
-                $("#main").height($(window).height());
-                
-                $("#linkToAbout").css("padding-top", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
-                $("#linkToAbout").css("padding-bottom", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
-                
-                $("#linkToPortfolio").css("padding-top", ($("#linkToPortfolio").height() - $("#aboutLinkText").height()) / 2);
-                $("#linkToPortfolio").css("padding-bottom", ($("#linkToPortfolio").height() - $("#aboutLinkText").height()) / 2);
-                
-                $("#linkToAbout").height(($(window).height() * 0.1) - (parseFloat($("#linkToAbout").css("padding-top")) * 2));
-                $("#linkToPortfolio").height(($(window).height() * 0.1) - (parseFloat($("#linkToPortfolio").css("padding-top")) * 2));
-                
-                $("#name").css("padding-left", $(window).width() * 0.1);
-                $("#name").css("padding-right", $(window).width() * 0.1);
-                $("#name").css("padding-top", $(window).height() * 0.1);
-                $("#name").css("padding-bottom", $(window).height() * 0.1);
-                $("#name").width($(window).width() * 0.8);
-                $("#name").height($(window).height() * 0.6);
-                
-                if ($(window).width() > 500)
-                    $("#name").css("font-size", ($(window).width() * 0.1) + "px");
-                else
-                    $("#name").css("font-size", ($(window).width() * 0.2) + "px");
-            }
             function setAboutMePage() {
                 //$("#aboutMe").css("background-color", "rgba(255, 0, 0, 0.2)");
                 $("#aboutMe").css("padding-left", $(window).width() * 0.1);
@@ -797,6 +798,31 @@
                     $(".alert").css("margin-right", (parseFloat($(".alert").css("margin-right")) + (($("#aboutMe").width() - ($(".alert").width() + parseFloat($(".alert").css("padding-left")) + parseFloat($(".alert").css("padding-right")))) / 2)) + "px");
                 }
             }
+            function setMainPage() {
+                //$("#main").css("background-color", "rgba(0, 255, 0, 0.2)");
+                $("#main").width($(window).width());
+                $("#main").height($(window).height());
+                
+                $("#linkToAbout").css("padding-top", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
+                $("#linkToAbout").css("padding-bottom", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
+                
+                $("#linkToPortfolio").css("padding-top", ($("#linkToPortfolio").height() - $("#aboutLinkText").height()) / 2);
+                $("#linkToPortfolio").css("padding-bottom", ($("#linkToPortfolio").height() - $("#aboutLinkText").height()) / 2);
+                
+                $("#linkToAbout").height(($(window).height() * 0.1) - (parseFloat($("#linkToAbout").css("padding-top")) * 2));
+                $("#linkToPortfolio").height(($(window).height() * 0.1) - (parseFloat($("#linkToPortfolio").css("padding-top")) * 2));
+                
+                $("#name").css("padding-top", $(window).height() * 0.25);
+                $("#name").css("padding-bottom", $(window).height() * 0.15);
+                $("#name").height($(window).height() * 0.4);
+                
+                if ($(window).width() > 500)
+                    $("#name").css("font-size", ($(window).width() * 0.1) + "px");
+                else
+                    $("#name").css("font-size", ($(window).width() * 0.2) + "px");
+                
+                $("#resumeBtn").css("font-size", $("#contactFormBtn").css("font-size"));
+            }
             function setPortfolioPage() {
                 //$("#portfolio").css("background-color", "rgba(0, 0, 255, 0.2)");
                 $("#portfolio").css("padding-left", $(window).width() * 0.05);
@@ -815,8 +841,8 @@
                 $("#portfolioTitle").css("font-size", $("#aboutMeTitle").css("font-size"));
             }
             
-            setMainPage();
             setAboutMePage();
+            setMainPage();
             setPortfolioPage();
             
             var gridSize = 50; // in pixels
@@ -867,8 +893,7 @@
             });
             
             // Submit contact form and error checking
-            $("#form").submit(function(e)
-            {
+            $("#form").submit(function(e) {
                 e.preventDefault();
                 
                 if ($("#nameInput").val() == "")
@@ -957,8 +982,8 @@
             
             // Redraw grid and reset pages whenever the window is resized
             $(window).resize(function() {
-                setMainPage();
                 setAboutMePage();
+                setMainPage();
                 setPortfolioPage();
                 setBackgroundSize();
                 setCanvasGrid(canvas, gridSize, 0);
