@@ -35,8 +35,15 @@
                 display: table-cell;
                 vertical-align: middle;
             }
-            #name, #linkToAbout, #linkToPortfolio {
+            #name {
                 text-align: center;
+            }
+            #linkToAbout, #linkToPortfolio {
+                text-align: center;
+                transition: transform .2s ease-out;
+            }
+            #linkToAbout:hover, #linkToPortfolio:hover {
+                transform: scale(1.3);
             }
             #aboutLinkText, #portfolioLinkText {
                 text-decoration: none;
@@ -73,6 +80,7 @@
                 background-color: white;
                 color: black;
                 transition: 0.5s;
+                transform: scale(1.05);
             }
             #aboutMeBtn {
                 text-align: center;
@@ -136,11 +144,30 @@
                 font-size: 160%;
                 color: white;
             }
+            #contactModalName, #contactModalEmail, #contactModalPhone, #contactModalWebsite, #contactModalBody {
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+            #nameError, #emailError, #bodyError {
+                display: none;
+            }
+            .alert {
+                display: none;
+                position: fixed;
+                z-index: 999;
+            }
         </style>
     </head>
     <body>
         <div id="background"></div>
         <canvas id="gameOfLife"></canvas>
+        
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+            <strong>Congrats!</strong> Your email has been sent, I will try my best to respond within 48 hours.
+        </div>
         <div id="aboutMe">
             <p id="aboutMeTitle">About Me</p>
             <div id="aboutMeMainText">
@@ -148,7 +175,62 @@
                 <p id="bio">Hi, my name is Matthew Bierman! I am currently a sophomore at the University of Texas at Dallas, majoring in Computer Science. I graduated from Faith Lutheran High School in Las Vegas, Nevada, where I was born and raised. During my time in Vegas, I enjoyed various internships, from working in post production on a documentary with Iacon Pictures to working in tech support with TLC Computer Solutions. In Texas, I now plan to strengthen my computer science skills and gain industry experience. Aside from programming, I enjoy travelling, cinematography, and photography in my free time.</p>
             </div>
             <div id="aboutMeBtn">
-                <button id="contactFormBtn">want to work together?</button>
+                <button id="contactFormBtn" data-toggle="modal" data-target="#contactFormModal">want to work together?</button>
+            </div>
+            <div class="modal fade" id="contactFormModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form id="form">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Let's work together!</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row form-group">
+                                        <div id="contactModalName" class="col-sm">
+                                            <div class="form-group">
+                                                <input id="nameInput" type="text" class="form-control" placeholder="Full Name">
+                                                <div id="nameError" class="form-control-feedback">Please fill out this field.</div>
+                                            </div>
+                                        </div>
+                                        <div id="contactModalEmail" class="col-sm">
+                                            <div class="form-group">
+                                                <input id="emailInput" type="email" class="form-control" placeholder="Email Address">
+                                                <div id="emailError" class="form-control-feedback">Please fill out this field.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div id="contactModalPhone" class="col-sm">
+                                            <div class="form-group">
+                                                <input id="phoneInput" type="text" class="form-control" placeholder="Phone Number">
+                                            </div>
+                                        </div>
+                                        <div id="contactModalWebsite" class="col-sm">
+                                            <div class="form-group">
+                                                <input id="websiteInput" type="text" class="form-control" placeholder="Website">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div id="contactModalBody" class="col-sm">
+                                            <div class="form-group">
+                                                <textarea id="bodyInput" class="form-control" rows="5" placeholder="Tell me about yourself, why you want to work together, and any project ideas you might have!"></textarea>
+                                                <div id="bodyError" class="form-control-feedback">Please fill out this field.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="sendEmail" type="submit" class="btn btn-success">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="main">
@@ -176,25 +258,25 @@
             </div>
             <ul class="nav nav-pills nav-justified flex-column flex-sm-row" role="tablist">
                     <li class="nav-item" data-filter="all">
-                        <a class="nav-link active" data-toggle="tab" href="#0">All</a>
+                        <a id="allTab" class="nav-link active" data-toggle="tab" href="#0">All</a>
                     </li>
                     <li class="nav-item" data-filter=".software">
-                        <a class="nav-link" data-toggle="tab" href="#0">Software</a>
+                        <a id="softwareTab" class="nav-link" data-toggle="tab" href="#0">Software</a>
                     </li>
                     <li class="nav-item" data-filter=".web">
-                        <a class="nav-link" data-toggle="tab" href="#0">Web Dev</a>
+                        <a id="webTab" class="nav-link" data-toggle="tab" href="#0">Web Dev</a>
                     </li>
                     <li class="nav-item" data-filter=".photography">
-                        <a class="nav-link" data-toggle="tab" href="#0">Photography</a>
+                        <a id="photographyTab" class="nav-link" data-toggle="tab" href="#0">Photography</a>
                     </li>
                     <li class="nav-item" data-filter=".film">
-                        <a class="nav-link" data-toggle="tab" href="#0">Film</a>
+                        <a id="filmTab" class="nav-link" data-toggle="tab" href="#0">Film</a>
                     </li>
                     <li class="nav-item" data-filter=".vfx">
-                        <a class="nav-link" data-toggle="tab" href="#0">VFX</a>
+                        <a id="vfxTab" class="nav-link" data-toggle="tab" href="#0">VFX</a>
                     </li>
                     <li class="nav-item" data-filter=".modeling">
-                        <a class="nav-link" data-toggle="tab" href="#0">3D Modeling</a>
+                        <a id="modelingTab" class="nav-link" data-toggle="tab" href="#0">3D Modeling</a>
                     </li>
             </ul>
             <div id="portfolioContainer" class="row justify-content-center">
@@ -450,7 +532,7 @@
                         if (cells[i][j] == 0)
                             drawCell(canvas, i, j, gridSize, 'black');
                         else
-                            drawCell(canvas, i, j, gridSize, 'transparent');
+                            drawCell(canvas, i, j, gridSize, "rgba(0, 0, 0, " + (Math.random() * 0.5) + ")");
                     }
                 }
             }
@@ -701,7 +783,19 @@
                     profileWH = Math.ceil($("#aboutMeMainText").height() / 3);
                 
                 $("#profile").width(profileWH + "px");
-                $("#profile").height(profileWH + "px");
+                $("#profile").height(profileWH + "px");                
+                
+                // set correct sizing for "sent email" alert
+                $(".alert").css("margin-left", $(window).width() * 0.1);
+                $(".alert").css("margin-right", $(window).width() * 0.1);
+                $(".alert").css("margin-top", $(window).height() * 0.1);
+                $(".alert").css("margin-bottom", $(window).height() * 0.1);
+                
+                if (Math.abs($("#aboutMe").width() - ($(".alert").width() + parseFloat($(".alert").css("padding-left")) + parseFloat($(".alert").css("padding-right")))) > 10)
+                {
+                    $(".alert").css("margin-left", (parseFloat($(".alert").css("margin-left")) + (($("#aboutMe").width() - ($(".alert").width() + parseFloat($(".alert").css("padding-left")) + parseFloat($(".alert").css("padding-right")))) / 2)) + "px");
+                    $(".alert").css("margin-right", (parseFloat($(".alert").css("margin-right")) + (($("#aboutMe").width() - ($(".alert").width() + parseFloat($(".alert").css("padding-left")) + parseFloat($(".alert").css("padding-right")))) / 2)) + "px");
+                }
             }
             function setPortfolioPage() {
                 //$("#portfolio").css("background-color", "rgba(0, 0, 255, 0.2)");
@@ -734,11 +828,7 @@
             run(cells, stepDelay);
             
             // Portfolio gallery
-            var containerEl = document.querySelector('#portfolioContainer');
-            var mixer = mixitup(containerEl);
-            
-            // 
-            
+            var mixer = mixitup($("#portfolioContainer"));
             
             // Enable hover for text on project when project tile is hovered over
             $(".project").hover(function () {
@@ -759,6 +849,11 @@
                 
             });
             
+            // Fix contact form modal from affecting portfolio gallery filter
+            $("#contactFormModal").on("show.bs.modal", function () {
+                mixer.toggleOff("modal");
+            });
+                        
             // Smooth scrolling for links to About Me and Portfolio pages
             $("#aboutLinkText").click(function() {
                 $('html, body').animate({
@@ -769,6 +864,95 @@
                 $('html, body').animate({
                     scrollTop: $("#portfolio").offset().top
                 }, 1000);
+            });
+            
+            // Submit contact form and error checking
+            $("#form").submit(function(e)
+            {
+                e.preventDefault();
+                
+                if ($("#nameInput").val() == "")
+                {
+                    $("#contactModalName").removeClass("has-success");
+                    $("#contactModalName").addClass("has-danger");
+                    
+                    $("#nameInput").removeClass("form-control-success");
+                    $("#nameInput").addClass("form-control-danger");
+                    
+                    $("#nameError").css("display", "block");
+                }
+                else
+                {
+                    $("#contactModalName").removeClass("has-danger");
+                    $("#contactModalName").addClass("has-success");
+                    
+                    $("#nameInput").removeClass("form-control-danger");
+                    $("#nameInput").addClass("form-control-success");
+                    
+                    $("#nameError").css("display", "none");
+                }
+                
+                if ($("#emailInput").val() == "")
+                {
+                    $("#contactModalEmail").removeClass("has-success");
+                    $("#contactModalEmail").addClass("has-danger");
+                    
+                    $("#emailInput").removeClass("form-control-success");
+                    $("#emailInput").addClass("form-control-danger");
+                    
+                    $("#emailError").css("display", "block");
+                }
+                else
+                {
+                    $("#contactModalEmail").removeClass("has-danger");
+                    $("#contactModalEmail").addClass("has-success");
+                    
+                    $("#emailInput").removeClass("form-control-danger");
+                    $("#emailInput").addClass("form-control-success");
+                    
+                    $("#emailError").css("display", "none");
+                }
+                
+                if ($("#bodyInput").val() == "")
+                {
+                    $("#contactModalBody").removeClass("has-success");
+                    $("#contactModalBody").addClass("has-danger");
+                    
+                    $("#bodyInput").removeClass("form-control-success");
+                    $("#bodyInput").addClass("form-control-danger");
+                    
+                    $("#bodyError").css("display", "block");
+                }
+                else
+                {
+                    $("#contactModalBody").removeClass("has-danger");
+                    $("#contactModalBody").addClass("has-success");
+                    
+                    $("#bodyInput").removeClass("form-control-danger");
+                    $("#bodyInput").addClass("form-control-success");
+                    
+                    $("#bodyError").css("display", "none");
+                }
+                
+                if ($("#phoneInput").val() != "")
+                {
+                    $("#contactModalPhone").addClass("has-success");
+                    $("#phoneInput").addClass("form-control-success");
+                }
+                
+                if ($("#websiteInput").val() != "")
+                {
+                    $("#contactModalWebsite").addClass("has-success");
+                    $("#websiteInput").addClass("form-control-success");
+                }
+                
+                if ($("#nameInput").val() != "" && $("#emailInput").val() != "" && $("#bodyInput").val() != "")
+                {
+                    $("#contactFormModal").modal("toggle");
+                    return true;
+                }
+                else
+                    return false;
             });
             
             // Redraw grid and reset pages whenever the window is resized
