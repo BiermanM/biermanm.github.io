@@ -6,8 +6,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <!-- Bootstrap with Darkly Theme -->
+        <link href="https://cdn.rawgit.com/thomaspark/bootswatch/v4/darkly/bootstrap.min.css" rel="stylesheet">
         
         <!-- Font Awesome (Icons) -->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -73,7 +73,7 @@
             }
             #contactFormBtn:hover, #resumeBtn:hover {
                 background-color: white;
-                color: black;
+                color: #222222;
                 transition: 0.5s;
                 transform: scale(1.05);
             }
@@ -123,7 +123,7 @@
             #footer {
                 padding-top: 5px;
                 padding-bottom: 5px;
-                background-color: black;
+                background-color: #222222;
             }
             .fa-disabled {
                 opacity: 0.6;
@@ -208,7 +208,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="container-fluid">
-                                    <div class="row form-group">
+                                    <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalName" class="col-sm">
                                             <div class="form-group">
                                                 <input id="nameInput" type="text" class="form-control" placeholder="Full Name">
@@ -222,7 +222,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalPhone" class="col-sm">
                                             <div class="form-group">
                                                 <input id="phoneInput" type="text" class="form-control" placeholder="Phone Number">
@@ -234,7 +234,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalBody" class="col-sm">
                                             <div class="form-group">
                                                 <textarea id="bodyInput" class="form-control" rows="5" placeholder="Tell me about yourself, why you want to work together, and any project ideas you might have!"></textarea>
@@ -245,7 +245,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="sendEmail" type="submit" class="btn btn-success">Send</button>
+                                <button id="sendEmail" type="submit" class="btn btn-primary">Send</button>
                             </div>
                         </form>
                     </div>
@@ -536,67 +536,67 @@
                                         <h6>Features:</h6>
                                         <ul>
                                             <li>Log file is created to date and describe all events</li>
-                                            <li>Verify script is being run as root</li>
+                                            <li>Verify script is being run as <code>root</code></li>
                                             <li>Backs up all critical files</li>
                                             <li>Add/Remove users</li>
                                             <li>Modify user privileges</li>
                                             <li>Change user passwords</li>
                                             <li>Remove alias</li>
-                                            <li>Lock root account</li>
-                                            <li>Set correct permissions for shadow</li>
-                                            <li>Remove unnecessary user directories in /home/</li>
+                                            <li>Lock <code>root</code> account</li>
+                                            <li>Set correct permissions for <code>shadow</code></li>
+                                            <li>Remove unnecessary user directories in <code>/home/</code></li>
                                             <li>Remove startup scripts</li>
                                             <li>Enable firewall</li>
                                             <li>Fix Shellshock Bash vulnerability</li>
                                             <li>Set hosts file to defaults</li>
-                                            <li>Secure LightDM</li>
-                                            <li>Remove scripts in /bin/</li>
+                                            <li>Secure <code>LightDM</code></li>
+                                            <li>Remove scripts in <code>/bin/</code></li>
                                             <li>Disable IRQ Balance</li>
-                                            <li>Configure sysctl</li>
+                                            <li>Configure <code>sysctl</code></li>
                                             <li>Enable/Disable IPv6</li>
-                                            <li>Add (and configure)/Remove samba</li>
-                                            <li>Add (and configure)/Remove ftp</li>
-                                            <li>Add (and configure)/Remove ssh</li>
-                                            <li>Add (and configure)/Remove telnet</li>
+                                            <li>Add (and configure)/Remove <code>samba</code></li>
+                                            <li>Add (and configure)/Remove <code>ftp</code></li>
+                                            <li>Add (and configure)/Remove <code>ssh</code></li>
+                                            <li>Add (and configure)/Remove <code>telnet</code></li>
                                             <li>Add (and configure)/Remove mail</li>
                                             <li>Add (and configure)/Remove printing</li>
-                                            <li>Add (and configure)/Remove MySQL</li>
+                                            <li>Add (and configure)/Remove <code>MySQL</code></li>
                                             <li>Add (and configure)/Remove web servers</li>
-                                            <li>Add (and configure)/Remove dns</li>
+                                            <li>Add (and configure)/Remove <code>dns</code></li>
                                             <li>Remove all media files</li>
                                             <li>List all files with a file permission of 700-777</li>
-                                            <li>List all PHP files</li>
-                                            <li>Remove netcat, John the Ripper, Hydra, Aircrack-NG, FCrackZIP, LCrack, OphCrack, PDFCrack, Pyrit, RARCrack, SipCrack, IRPAS, LogKeys, Zeitgeist, NFS, NGINX, Inetd, VNC, and SNMP</li>
-                                            <li>Set login.defs and pam.d password policies</li>
+                                            <li>List all <code>PHP</code> files</li>
+                                            <li>Remove <code>netcat</code>, <code>John the Ripper</code>, <code>Hydra</code>, <code>Aircrack-NG</code>, <code>FCrackZIP</code>, <code>LCrack</code>, <code>OphCrack</code>, <code>PDFCrack</code>, <code>Pyrit</code>, <code>RARCrack</code>, <code>SipCrack</code>, <code>IRPAS</code>, <code>LogKeys</code>, <code>Zeitgeist</code>, <code>NFS</code>, <code>NGINX</code>, <code>Inetd</code>, <code>VNC</code>, and <code>SNMP</code></li>
+                                            <li>Set <code>login.defs</code> and <code>pam.d</code> password policies</li>
                                             <li>Deny false loopback packets</li>
                                             <li>Disable Ctrl-Alt-Del reboot</li>
-                                            <li>Install AppArmor</li>
-                                            <li>Remove startup tasks from crontab</li>
-                                            <li>Allow only root in cron</li>
+                                            <li>Install <code>AppArmor</code></li>
+                                            <li>Remove startup tasks from <code>crontab</code></li>
+                                            <li>Allow only <code>root</code> in <code>cron</code></li>
                                             <li>Add apt repositories</li>
                                             <li>Check and perform updates and operating system upgrades</li>
                                             <li>Remove unused packages</li>
-                                            <li>Fix OpenSSL Heart Bleed bug</li>
-                                            <li>Set UID 0 to root</li>
+                                            <li>Fix <code>OpenSSL</code> Heart Bleed bug</li>
+                                            <li>Set UID 0 to <code>root</code></li>
                                             <li>Create backups/logs for comparatives script</li>
                                         </ul>
 
                                         <h4>Ubuntu, Mint, Debian Options Script / Fedora Options Script</h4>
                                         <h6>Allows the user to use the following programs:</h6>
                                         <ul>
-                                            <li>HTOP (Task Manager)</li>
-                                            <li>Nmap (Network Mapper)</li>
-                                            <li>ClamAV (Anti-Virus)</li>
-                                            <li>RKHunter (Anti-Rootkit)</li>
-                                            <li>CHKRootkit (Anti-Rootkit)</li>
-                                            <li>Unhide (Shows Hidden Processes & TCP/UDP Ports)</li>
-                                            <li>Lynis (Security Auditing)</li>
-                                            <li>Bum (GUI for Startup Scripts & Services)</li>
-                                            <li>HardInfo (Hardware Analysis, System Benchmark, & Report Generator)</li>
+                                            <li><code>HTOP</code> (Task Manager)</li>
+                                            <li><code>Nmap</code> (Network Mapper)</li>
+                                            <li><code>ClamAV</code> (Anti-Virus)</li>
+                                            <li><code>RKHunter</code> (Anti-Rootkit)</li>
+                                            <li><code>CHKRootkit</code> (Anti-Rootkit)</li>
+                                            <li><code>Unhide</code> (Shows Hidden Processes &amp; TCP/UDP Ports)</li>
+                                            <li><code>Lynis</code> (Security Auditing)</li>
+                                            <li><code>Bum</code> (GUI for Startup Scripts &amp; Services)</li>
+                                            <li><code>HardInfo</code> (Hardware Analysis, System Benchmark, &amp; Report Generator)</li>
                                         </ul>
 
                                         <h4>Comparative Script</h4>
-                                        <p>Uses the program Diffuse to compare various system files between the current files and the default system files as of January 21, 2016. Diffuse shows the differences in text between the two files using colored highlighting.</p>
+                                        <p>Uses the program <code>Diffuse</code> to compare various system files between the current files and the default system files as of January 21, 2016. <code>Diffuse</code> shows the differences in text between the two files using colored highlighting.</p>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/AFACP-Scripts"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
@@ -675,7 +675,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md">
-                                        <p style="margin-bottom: 15px">A shell script that converts other shell scripts into encrypted, executable files. Move the script to the Desktop, then run the script in the following format: sudo ./Desktop/encryptScript.sh [script]. The parameter must be the full path of a script which is also on the Desktop.</p>
+                                        <p style="margin-bottom: 15px">A shell script that converts other shell scripts into encrypted, executable files. Move the script to the Desktop, then run the script in the following format: <code>sudo ./Desktop/encryptScript.sh [script]</code>. The parameter must be the full path of a script which is also on the Desktop.</p>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/EncryptScript"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
@@ -1282,7 +1282,7 @@
                 if (canvas.getContext)
                 {
                     var ctx = canvas.getContext("2d");
-                    ctx.fillStyle = 'black';
+                    ctx.fillStyle = "#222222";
                     
                     for (var i = 1; i <= Math.floor(canvas.width / gridSize); i++)
                         ctx.fillRect((gridSize * i) - 1, 0, 2, canvas.height);
@@ -1332,7 +1332,7 @@
                     for (var j = 0; j < cells[0].length; j++)
                     {
                         if (cells[i][j] == 0)
-                            drawCell(canvas, i, j, gridSize, 'black');
+                            drawCell(canvas, i, j, gridSize, "#222222");
                         else
                             drawCell(canvas, i, j, gridSize, "rgba(0, 0, 0, " + (Math.random() * 0.5) + ")");
                     }
@@ -1506,11 +1506,11 @@
             // functions for the background
             function setBackgroundColor() {                
                 if ($(this).scrollTop() >= 0 && $(this).scrollTop() < $(window).height())
-                    $("#background").css("background-color", "red");
+                    $("#background").css("background-color", "#7f3737");
                 else if ($(this).scrollTop() >= $(window).height() && $(this).scrollTop() < ($(window).height() * 2))
                     $("#background").css("background-color", "#535353");
                 else if ($(this).scrollTop() >= ($(window).height() * 2) && $(this).scrollTop() < ($(window).height() * 3))
-                    $("#background").css("background-color", "blue");
+                    $("#background").css("background-color", "#375a7f");
             }
             function setBackgroundSize() {
                 $("#background").height($(window).height());
