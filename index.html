@@ -226,7 +226,7 @@
                                     <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalPhone" class="col-sm">
                                             <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="phoneInput" type="text" class="form-control" name="phoneNumber" placeholder="Phone Number">
+                                                <input type="text" class="form-control" name="phoneNumber" placeholder="Phone Number">
                                             </div>
                                         </div>
                                         <div id="contactModalWebsite" class="col-sm">
@@ -1902,12 +1902,6 @@
                     $("#bodyInput").addClass("form-control-success");
                     
                     $("#bodyError").css("display", "none");
-                }
-                
-                if ($("#phoneInput").val() != "")
-                {
-                    $("#contactModalPhone").addClass("has-success");
-                    $("#phoneInput").addClass("form-control-success");
                 }
                 
                 if ($("#websiteInput").val() != "")
