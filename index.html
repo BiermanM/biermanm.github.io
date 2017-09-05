@@ -206,7 +206,7 @@
             <div class="modal fade" id="contactFormModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <form id="form">
+                        <form id="form" action="https://formspree.io/matthew.bierman2@gmail.com" method="post">
                             <div class="modal-header">
                                 <h5 class="modal-title">Let's work together!</h5>
                                 <button type="button" class="close" data-dismiss="modal">
@@ -218,13 +218,13 @@
                                     <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalName" class="col-sm">
                                             <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="nameInput" type="text" class="form-control" placeholder="Full Name">
+                                                <input id="nameInput" type="text" class="form-control" name="name" placeholder="Full Name">
                                                 <div id="nameError" class="form-control-feedback">Please fill out this field.</div>
                                             </div>
                                         </div>
                                         <div id="contactModalEmail" class="col-sm">
                                             <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="emailInput" type="email" class="form-control" placeholder="Email Address">
+                                                <input id="emailInput" type="email" class="form-control" name="_replyto" placeholder="Email Address">
                                                 <div id="emailError" class="form-control-feedback">Please fill out this field.</div>
                                             </div>
                                         </div>
@@ -232,19 +232,19 @@
                                     <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalPhone" class="col-sm">
                                             <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="phoneInput" type="text" class="form-control" placeholder="Phone Number">
+                                                <input id="phoneInput" type="text" class="form-control" name="phoneNumber" placeholder="Phone Number">
                                             </div>
                                         </div>
                                         <div id="contactModalWebsite" class="col-sm">
                                             <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="websiteInput" type="text" class="form-control" placeholder="Website">
+                                                <input id="websiteInput" type="text" class="form-control" name="website" placeholder="Website">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalBody" class="col-sm">
                                             <div class="form-group" style="margin-bottom: 0px">
-                                                <textarea id="bodyInput" class="form-control" rows="5" placeholder="Tell me about yourself, why you want to work together, and any project ideas you might have!"></textarea>
+                                                <textarea id="bodyInput" class="form-control" rows="5" name="message" placeholder="Tell me about yourself, why you want to work together, and any project ideas you might have!"></textarea>
                                                 <div id="bodyError" class="form-control-feedback">Please fill out this field.</div>
                                             </div>
                                         </div>
@@ -252,7 +252,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="sendEmail" type="submit" class="btn btn-primary">Send</button>
+                                <button id="sendEmail" type="submit" class="btn btn-primary" value="Send">Send</button>
                             </div>
                         </form>
                     </div>
@@ -1925,10 +1925,7 @@
                 }
                 
                 if ($("#nameInput").val() != "" && $("#emailInput").val() != "" && $("#bodyInput").val() != "")
-                {
-                    $("#contactFormModal").modal("toggle");
                     return true;
-                }
                 else
                     return false;
             });
