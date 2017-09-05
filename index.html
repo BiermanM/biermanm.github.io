@@ -206,7 +206,7 @@
             <div class="modal fade" id="contactFormModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <form id="form" action="https://formspree.io/matthew.bierman2@gmail.com" method="post">
+                        <form id="form" action="https://formspree.io/matthew.bierman2@gmail.com" method="POST">
                             <div class="modal-header">
                                 <h5 class="modal-title">Let's work together!</h5>
                                 <button type="button" class="close" data-dismiss="modal">
@@ -1846,9 +1846,7 @@
             });
             
             // Submit contact form and error checking
-            $("#form").submit(function(e) {
-                e.preventDefault();
-                
+            $("#form").submit(function() {
                 if ($("#nameInput").val() == "")
                 {
                     $("#contactModalName").removeClass("has-success");
