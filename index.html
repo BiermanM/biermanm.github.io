@@ -1604,15 +1604,13 @@
                 {
                     cells[i] = new Array(yCoordCells);
                     for (var j = 0; j < yCoordCells; j++)
-                        cells[i][j] = 0;
-                }
-                
-                // Initial state
-                cells[2][2] = 1;
-                cells[3][3] = 1;
-                cells[3][4] = 1;
-                cells[2][4] = 1;
-                cells[1][4] = 1;               
+                    {
+                        if (Math.random() < 0.5)
+                            cells[i][j] = 0;
+                        else
+                            cells[i][j] = 1;
+                    }
+                }           
                 
                 // Draw cells at their initial state
                 for (var i = 0; i < xCoordCells; i++) {
@@ -1759,12 +1757,17 @@
             }
            
             // functions for the background
-            function setBackgroundColor() {                
-                if ($(this).scrollTop() >= 0 && $(this).scrollTop() < $(window).height())
+            function setBackgroundColor() {
+                var windowHeight = $(window).height();
+                if ($(this).scrollTop() >= 0 && $(this).scrollTop() < windowHeight * 0.5)
                     $("#background").css("background-color", "#7f3737");
-                else if ($(this).scrollTop() >= $(window).height() && $(this).scrollTop() < ($(window).height() * 2))
+                else if ($(this).scrollTop() >= windowHeight * 0.5 && $(this).scrollTop() < windowHeight)
+                    $("#background").css("background-color", "#66377f");
+                else if ($(this).scrollTop() >= windowHeight && $(this).scrollTop() < windowHeight * 1.5)
                     $("#background").css("background-color", "#535353");
-                else if ($(this).scrollTop() >= ($(window).height() * 2) && $(this).scrollTop() < ($(window).height() * 3))
+                else if ($(this).scrollTop() >= windowHeight * 1.5 && $(this).scrollTop() < windowHeight * 2)
+                    $("#background").css("background-color", "#377f77");
+                else if ($(this).scrollTop() >= windowHeight * 2)
                     $("#background").css("background-color", "#375a7f");
             }
             function setBackgroundSize() {
@@ -1914,7 +1917,7 @@
             setModalImageSizes();
             
             var gridSize = 50; // in pixels
-            var stepDelay = 100; // in milliseconds
+            var stepDelay = 400; // in milliseconds
             var canvas = document.getElementById("gameOfLife");
             
             setCanvasGrid(canvas, gridSize, 1000);
