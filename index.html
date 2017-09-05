@@ -7,9 +7,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
         <!-- Redirect to center of page on load -->
-        <!-- <script language="javascript" type="text/javascript">
+        <script language="javascript" type="text/javascript">
             window.location="https://biermanm.github.io/#main";
-        </script> -->
+        </script>
         
         <!-- Bootstrap with Darkly Theme -->
         <link href="https://cdn.rawgit.com/thomaspark/bootswatch/v4/darkly/bootstrap.min.css" rel="stylesheet">
@@ -39,20 +39,21 @@
                 position: relative;
             }
             #name {
-                color: white;
+                color: #dddddd;
             }
             #linkToAbout, #linkToPortfolio {
+                cursor: pointer;
                 text-align: center;
             }
             #aboutMeTitle, #portfolioTitle {
                 text-align: center;
                 margin: 0;
-                color: white;
+                color: #dddddd;
             }
             #bio {
                 text-align: justify;
                 margin: 0;
-                color: white;
+                color: #dddddd;
                 font-size: 2vmax;
             }
             #profile {
@@ -67,12 +68,12 @@
                 padding: 10px;
                 border-radius: 10px;
                 background-color: transparent;
-                border: solid white 1px;
-                color: white;
+                border: solid #dddddd 1px;
+                color: #dddddd;
                 transition: 0.5s;
             }
             #contactFormBtn:hover, #resumeBtn:hover {
-                background-color: white;
+                background-color: #dddddd;
                 color: #222222;
                 transition: 0.5s;
                 transform: scale(1.05);
@@ -93,7 +94,7 @@
                 z-index: 100;
                 position: absolute;
                 opacity: 0;
-                color: white;
+                color: #dddddd;
             }
             .fill {
                 display: flex;
@@ -107,17 +108,17 @@
                 min-height: 100%;
             }
             .nav-link {
-                color: white;
+                color: #dddddd;
                 transition: 0.2s;
             }
             .nav-link:hover {
                 color: black;
-                background-color: white;
+                background-color: #dddddd;
                 transition: 0.2s;
             }
             .nav-link:active {
                 color: black;
-                background-color: white;
+                background-color: #dddddd;
                 transition: 0.2s;
             }
             #footer {
@@ -137,7 +138,7 @@
                 margin-left: 5px;
                 margin-right: 5px;
                 font-size: 160%;
-                color: white;
+                color: #dddddd;
             }
             #contactModalName, #contactModalEmail, #contactModalPhone, #contactModalWebsite, #contactModalBody {
                 margin-top: 5px;
@@ -158,14 +159,14 @@
             .githubLink {
                 padding: 10px;
                 border-radius: 10px;
-                background-color: white;
+                background-color: #dddddd;
                 border: solid #222222 1px;
                 color: #222222;
                 transition: 0.5s;
             }
             .githubLink:hover {
                 background-color: black;
-                color: white;
+                color: #dddddd;
                 transition: 0.5s;
                 transform: scale(1.05);
                 text-decoration: none;
@@ -174,22 +175,142 @@
                 text-decoration: none !important;
             }
             
+            /* loading screen */
+            #loading {
+                background-color: #222222;
+                height: 100%;
+                width: 100%;
+                position: fixed;
+                z-index: 1;
+                margin-top: 0px;
+                top: 0px;
+            }
+            #loading-center {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                }
+            #loading-center-absolute {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                height: 50px;
+                width: 300px;
+                margin-top: -25px;
+                margin-left: -150px;
+
+            }
+            #loading-text {
+                 position: absolute;
+                top: 60%;
+                left: 50%;
+                padding: .8em 1.2em;
+                color: #dddddd;
+    
+                -webkit-transform: translate(-50%, -50%);
+                -moz-transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                -o-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+            .object {
+                width: 18px;
+                height: 18px;
+                background-color: #dddddd;
+                float: left;
+                margin-top: 15px;
+                margin-right: 15px;
+                -moz-border-radius: 50% 50% 50% 50%;
+                -webkit-border-radius: 50% 50% 50% 50%;
+                border-radius: 50% 50% 50% 50%;
+                -webkit-animation: object 1s infinite;
+                animation: object 1s infinite;
+            }
+            .object:last-child {
+                margin-right: 0px;
+                }
+            .object:nth-child(9) {
+                -webkit-animation-delay: 0.9s;
+                animation-delay: 0.9s;
+                }
+            .object:nth-child(8) {
+                -webkit-animation-delay: 0.8s;
+                animation-delay: 0.8s;
+                }
+            .object:nth-child(7) {
+                -webkit-animation-delay: 0.7s;
+                animation-delay: 0.7s;
+                }	
+            .object:nth-child(6) {
+                -webkit-animation-delay: 0.6s;
+                animation-delay: 0.6s;
+                }
+            .object:nth-child(5) {
+                -webkit-animation-delay: 0.5s;
+                animation-delay: 0.5s;
+                }
+            .object:nth-child(4) {
+                -webkit-animation-delay: 0.4s;
+                animation-delay: 0.4s;
+                }
+            .object:nth-child(3) {
+                -webkit-animation-delay: 0.3s;
+                animation-delay: 0.3s;
+                }
+            .object:nth-child(2) {
+                -webkit-animation-delay: 0.2s;
+                animation-delay: 0.2s;
+                }
+            @-webkit-keyframes object {
+            50% {
+                -ms-transform: translate(0,-50px); 
+                -webkit-transform: translate(0,-50px);
+                transform: translate(0,-50px);
+                }
+            }		
+            @keyframes object {
+            50% {
+                -ms-transform: translate(0,-50px); 
+                -webkit-transform: translate(0,-50px);
+                transform: translate(0,-50px);
+                }
+            }
+            
             /* fonts */
             #aboutMeTitle, #portfolioTitle, #mainTitle, .modal-title {
                 font-family: 'Roboto Slab', sans-serif;
             }
-            .alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #modelingTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text {
+            .alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #modelingTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text, #loading-text {
                 font-family: 'Roboto', sans-serif;
             }
         </style>
     </head>
     <body>
+        <!-- Loading screen/animation is based off of tutorial from http://simbyone.com/ -->
+        <div id="loading">
+            <div id="loading-center">
+                <div id="loading-center-absolute">
+                    <div class="object"></div>
+                    <div class="object"></div>
+                    <div class="object"></div>
+                    <div class="object"></div>
+                    <div class="object"></div>
+                    <div class="object"></div>
+                    <div class="object"></div>
+                    <div class="object"></div>
+                    <div class="object"></div>
+                </div>
+                <p id="loading-text">loading, please wait...</p>
+            </div>
+        </div>
+        
         <div id="background"></div>
         <canvas id="gameOfLife"></canvas>
         
         <div id="aboutMe">
             <p id="aboutMeTitle">About Me</p>
             <div id="aboutMeMainText">
+                <div class="bcg"></div>
                 <img id="profile" src="images/profile.jpg">
                 <p id="bio">Hi, my name is Matthew Bierman! I am currently a sophomore at the University of Texas at Dallas, majoring in Computer Science. I graduated from Faith Lutheran High School in Las Vegas, Nevada, where I was born and raised. During my time in Vegas, I enjoyed various internships, from working in post production on a documentary with Iacon Pictures to working in tech support with TLC Computer Solutions. In Texas, I now plan to strengthen my computer science skills and gain industry experience. Aside from programming, I enjoy travelling, cinematography, and photography in my free time.</p>
             </div>
@@ -256,7 +377,7 @@
         <div id="main">
             <div id="linkToAbout">
                 <div id="aboutLinkText" style="width: 86px">
-                    <a class="no-underline" href="#aboutMe" style="color: white">
+                    <a class="no-underline" href="#aboutMe" style="color: #dddddd">
                         <i class="fa fa-chevron-up" aria-hidden="true"></i>
                         <br>
                         <span>About Me</span>
@@ -277,7 +398,7 @@
             </div>
             <div id="linkToPortfolio">
                 <div id="portfolioLinkText" style="width: 86px">
-                    <a class="no-underline" href="#portfolio" style="color: white">
+                    <a class="no-underline" href="#portfolio" style="color: #dddddd">
                         <span>My Portfolio</span>
                         <br>
                         <i class="fa fa-chevron-down" aria-hidden="true"></i>
@@ -1310,7 +1431,7 @@
             <div class="row">
                 <!-- Made by -->
                 <div class="col">
-                    <p class="col" style="text-align: left; color: white">Made with <span style="color: lightpink">&hearts;</span> by Matthew Bierman</p>
+                    <p class="col" style="text-align: left; color: #dddddd">Made with <span style="color: lightpink">&hearts;</span> by Matthew Bierman</p>
                 </div>
 
                 <!-- Social Media Links -->
@@ -1346,6 +1467,11 @@
         
         <!-- JavaScript -->
         <script type="text/javascript">
+            // loading screen
+            $(window).on('load', function() {
+                $("#loading").fadeOut(500);
+            });
+            
             // general functions
             function print2dArray(arr) {
                 var str = "";
