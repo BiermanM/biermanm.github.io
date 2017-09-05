@@ -1,3 +1,16 @@
+<?php
+    $successMsg = "";
+    if ($_POST)
+    {
+        $recipient = "matthew.bierman2@gmail.com";
+        $subject = $_POST["subject"];
+        $content = $_POST["content"];
+        $headers = "From ".$_POST["email"];
+        if (mail($recipient, $subject, $content, $headers))
+            $successMsg = "<div class=\"alert alert-success alert-dismissible fade show\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button><strong>Congrats!</strong> Your email has been sent, I will try my best to respond within 48 hours.</div>";
+    }
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +29,9 @@
         
         <!-- Font Awesome (Icons) -->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
         
         <style type="text/css">
             body {
@@ -40,14 +56,6 @@
             }
             #linkToAbout, #linkToPortfolio {
                 text-align: center;
-                transition: transform .2s ease-out;
-            }
-            #linkToAbout:hover, #linkToPortfolio:hover {
-                transform: scale(1.3);
-            }
-            #aboutLinkText, #portfolioLinkText {
-                text-decoration: none;
-                color: white;
             }
             #aboutMeTitle, #portfolioTitle {
                 text-align: center;
@@ -152,7 +160,6 @@
                 display: none;
             }
             .alert {
-                display: none;
                 position: fixed;
                 z-index: 999;
             }
@@ -183,18 +190,21 @@
             .no-underline {
                 text-decoration: none !important;
             }
+            
+            /* fonts */
+            #aboutMeTitle, #portfolioTitle, #mainTitle, .modal-title {
+                font-family: 'Roboto Slab', sans-serif;
+            }
+            .alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #modelingTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text {
+                font-family: 'Roboto', sans-serif;
+            }
         </style>
     </head>
     <body>
         <div id="background"></div>
         <canvas id="gameOfLife"></canvas>
         
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <button type="button" class="close" data-dismiss="alert">
-                <span>&times;</span>
-            </button>
-            <strong>Congrats!</strong> Your email has been sent, I will try my best to respond within 48 hours.
-        </div>
+        <div id="success-msg"><? echo $successMsg; ?></div>
         <div id="aboutMe">
             <p id="aboutMeTitle">About Me</p>
             <div id="aboutMeMainText">
@@ -202,12 +212,13 @@
                 <p id="bio">Hi, my name is Matthew Bierman! I am currently a sophomore at the University of Texas at Dallas, majoring in Computer Science. I graduated from Faith Lutheran High School in Las Vegas, Nevada, where I was born and raised. During my time in Vegas, I enjoyed various internships, from working in post production on a documentary with Iacon Pictures to working in tech support with TLC Computer Solutions. In Texas, I now plan to strengthen my computer science skills and gain industry experience. Aside from programming, I enjoy travelling, cinematography, and photography in my free time.</p>
             </div>
             <div id="aboutMeBtn">
-                <button id="contactFormBtn" data-toggle="modal" data-target="#contactFormModal">want to work together?</button>
+                <button id="contactFormBtn">want to work together?</button>
             </div>
+            
             <div class="modal fade" id="contactFormModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <form id="form">
+                        <form id="form" method="post">
                             <div class="modal-header">
                                 <h5 class="modal-title">Let's work together!</h5>
                                 <button type="button" class="close" data-dismiss="modal">
@@ -218,13 +229,13 @@
                                 <div class="container-fluid">
                                     <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalName" class="col-sm">
-                                            <div class="form-group">
+                                            <div class="form-group" style="margin-bottom: 0px">
                                                 <input id="nameInput" type="text" class="form-control" placeholder="Full Name">
                                                 <div id="nameError" class="form-control-feedback">Please fill out this field.</div>
                                             </div>
                                         </div>
                                         <div id="contactModalEmail" class="col-sm">
-                                            <div class="form-group">
+                                            <div class="form-group" style="margin-bottom: 0px">
                                                 <input id="emailInput" type="email" class="form-control" placeholder="Email Address">
                                                 <div id="emailError" class="form-control-feedback">Please fill out this field.</div>
                                             </div>
@@ -232,19 +243,19 @@
                                     </div>
                                     <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalPhone" class="col-sm">
-                                            <div class="form-group">
+                                            <div class="form-group" style="margin-bottom: 0px">
                                                 <input id="phoneInput" type="text" class="form-control" placeholder="Phone Number">
                                             </div>
                                         </div>
                                         <div id="contactModalWebsite" class="col-sm">
-                                            <div class="form-group">
+                                            <div class="form-group" style="margin-bottom: 0px">
                                                 <input id="websiteInput" type="text" class="form-control" placeholder="Website">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group" style="margin-bottom: 0">
                                         <div id="contactModalBody" class="col-sm">
-                                            <div class="form-group">
+                                            <div class="form-group" style="margin-bottom: 0px">
                                                 <textarea id="bodyInput" class="form-control" rows="5" placeholder="Tell me about yourself, why you want to work together, and any project ideas you might have!"></textarea>
                                                 <div id="bodyError" class="form-control-feedback">Please fill out this field.</div>
                                             </div>
@@ -262,16 +273,18 @@
         </div>
         <div id="main">
             <div id="linkToAbout">
-                <a id="aboutLinkText" href="#aboutMe">
-                    <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                    <br>
-                    <span>About Me</span>
-                </a>
+                <div id="aboutLinkText" style="width: 86px">
+                    <a class="no-underline" href="#aboutMe" style="color: white">
+                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                        <br>
+                        <span>About Me</span>
+                    </a>
+                </div>
             </div>
             <div id="name" class="container-fluid">
                 <div class="col">
                     <div class="row justify-content-center">
-                        <span style="text-align: center">Matthew Bierman</span>
+                        <span id="mainTitle" style="text-align: center">Matthew Bierman</span>
                     </div>
                     <div class="row justify-content-center">
                         <a id="mainBtn" class="justify-content-center" href="resume.pdf">
@@ -281,11 +294,13 @@
                 </div>
             </div>
             <div id="linkToPortfolio">
-                <a id="portfolioLinkText" href="#portfolio">
-                    <span>My Portfolio</span>
-                    <br>
-                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                </a>
+                <div id="portfolioLinkText" style="width: 86px">
+                    <a class="no-underline" href="#portfolio" style="color: white">
+                        <span>My Portfolio</span>
+                        <br>
+                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </div>
         <div id="portfolio" class="container">
@@ -318,95 +333,95 @@
                     </li>
             </ul>
             <div id="portfolioContainer" class="row justify-content-center">
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-smartLock">
+                <div id="openModal-smartLock" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                         <p class="projectTitle">Smart Lock</p>
                         <img src="images/smartLock.png">
                 </div>
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-homeVR">
+                <div id="openModal-homeVR" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">HomeVR</p>
-                    <img src="images/homeVR_1.jpg">
+                    <img src="images/homeVR_01.jpg">
                 </div>
-                <div class="project fill mix software web col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-domainNameChecker">
+                <div id="openModal-domainNameChecker" class="project fill mix software web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Domain Name Checker</p>
                     <img src="images/domainNameChecker.jpg">
                 </div>
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-theDragonsLairCTF">
+                <div id="openModal-theDragonsLairCTF" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">The Dragon's Lair CTF</p>
                     <img src="images/theDragonsLairCTF.jpg">
                 </div>
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-cpScripts">
+                <div id="openModal-cpScripts" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">CyberPatriot Scripts</p>
                     <img src="images/cpScripts.jpg">
                 </div>
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-worldCupSimulator">
+                <div id="openModal-worldCupSimulator" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">World Cup Simulator</p>
                     <img src="images/worldCupSimulator.jpeg">
                 </div>
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-leagueTableSimulator">
+                <div id="openModal-leagueTableSimulator" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">League Table Simulator</p>
                     <img src="images/leagueTableSimulator.jpeg">
                 </div>
-                <div class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-encryptScript">
+                <div id="openModal-encryptScript" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">EncryptScript</p>
                     <img src="images/encryptScript.jpeg">
                 </div>
-                <div class="project fill mix web col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-tlcComputerSolutions">
+                <div id="openModal-tlcComputerSolutions" class="project fill mix web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">TLC Computer Solutions</p>
                     <img src="images/tlcComputerSolutions_1.png">
                 </div>
-                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-alaska">
+                <div id="openModal-alaska" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Alaska</p>
                     <img src="images/alaska_14.png">
                 </div>
-                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-california">
+                <div id="openModal-california" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">California</p>
                     <img src="images/california_01.jpg">
                 </div>
-                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-nevada">
+                <div id="openModal-nevada" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Nevada</p>
                     <img src="images/nevada_12.jpg">
                 </div>
-                <div class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-canada">
+                <div id="openModal-canada" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Canada</p>
                     <img src="images/canada_01.png">
                 </div>
-                <div class="project fill mix film vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-theScientist">
+                <div id="openModal-theScientist" class="project fill mix film vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">The Scientist</p>
                     <img src="images/theScientist.png">
                 </div>
-                <div class="project fill mix film col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-shatteredHeaven">
+                <div id="openModal-shatteredHeaven" class="project fill mix film col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Shattered Heaven</p>
                     <img src="images/shatteredHeaven.png">
                 </div>
-                <div class="project fill mix film col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-darkHorizon">
+                <div id="openModal-darkHorizon" class="project fill mix film col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Dark Horizon</p>
                     <img src="images/darkHorizon.png">
                 </div>
-                <div class="project fill mix film vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-holdingTheWire">
+                <div id="openModal-holdingTheWire" class="project fill mix film vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Holding the Wire</p>
                     <img src="images/holdingTheWire.png">
                 </div>
-                <div class="project fill mix vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-asciiIntro">
+                <div id="openModal-asciiIntro" class="project fill mix vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">ASCII Intro</p>
                     <img src="images/asciiIntro.png">
                 </div>
-                <div class="project fill mix vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-sinisterMeeting">
+                <div id="openModal-sinisterMeeting" class="project fill mix vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Sinister Meeting</p>
                     <img src="images/sinisterMeeting.png">
                 </div>
-                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-sciFiRevolver">
+                <div id="openModal-sciFiRevolver" class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Sci-Fi Revolver</p>
                     <img src="images/sciFiRevolver.png">
                 </div>
-                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-house">
+                <div id="openModal-house" class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">House</p>
                     <img src="images/house.png">
                 </div>
-                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-houseUntextured">
+                <div id="openModal-houseUntextured" class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">House (untextured)</p>
                     <img src="images/houseUntextured.png">
                 </div>
-                <div class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6" data-toggle="modal" data-target="#modal-powerGenerator">
+                <div id="openModal-powerGenerator" class="project fill mix modeling col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Power Generator</p>
                     <img src="images/powerGenerator.png">
                 </div>
@@ -433,7 +448,7 @@
                                     </div>
                                     <div class="col-md">
                                         <div class="row vertical-align">
-                                            <p>We designed our Smart Lock using a Raspberry Pi and a servo motor. To set up the device, the user must connect the Raspberry Pi to the home wireless network, and from there, users can navigate to a local address on any device (that is also on the network) and add/remove users on the access control list (ACL) by entering the MAC address of the user's device. Once it is set up, the Smart Lock will unlock the door when any user on the network is on the ACL and lock the door when there are no users from the ACL on the network. </p>
+                                            <p class="modal-text">We designed our Smart Lock using a Raspberry Pi and a servo motor. To set up the device, the user must connect the Raspberry Pi to the home wireless network, and from there, users can navigate to a local address on any device (that is also on the network) and add/remove users on the access control list (ACL) by entering the MAC address of the user's device. Once it is set up, the Smart Lock will unlock the door when any user on the network is on the ACL and lock the door when there are no users from the ACL on the network. </p>
                                         </div>
                                         <div class="row justify-content-center" style="margin-top: 15px;">
                                             <a class="githubLink" href="https://github.com/saipathuri/Smart_Lock"><i class="fa fa-github"></i> GitHub</a>
@@ -458,9 +473,42 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md">
-                                        <img style="width: 100%" src="images/homeVR_1.jpg">
+                                        <div id="homeVRCarousel" class="carousel slide" data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                                <li data-target="#homeVRCarousel" data-slide-to="0" class="active"></li>
+                                                <li data-target="#homeVRCarousel" data-slide-to="1"></li>
+                                                <li data-target="#homeVRCarousel" data-slide-to="2"></li>
+                                                <li data-target="#homeVRCarousel" data-slide-to="3"></li>
+                                                <li data-target="#homeVRCarousel" data-slide-to="4"></li>
+                                            </ol>
+                                            <div class="carousel-inner" role="listbox">
+                                                <div class="carousel-item active">
+                                                    <img class="d-block img-fluid" src="images/homeVR_01.jpg">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block img-fluid" src="images/homeVR_02.jpg">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block img-fluid" src="images/homeVR_03.jpg">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block img-fluid" src="images/homeVR_04.jpg">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block img-fluid" src="images/homeVR_05.jpg">
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#homeVRCarousel" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#homeVRCarousel" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
                                         <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p>HomeVR uses GearVR to allow you to tour a 3D home in virtual reality, without ever having to leaving your chair. We used Unreal Engine 4 to create the project, Blender and Google Sketch-Up to create some of the 3D models, and it runs on a Galaxy S7 with GearVR. Our inspiration for HomeVR was that we wanted to create a better alternative to real estate tours, one that removed the need for you to physically visit the house while also provided more than just photos, video tours, or 360 photos. This project was built during <a class="no-underline" href="https://hackutd17.devpost.com/">HackUTD 17</a>.</p>
+                                            <p class="modal-text">HomeVR uses GearVR to allow you to tour a 3D home in virtual reality, without ever having to leaving your chair. We used Unreal Engine 4 to create the project, Blender and Google Sketch-Up to create some of the 3D models, and it runs on a Galaxy S7 with GearVR. Our inspiration for HomeVR was that we wanted to create a better alternative to real estate tours, one that removed the need for you to physically visit the house while also provided more than just photos, video tours, or 360 photos. This project was built during <a class="no-underline" href="https://hackutd17.devpost.com/">HackUTD 17</a>.</p>
                                         </div>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/HomeVR--HackUTD"><i class="fa fa-github"></i> GitHub</a>
@@ -487,7 +535,7 @@
                                     <div class="col-md">
                                         <img style="width: 100%" src="images/domainNameChecker.jpg">
                                         <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p>Some websites names are just too difficult to type out quickly and we made this so people could find the best names for their websites. Domain Name Checker takes in a potential name and rates it's difficulty to type quickly on a scale of 1-10 based on the distance your fingers have to move to type it. We built it using HTML and CSS with Javascript at <a class="no-underline" href="https://minnehack.devpost.com/">MinneHack 2017</a>.</p>
+                                            <p class="modal-text">Some websites names are just too difficult to type out quickly and we made this so people could find the best names for their websites. Domain Name Checker takes in a potential name and rates it's difficulty to type quickly on a scale of 1-10 based on the distance your fingers have to move to type it. We built it using HTML and CSS with Javascript at <a class="no-underline" href="https://minnehack.devpost.com/">MinneHack 2017</a>.</p>
                                         </div>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/Domain-Name-Checker--MinneHack17"><i class="fa fa-github"></i> GitHub</a>
@@ -514,7 +562,7 @@
                                     <div class="col-md">
                                         <img style="width: 100%" src="images/theDragonsLairCTF.jpg">
                                         <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p>Red team and blue team compete in an Attack-and-Defend style Capture the Flag competition with Forensics challenges included. Both teams participate in attacking and defending; team colors are not associated with only attacking or only defending. There are six levels in the competition, each team receives points for completing levels and loses points for using hints to complete the levels. The host system displays the current scores and communicates with the two teams to give them each level as they unlock it. Each level contains a readme file for instructions. Now includes animations and ASCII art made entirely in bash!</p>
+                                            <p class="modal-text">Red team and blue team compete in an Attack-and-Defend style Capture the Flag competition with Forensics challenges included. Both teams participate in attacking and defending; team colors are not associated with only attacking or only defending. There are six levels in the competition, each team receives points for completing levels and loses points for using hints to complete the levels. The host system displays the current scores and communicates with the two teams to give them each level as they unlock it. Each level contains a readme file for instructions. Now includes animations and ASCII art made entirely in bash!</p>
                                         </div>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/TheDragonsLairCTF"><i class="fa fa-github"></i> GitHub</a>
@@ -539,10 +587,10 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md">
-                                        <p style="margin-bottom: 15px">These scripts were created for the <a class="no-underline" href="https://www.uscyberpatriot.org">Air Force Association's CyberPatriot VIII</a> competition. Overall, our team ranked 1st in Nevada, 2nd in the Western Region of the U.S., and 15th overall, out of over 3200 teams in our school's first year competing.</p>
-                                        <h4>Ubuntu Script / Debian Script / Mint Script / Fedora Script</h4>
-                                        <h6>Features:</h6>
-                                        <ul>
+                                        <p class="modal-text" style="margin-bottom: 15px">These scripts were created for the <a class="no-underline" href="https://www.uscyberpatriot.org">Air Force Association's CyberPatriot VIII</a> competition. Overall, our team ranked 1st in Nevada, 2nd in the Western Region of the U.S., and 15th overall, out of over 3200 teams in our school's first year competing.</p>
+                                        <h4 class="modal-title">Ubuntu Script / Debian Script / Mint Script / Fedora Script</h4>
+                                        <h6 class="modal-text">Features:</h6>
+                                        <ul class="modal-text">
                                             <li>Log file is created to date and describe all events</li>
                                             <li>Verify script is being run as <kbd>root</kbd></li>
                                             <li>Backs up all critical files</li>
@@ -589,9 +637,9 @@
                                             <li>Create backups/logs for comparatives script</li>
                                         </ul>
 
-                                        <h4>Ubuntu, Mint, Debian Options Script / Fedora Options Script</h4>
-                                        <h6>Allows the user to use the following programs:</h6>
-                                        <ul>
+                                        <h4 class="modal-title">Ubuntu, Mint, Debian Options Script / Fedora Options Script</h4>
+                                        <h6 class="modal-text">Allows the user to use the following programs:</h6>
+                                        <ul class="modal-text">
                                             <li><kbd>HTOP</kbd> (Task Manager)</li>
                                             <li><kbd>Nmap</kbd> (Network Mapper)</li>
                                             <li><kbd>ClamAV</kbd> (Anti-Virus)</li>
@@ -603,8 +651,8 @@
                                             <li><kbd>HardInfo</kbd> (Hardware Analysis, System Benchmark, &amp; Report Generator)</li>
                                         </ul>
 
-                                        <h4>Comparative Script</h4>
-                                        <p>Uses the program <kbd>Diffuse</kbd> to compare various system files between the current files and the default system files as of January 21, 2016. <kbd>Diffuse</kbd> shows the differences in text between the two files using colored highlighting.</p>
+                                        <h4 class="modal-title">Comparative Script</h4>
+                                        <p class="modal-text">Uses the program <kbd>Diffuse</kbd> to compare various system files between the current files and the default system files as of January 21, 2016. <kbd>Diffuse</kbd> shows the differences in text between the two files using colored highlighting.</p>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/AFACP-Scripts"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
@@ -628,8 +676,8 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md">
-                                        <p style="margin-bottom: 15px">A prediction of a 32-team soccer World Cup based on 2015 team statistics. Teams are sorted into 8 four team knockout stages. The top two teams of each group are promoted to a tournament bracket.</p>
-                                        <p style="margin-bottom: 15px">Temas include: Algeria, Argentina, Australia, Belgium, Bosnia, Brazil, Cameroon, Chile, Colombia, Costa Rica, Croatia, Ecuador, England, France, Germany, Ghana, Greece, Honduras, Italy, Iran, Ivory Coast, Japan, Korea, Mexico, Netherlands, Nigeria, Portugal, Russia, Spain, Switzerland, Uruguay, and the United States.</p>
+                                        <p class="modal-text" style="margin-bottom: 15px">A prediction of a 32-team soccer World Cup based on 2015 team statistics. Teams are sorted into 8 four team knockout stages. The top two teams of each group are promoted to a tournament bracket.</p>
+                                        <p class="modal-text" style="margin-bottom: 15px">Temas include: Algeria, Argentina, Australia, Belgium, Bosnia, Brazil, Cameroon, Chile, Colombia, Costa Rica, Croatia, Ecuador, England, France, Germany, Ghana, Greece, Honduras, Italy, Iran, Ivory Coast, Japan, Korea, Mexico, Netherlands, Nigeria, Portugal, Russia, Spain, Switzerland, Uruguay, and the United States.</p>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/WorldCupSimulator"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
@@ -653,9 +701,9 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md">
-                                        <p style="margin-bottom: 15px">Based on 2015 team statistics, soccer matches for any of 33 leagues are simulated.</p>
-                                        <h4>Features</h4>
-                                        <ul>
+                                        <p class="modal-text" style="margin-bottom: 15px">Based on 2015 team statistics, soccer matches for any of 33 leagues are simulated.</p>
+                                        <h4 class="modal-title">Features</h4>
+                                        <ul class="modal-text">
                                             <li>Simulate any of 33 leages from the English Premier League to the Swiss Allsvenskan</li>
                                             <li>Simulate any number of weeks (between 0 and 99)</li>
                                             <li>Simulate individual matches and display matches summaries (including goals, penalty kicks, and cards)</li>
@@ -683,7 +731,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md">
-                                        <p style="margin-bottom: 15px">A shell script that converts other shell scripts into encrypted, executable files. Move the script to the Desktop, then run the script in the following format: <code>sudo ./Desktop/encryptScript.sh [script]</code>. The parameter must be the full path of a script which is also on the Desktop.</p>
+                                        <p class="modal-text" style="margin-bottom: 15px">A shell script that converts other shell scripts into encrypted, executable files. Move the script to the Desktop, then run the script in the following format: <code>sudo ./Desktop/encryptScript.sh [script]</code>. The parameter must be the full path of a script which is also on the Desktop.</p>
                                         <div class="row justify-content-center">
                                             <a class="githubLink" href="https://github.com/BiermanM/EncryptScript"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
@@ -710,7 +758,7 @@
                                         <!-- Image modified from http://www.freepik.com/free-vector/technological-devices-design_953321.htm by Freepik -->
                                         <img style="width: 100%" src="images/tlcComputerSolutions_2.png">
                                         <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p>A revamped website for <a class="no-underline" href="http://www.tlcpcsolutions.com">TLC Computer Solutions</a>, a tech support store in Las Vegas, that includes interactivity and a modern, minimalistic design. The front-end uses HTML, CSS, JavaScript, jQuery, and Bootstrap. The back-end uses PHP, Google Maps API, and, once the website goes live, Google Analytics and Hotjar. The website offers a simple one-page layout, responsiveness for all devices, reviews from happy customers, and much more!</p>
+                                            <p class="modal-text">A revamped website for <a class="no-underline" href="http://www.tlcpcsolutions.com">TLC Computer Solutions</a>, a tech support store in Las Vegas, that includes interactivity and a modern, minimalistic design. The front-end uses HTML, CSS, JavaScript, jQuery, and Bootstrap. The back-end uses PHP, Google Maps API, and, once the website goes live, Google Analytics and Hotjar. The website offers a simple one-page layout, responsiveness for all devices, reviews from happy customers, and much more!</p>
                                         </div>
                                         <div class="row">
                                             <div class="col">
@@ -1029,14 +1077,14 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <p>A scientist's attempt to create thee perfect human being goes terribly wrong. A short film by Austin Lien and Matthew Bierman. Special thanks to AKM & Faith Lutheran Middle and High School! Starring: Austin Lien, Gage Badger, and Jackson Langford.</p>
+                                    <p class="modal-text">A scientist's attempt to create thee perfect human being goes terribly wrong. A short film by Austin Lien and Matthew Bierman. Special thanks to AKM & Faith Lutheran Middle and High School! Starring: Austin Lien, Gage Badger, and Jackson Langford.</p>
                                 </div>
                                 <br>
                                 <div class="row justify-content-center">
-                                    <h5>My Roles</h5>
+                                    <h5 class="modal-title">My Roles</h5>
                                 </div>
                                 <div class="row justify-content-center">
-                                    <p>producer, editor, production manager, visual effects producer</p>
+                                    <p class="modal-text">producer, editor, production manager, visual effects producer</p>
                                 </div>
                             </div>
                         </div>
@@ -1059,20 +1107,20 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <p>A young detective must get his suspect to confess to gruesome murders before time runs out. Starring Ashton Alexander, Kyle Goulston, and Chaunsi Heatley.</p>
+                                    <p class="modal-text">A young detective must get his suspect to confess to gruesome murders before time runs out. Starring Ashton Alexander, Kyle Goulston, and Chaunsi Heatley.</p>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col">
                                         <div class="row justify-content-center">
-                                            <h5>My Roles</h5>
-                                            <p style="text-align: center">producer, editor, production manager, visual effects producer</p>
+                                            <h5 class="modal-title">My Roles</h5>
+                                            <p class="modal-text" style="text-align: center">producer, cinematographer, editor, colorist, boom operator, assistant script editor</p>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="row justify-content-center">
-                                            <h5>Awards</h5>
-                                            <p style="text-align: center">All American High School Film Festival Official Selection 2016</p>
+                                            <h5 class="modal-title">Awards</h5>
+                                            <p class="modal-text" style="text-align: center">All American High School Film Festival Official Selection 2016</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1097,21 +1145,24 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <p>After a close encounter in suburban Las Vegas, NV, Scott Goodlight and his grandfather must embark on a harrowing journey, one that will alter the history of the earth as they know it.</p>
+                                    <p class="modal-text">After a close encounter in suburban Las Vegas, NV, Scott Goodlight and his grandfather must embark on a harrowing journey, one that will alter the history of the earth as they know it.</p>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col">
                                         <div class="row justify-content-center">
-                                            <h5>My Roles</h5>
-                                            <p style="text-align: center">lighting tester</p>
+                                            <h5 class="modal-title">My Roles</h5>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <p class="modal-text" style="text-align: center">lighting tester</p>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="row justify-content-center">
-                                            <h5>Awards</h5>
-                                            <p style="text-align: center">All American High School Film Festival Official Selection 2015</p>
-                                            <p style="text-align: center">All American High School Film Festival Best Visual FX 2015</p>
+                                            <h5 class="modal-title">Awards</h5>
+                                            <p class="modal-text" style="text-align: center">All American High School Film Festival Official Selection 2015</p>
+                                            <br>
+                                            <p class="modal-text" style="text-align: center">All American High School Film Festival Best Visual FX 2015</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1149,14 +1200,14 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <p>Iacon Pictures announces <a class="no-underline" href="http://www.holdingthewire.com/">Holding the Wire</a>, a unique portrait of tournament paintball during an economically turbulent time. Jose Diaz, a veteran high school teacher, sets out to document the lives and experiences of tournament paintball players. Along the way, he encounters a variety of individuals, young and old, from different walks of life, all united by a fierce passion for tournament paintball.</p>
+                                    <p class="modal-text">Iacon Pictures announces <a class="no-underline" href="http://www.holdingthewire.com/">Holding the Wire</a>, a unique portrait of tournament paintball during an economically turbulent time. Jose Diaz, a veteran high school teacher, sets out to document the lives and experiences of tournament paintball players. Along the way, he encounters a variety of individuals, young and old, from different walks of life, all united by a fierce passion for tournament paintball.</p>
                                 </div>
                                 <br>
                                 <div class="row justify-content-center">
-                                    <h5>My Roles</h5>
+                                    <h5 class="modal-title">My Roles</h5>
                                 </div>
                                 <div class="row justify-content-center">
-                                    <p>editor, visual effects producer, 3D modeling rigger, animator</p>
+                                    <p class="modal-text">editor, visual effects producer, 3D modeling rigger, animator</p>
                                 </div>
                             </div>
                         </div>
@@ -1178,7 +1229,7 @@
                             </div>
                             <div class="container">
                                 <div class="row justify-content-center">
-                                    <p>An animation created using Adobe After Effects CS6.</p>
+                                    <p class="modal-text">An animation created using Adobe After Effects CS6.</p>
                                 </div>
                             </div>
                         </div>
@@ -1200,7 +1251,7 @@
                             </div>
                             <div class="container">
                                 <div class="row justify-content-center">
-                                    <p>An animation created using Adobe After Effects CS6 and Video Copilot's Element 3D plugin.</p>
+                                    <p class="modal-text">An animation created using Adobe After Effects CS6 and Video Copilot's Element 3D plugin.</p>
                                 </div>
                             </div>
                         </div>
@@ -1307,6 +1358,9 @@
         
         <!-- MixItUp -->
         <script src="mixitup.min.js"></script>
+        
+        <!-- jQuery Transit -->
+        <script src="jquery.transit.min.js"></script>
         
         <!-- JavaScript -->
         <script type="text/javascript">
@@ -1672,6 +1726,8 @@
                 
                 $("#linkToAbout").css("padding-top", h * 0.02);
                 $("#linkToAbout").height(h * 0.08);
+                $("#aboutLinkText").css("margin-left", (($("#linkToPortfolio").width() - $("#aboutLinkText").width()) / 2) );
+                $("#aboutLinkText").css("margin-right", (($("#linkToPortfolio").width() - $("#aboutLinkText").width()) / 2) );
                 
                 $("#name").height(h * 0.4);
                 if ($(window).width() > 1000)
@@ -1687,6 +1743,8 @@
                 
                 $("#linkToPortfolio").height(h * 0.08);
                 $("#linkToPortfolio").css("padding-bottom", h * 0.02);
+                $("#portfolioLinkText").css("margin-left", (($("#linkToPortfolio").width() - $("#portfolioLinkText").width()) / 2) );
+                $("#portfolioLinkText").css("margin-right", (($("#linkToPortfolio").width() - $("#portfolioLinkText").width()) / 2) );
                 
                 if ($(window).width() > 500)
                     $("#name").css("font-size", ($(window).width() * 0.1) + "px");
@@ -1694,28 +1752,6 @@
                     $("#name").css("font-size", ($(window).width() * 0.1) + "px");
                 
                 $("#resumeBtn").css("font-size", $("#contactFormBtn").css("font-size"));
-
-                /* /////////////////////////////////////////////////
-                $("#linkToAbout").css("padding-top", ($("#linkToAbout").height() - $("#aboutLinkText").height()) / 2);
-                $("#linkToAbout").css("padding-bottom", parseFloat($("#linkToAbout").css("padding-top")));
-                
-                $("#linkToPortfolio").css("padding-top", ($("#linkToPortfolio").height() - $("#aboutLinkText").height()) / 2);
-                $("#linkToPortfolio").css("padding-bottom", parseFloat($("#linkToPortfolio").css("padding-top")));
-                
-                $("#linkToAbout").height(($(window).height() * 0.1) - (parseFloat($("#linkToAbout").css("padding-top")) * 2));
-                $("#linkToPortfolio").height(($(window).height() * 0.1) - (parseFloat($("#linkToPortfolio").css("padding-top")) * 2));
-                
-                $("#name").css("padding-top", $(window).height() * 0.15);
-                $("#name").css("padding-bottom", $(window).height() * 0.25);
-                $("#name").height($(window).height() * 0.4);
-                
-                if ($(window).width() > 500)
-                    $("#name").css("font-size", ($(window).width() * 0.1) + "px");
-                else
-                    $("#name").css("font-size", ($(window).width() * 0.2) + "px");
-                
-                $("#resumeBtn").css("font-size", $("#contactFormBtn").css("font-size"));
-                ///////////////////////////////////////////////// */
             }
             function setPortfolioPage() {
                 $("#portfolio").css("padding-left", $(window).width() * 0.05);
@@ -1735,18 +1771,32 @@
             }
             function setModalImageSizes() {
                 var innerW = 0;
-                if ($("#modal-alaska").find(".carousel-inner").width() != 100)
+                var multiplier = 0;
+                
+                if ($("#modal-homeVR").find(".carousel-inner").width() != 100) {
+                    innerW = $("#modal-homeVR").find(".carousel-inner").width();
+                    multiplier = 334 / 695;
+                }
+                else if ($("#modal-alaska").find(".carousel-inner").width() != 100) {
                     innerW = $("#modal-alaska").find(".carousel-inner").width();
-                else if ($("#modal-california").find(".carousel-inner").width() != 100)
+                    multiplier = 0.75;
+                }
+                else if ($("#modal-california").find(".carousel-inner").width() != 100) {
                     innerW = $("#modal-california").find(".carousel-inner").width();
-                else if ($("#modal-nevada").find(".carousel-inner").width() != 100)
+                    multiplier = 0.75;
+                }
+                else if ($("#modal-nevada").find(".carousel-inner").width() != 100) {
                     innerW = $("#modal-nevada").find(".carousel-inner").width();
-                else if ($("#modal-canada").find(".carousel-inner").width() != 100)
+                    multiplier = 0.75;
+                }
+                else if ($("#modal-canada").find(".carousel-inner").width() != 100) {
                     innerW = $("#modal-canada").find(".carousel-inner").width();
+                    multiplier = 0.75;
+                }
                 
                 $(".img-fluid").each(function() {
                     $(this).width(innerW);
-                    $(this).height(innerW * 0.75);
+                    $(this).height(innerW * multiplier);
                 });
             }
             
@@ -1783,99 +1833,7 @@
                 $(this).children('img').css("transition", "0.5s");
                 $(this).children('img').css("opacity", 1);
             });
-            
-            // Fix contact form modal from affecting portfolio gallery filter
-            $("#contactFormModal").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-smartLock").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-homeVR").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-domainNameChecker").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-theDragonsLairCTF").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-cpScripts").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-worldCupSimulator").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-leagueTableSimulator").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-encryptScript").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-tlcComputerSolutions").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-alaska").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-alaska").on("shown.bs.modal", function () {
-                setModalImageSizes();
-            });
-            $("#modal-california").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-california").on("shown.bs.modal", function () {
-                setModalImageSizes();
-            });
-            $("#modal-nevada").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-nevada").on("shown.bs.modal", function () {
-                setModalImageSizes();
-            });
-            $("#modal-canada").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-canada").on("shown.bs.modal", function () {
-                setModalImageSizes();
-            });
-            $("#modal-theScientist").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $('#modal-shatteredHeaven').on('show.bs.modal', function () {
-                mixer.toggleOff("modal");
-                $(".vimeo").height($(window).height() * 0.65);
-            });
-            $('#modal-darkHorizon').on('show.bs.modal', function () {
-                mixer.toggleOff("modal");
-                $(".vimeo").height($(window).height() * 0.65);
-            });
-            $("#modal-holdingTheWire").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-asciiIntro").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $("#modal-sinisterMeeting").on("show.bs.modal", function () {
-                mixer.toggleOff("modal");
-            });
-            $('#modal-sciFiRevolver').on('show.bs.modal', function () {
-                mixer.toggleOff("modal");
-                $(".sketchfab").height($(window).height() - 160);
-            });
-            $('#modal-house').on('show.bs.modal', function () {
-                mixer.toggleOff("modal");
-                $(".sketchfab").height($(window).height() - 160);
-            });
-            $('#modal-houseUntextured').on('show.bs.modal', function () {
-                mixer.toggleOff("modal");
-                $(".sketchfab").height($(window).height() - 160);
-            });
-            $('#modal-powerGenerator').on('show.bs.modal', function () {
-                mixer.toggleOff("modal");
-                $(".sketchfab").height($(window).height() - 160);
-            });
-                        
+
             // Smooth scrolling for links to About Me and Portfolio pages
             $("#aboutLinkText").click(function() {
                 $('html, body').animate({
@@ -1886,6 +1844,17 @@
                 $('html, body').animate({
                     scrollTop: $("#portfolio").offset().top
                 }, 1000);
+            });
+            
+            $("#linkToAbout").hover(function() {
+                $("#aboutLinkText").transition({scale: 1.3});
+            }, function() {
+                $("#aboutLinkText").transition({scale: 1});
+            });
+            $("#linkToPortfolio").hover(function() {
+                $("#portfolioLinkText").transition({scale: 1.3});
+            }, function() {
+                $("#portfolioLinkText").transition({scale: 1});
             });
             
             // Submit contact form and error checking
@@ -1974,6 +1943,98 @@
                 }
                 else
                     return false;
+            });
+            
+            // open modals of portfolio items without affecting MixItUp
+            $("#contactFormBtn").click(function() {
+                $("#contactFormModal").modal("show");
+            });
+            $("#openModal-smartLock").click(function() {
+                $("#modal-smartLock").modal("show");
+            });
+            $("#openModal-homeVR").click(function() {
+                $("#modal-homeVR").modal("show");
+            });
+            $("#openModal-domainNameChecker").click(function() {
+                $("#modal-domainNameChecker").modal("show");
+            });
+            $("#openModal-theDragonsLairCTF").click(function() {
+                $("#modal-theDragonsLairCTF").modal("show");
+            });
+            $("#openModal-cpScripts").click(function() {
+                $("#modal-cpScripts").modal("show");
+            });
+            $("#openModal-worldCupSimulator").click(function() {
+                $("#modal-worldCupSimulator").modal("show");
+            });
+            $("#openModal-leagueTableSimulator").click(function() {
+                $("#modal-leagueTableSimulator").modal("show");
+            });
+            $("#openModal-encryptScript").click(function() {
+                $("#modal-encryptScript").modal("show");
+            });
+            $("#openModal-tlcComputerSolutions").click(function() {
+                $("#modal-tlcComputerSolutions").modal("show");
+            });
+            $("#openModal-alaska").click(function() {
+                $("#modal-alaska").modal("show");
+            });
+            $("#openModal-california").click(function() {
+                $("#modal-california").modal("show");
+            });
+            $("#openModal-nevada").click(function() {
+                $("#modal-nevada").modal("show");
+            });
+            $("#openModal-canada").click(function() {
+                $("#modal-canada").modal("show");
+            });
+            $("#openModal-theScientist").click(function() {
+                $("#modal-theScientist").modal("show");
+            });
+            $("#openModal-shatteredHeaven").click(function() {
+                $("#modal-shatteredHeaven").modal("show");
+            });
+            $("#openModal-darkHorizon").click(function() {
+                $("#modal-darkHorizon").modal("show");
+            });
+            $("#openModal-holdingTheWire").click(function() {
+                $("#modal-holdingTheWire").modal("show");
+            });
+            $("#openModal-asciiIntro").click(function() {
+                $("#modal-asciiIntro").modal("show");
+            });
+            $("#openModal-sinisterMeeting").click(function() {
+                $("#modal-sinisterMeeting").modal("show");
+            });
+            $("#openModal-sciFiRevolver").click(function() {
+                $("#modal-sciFiRevolver").modal("show");
+            });
+            $("#openModal-house").click(function() {
+                $("#modal-house").modal("show");
+            });
+            $("#openModal-houseUntextured").click(function() {
+                $("#modal-houseUntextured").modal("show");
+            });
+            $("#openModal-powerGenerator").click(function() {
+                $("#modal-powerGenerator").modal("show");
+            });
+            
+            
+            // Set image sizes inside modals
+            $("#modal-homeVR").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-alaska").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-california").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-nevada").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-canada").on("shown.bs.modal", function () {
+                setModalImageSizes();
             });
             
             // Redraw grid and reset pages whenever the window is resized
