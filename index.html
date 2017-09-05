@@ -1371,7 +1371,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <iframe width="100%" class="sketchfab" src="https://sketchfab.com/models/6d2849f910d64b7087dc0720073b42a5/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
+                            <iframe width="100%" id="sketchfab-sfr" src="https://sketchfab.com/models/6d2849f910d64b7087dc0720073b42a5/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
                         </div>
                     </div>
                 </div>
@@ -1386,7 +1386,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <iframe width="100%" class="sketchfab" src="https://sketchfab.com/models/0416ee095a074559b2aae04b066350fa/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
+                            <iframe width="100%" id="sketchfab-h" src="https://sketchfab.com/models/0416ee095a074559b2aae04b066350fa/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
                         </div>
                     </div>
                 </div>
@@ -1401,7 +1401,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <iframe width="100%" class="sketchfab" src="https://sketchfab.com/models/d142dc5513ff438b96a41c8931975825/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
+                            <iframe width="100%" id="sketchfab-hu" src="https://sketchfab.com/models/d142dc5513ff438b96a41c8931975825/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
                         </div>
                     </div>
                 </div>
@@ -1416,7 +1416,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <iframe width="100%" class="sketchfab" src="https://sketchfab.com/models/44b350ac11b648cfb0c02151415f6274/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
+                            <iframe width="100%" id="sketchfab-pg" src="https://sketchfab.com/models/44b350ac11b648cfb0c02151415f6274/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
                         </div>
                     </div>
                 </div>
@@ -1909,6 +1909,23 @@
                     $(this).width(innerW);
                     $(this).height(innerW * multiplier);
                 });
+                
+                if ($("#sketchfab-sfr").width() != 100) {
+                    $("#sketchfab-sfr").width($("#modal-sciFiRevolver").find(".modal-body").width());
+                    $("#sketchfab-sfr").height($("#modal-sciFiRevolver").find(".modal-body").width() * 0.75);
+                }
+                else if ($("#sketchfab-h").width() != 100) {
+                    $("#sketchfab-h").width($("#modal-house").find(".modal-body").width());
+                    $("#sketchfab-h").height($("#modal-house").find(".modal-body").width() * 0.75);
+                }
+                else if ($("#sketchfab-hu").width() != 100) {
+                    $("#sketchfab-hu").width($("#modal-houseUntextured").find(".modal-body").width());
+                    $("#sketchfab-hu").height($("#modal-houseUntextured").find(".modal-body").width() * 0.75);
+                }
+                else if ($("#sketchfab-pg").width() != 100) {
+                    $("#sketchfab-pg").width($("#modal-powerGenerator").find(".modal-body").width());
+                    $("#sketchfab-pg").height($("#modal-powerGenerator").find(".modal-body").width() * 0.75);
+                }
             }
             
             setAboutMePage();
@@ -2134,6 +2151,18 @@
                 setModalImageSizes();
             });
             $("#modal-canada").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-sciFiRevolver").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-house").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-houseUntextured").on("shown.bs.modal", function () {
+                setModalImageSizes();
+            });
+            $("#modal-powerGenerator").on("shown.bs.modal", function () {
                 setModalImageSizes();
             });
             
