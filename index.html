@@ -1530,7 +1530,7 @@
                 }
             }
             function setCanvasGrid(canvas, gridSize, addHeight) {
-                canvas.height = $(window).height();
+                canvas.height = $(window).outerHeight();
                 canvas.width = $(window).width();
                 
                 $("body").height(canvas.height + addHeight);
@@ -2192,20 +2192,6 @@
                     drawAllCells(canvas, gridSize, cells);
                     run(cells, stepDelay);
                 }
-            });
-            
-            // Redraw grid and reset pages whenever the window is resized (on mobile devices and tablets)
-            $(window).on("orientationchange", function() {
-                alert("This device is in " + event.orientation + " mode!");
-                setAboutMePage();
-                setMainPage();
-                setPortfolioPage();
-                setModalImageSizes();
-                setBackgroundSize();
-                setCanvasGrid(canvas, gridSize, 0);
-                cells = initialState(canvas, gridSize);
-                drawAllCells(canvas, gridSize, cells);
-                run(cells, stepDelay);
             });
         </script>
     </body>
