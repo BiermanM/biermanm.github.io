@@ -1530,7 +1530,7 @@
                 }
             }
             function setCanvasGrid(canvas, gridSize, addHeight) {
-                canvas.height = $(window).outerHeight();
+                canvas.height = $(window).height();
                 canvas.width = $(window).width();
                 
                 $("body").height(canvas.height + addHeight);
@@ -2180,8 +2180,6 @@
             
             // Redraw grid and reset pages whenever the window is resized (on non-mobile/tablet devices)
             $(window).resize(function() {
-                //if (window.isMobileOrTablet() == false)
-                //{
                     setAboutMePage();
                     setMainPage();
                     setPortfolioPage();
@@ -2191,7 +2189,6 @@
                     cells = initialState(canvas, gridSize);
                     drawAllCells(canvas, gridSize, cells);
                     run(cells, stepDelay);
-                //}
             });
         </script>
     </body>
