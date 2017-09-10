@@ -2196,6 +2196,7 @@
             
             // Redraw grid and reset pages whenever the window is resized (on mobile devices and tablets)
             $(window).on("orientationchange", function() {
+                alert("This device is in " + event.orientation + " mode!");
                 setAboutMePage();
                 setMainPage();
                 setPortfolioPage();
