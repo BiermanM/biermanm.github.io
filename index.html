@@ -2178,10 +2178,9 @@
                 return check;
             };
             
-            // Redraw grid and reset pages whenever the window is resized
+            // Redraw grid and reset pages whenever the window is resized (on non-mobile/tablet devices)
             $(window).resize(function() {
-                // if not a mobile/tablet or, if it is, is not portrait mode
-                if ((window.isMobileOrTablet() == false) || (window.isMobileOrTablet() == true && window.innerHeight < window.innerWidth) )
+                if (window.isMobileOrTablet() == false)
                 {
                     setAboutMePage();
                     setMainPage();
@@ -2193,6 +2192,19 @@
                     drawAllCells(canvas, gridSize, cells);
                     run(cells, stepDelay);
                 }
+            });
+            
+            // Redraw grid and reset pages whenever the window is resized (on mobile devices and tablets)
+            $(window).on("orientationchange", function() {
+                setAboutMePage();
+                setMainPage();
+                setPortfolioPage();
+                setModalImageSizes();
+                setBackgroundSize();
+                setCanvasGrid(canvas, gridSize, 0);
+                cells = initialState(canvas, gridSize);
+                drawAllCells(canvas, gridSize, cells);
+                run(cells, stepDelay);
             });
         </script>
     </body>
