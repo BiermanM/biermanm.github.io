@@ -1,0 +1,262 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+p {
+    margin: 0;
+}
+#background {
+    position: fixed;
+    transition: 0.5s;
+}
+#gameOfLife {
+    position: fixed;
+}
+#aboutMe, #main, #portfolio {
+    position: relative;
+}
+#name {
+    color: #dddddd;
+}
+#linkToAbout, #linkToPortfolio {
+    cursor: pointer;
+    text-align: center;
+}
+#aboutMeTitle, #portfolioTitle {
+    text-align: center;
+    margin: 0;
+    color: #dddddd;
+}
+#bio {
+    text-align: justify;
+    margin: 0;
+    color: #dddddd;
+    font-size: 2vmax;
+}
+#profile {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    float: left;
+    margin: 20px 20px 0px 20px;
+}
+#contactFormBtn, #resumeBtn {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    border: solid #dddddd 1px;
+    color: #dddddd;
+    transition: 0.5s;
+}
+#contactFormBtn:hover, #resumeBtn:hover {
+    background-color: #dddddd;
+    color: #222222;
+    transition: 0.5s;
+    transform: scale(1.05);
+}
+#aboutMeBtn {
+    text-align: center;
+}
+#portfolioTitle {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.project {
+    margin: 10px;
+    padding: 0;
+    background-color: black;
+}
+.projectTitle {
+    z-index: 100;
+    position: absolute;
+    opacity: 0;
+    color: #dddddd;
+}
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+.nav-link {
+    color: #dddddd;
+    transition: 0.2s;
+}
+.nav-link:hover {
+    color: black;
+    background-color: #dddddd;
+    transition: 0.2s;
+}
+.nav-link:active {
+    color: black;
+    background-color: #dddddd;
+    transition: 0.2s;
+}
+#footer {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #222222;
+}
+.fa-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.icon-size {
+    width: 25px;
+    height: 25px;
+}
+.footer-icon {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 160%;
+    color: #dddddd;
+}
+#contactModalName, #contactModalEmail, #contactModalPhone, #contactModalWebsite, #contactModalBody {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#nameError, #emailError, #bodyError {
+    display: none;
+}
+#resumeBtn {
+    vertical-align: middle;
+    display: block;
+}
+#mainBtn {
+    height: 100px;
+    width: 102px;
+    text-decoration: none;
+}
+.githubLink {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #dddddd;
+    border: solid #222222 1px;
+    color: #222222;
+    transition: 0.5s;
+}
+.githubLink:hover {
+    background-color: black;
+    color: #dddddd;
+    transition: 0.5s;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+.no-underline {
+    text-decoration: none !important;
+}
+
+/* loading screen */
+#loading {
+    background-color: #222222;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    margin-top: 0px;
+    top: 0px;
+}
+#loading-center {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    }
+#loading-center-absolute {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 50px;
+    width: 300px;
+    margin-top: -25px;
+    margin-left: -150px;
+
+}
+#loading-text {
+     position: absolute;
+    top: 60%;
+    left: 50%;
+    padding: .8em 1.2em;
+    color: #dddddd;
+
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.object {
+    width: 18px;
+    height: 18px;
+    background-color: #dddddd;
+    float: left;
+    margin-top: 15px;
+    margin-right: 15px;
+    -moz-border-radius: 50% 50% 50% 50%;
+    -webkit-border-radius: 50% 50% 50% 50%;
+    border-radius: 50% 50% 50% 50%;
+    -webkit-animation: object 1s infinite;
+    animation: object 1s infinite;
+}
+.object:last-child {
+    margin-right: 0px;
+    }
+.object:nth-child(9) {
+    -webkit-animation-delay: 0.9s;
+    animation-delay: 0.9s;
+    }
+.object:nth-child(8) {
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+    }
+.object:nth-child(7) {
+    -webkit-animation-delay: 0.7s;
+    animation-delay: 0.7s;
+    }	
+.object:nth-child(6) {
+    -webkit-animation-delay: 0.6s;
+    animation-delay: 0.6s;
+    }
+.object:nth-child(5) {
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+    }
+.object:nth-child(4) {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+    }
+.object:nth-child(3) {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+    }
+.object:nth-child(2) {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+    }
+@-webkit-keyframes object {
+50% {
+    -ms-transform: translate(0,-50px); 
+    -webkit-transform: translate(0,-50px);
+    transform: translate(0,-50px);
+    }
+}		
+@keyframes object {
+50% {
+    -ms-transform: translate(0,-50px); 
+    -webkit-transform: translate(0,-50px);
+    transform: translate(0,-50px);
+    }
+}
+
+/* fonts */
+#aboutMeTitle, #portfolioTitle, #mainTitle, .modal-title {
+    font-family: 'Roboto Slab', sans-serif;
+}
+.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #modelingTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text, #loading-text {
+    font-family: 'Roboto', sans-serif;
+}
