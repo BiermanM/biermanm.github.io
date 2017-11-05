@@ -1,0 +1,196 @@
+body {
+    margin: 0;
+    padding: 0;
+    
+    background: linear-gradient(270deg, #222222, #411f1f, #142e15, #14212e);
+    background-size: 800% 800%;
+    -webkit-animation: Gradient 39s ease infinite;
+    -moz-animation: Gradient 39s ease infinite;
+    animation: Gradient 39s ease infinite;
+}
+
+@-webkit-keyframes Gradient {
+    0%{background-position:0% 97%}
+    50%{background-position:100% 4%}
+    100%{background-position:0% 97%}
+}
+@-moz-keyframes Gradient {
+    0%{background-position:0% 97%}
+    50%{background-position:100% 4%}
+    100%{background-position:0% 97%}
+}
+@keyframes Gradient { 
+    0%{background-position:0% 97%}
+    50%{background-position:100% 4%}
+    100%{background-position:0% 97%}
+}
+
+p {
+    margin: 0;
+}
+#background {
+    position: fixed;
+    transition: 0.5s;
+}
+#gameOfLife {
+    position: fixed;
+}
+#aboutUs, #main, #portfolio {
+    position: relative;
+}
+#name {
+    color: #dddddd;
+}
+#linkToAbout, #linkToPortfolio {
+    cursor: pointer;
+    text-align: center;
+}
+#aboutUsTitle, #portfolioTitle {
+    text-align: center;
+    margin: 0;
+    color: #dddddd;
+}
+#bio {
+    text-align: justify;
+    margin: 0;
+    color: #dddddd;
+    font-size: 2vmax;
+}
+.profile {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 20px 20px 0px 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#contactFormBtn, #resumeBtn {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    border: solid #dddddd 1px;
+    color: #dddddd;
+    transition: 0.5s;
+}
+#contactFormBtn:hover, #resumeBtn:hover {
+    background-color: #dddddd;
+    color: #222222;
+    transition: 0.5s;
+    transform: scale(1.05);
+}
+#aboutUsBtn {
+    text-align: center;
+}
+#portfolioTitle {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.project {
+    margin: 10px;
+    padding: 0;
+    background-color: black;
+}
+.projectTitle {
+    z-index: 100;
+    position: absolute;
+    opacity: 0;
+    color: #dddddd;
+}
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.fill img {
+    flex-shrink: 0;
+    max-width: 100%;
+    max-height: 100%;
+}
+.nav-link {
+    color: #dddddd;
+    transition: 0.2s;
+}
+.nav-link:hover {
+    color: black;
+    background-color: #dddddd;
+    transition: 0.2s;
+}
+.nav-link:active {
+    color: black;
+    background-color: #dddddd;
+    transition: 0.2s;
+}
+#footer {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.fa-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.icon-size {
+    width: 25px;
+    height: 25px;
+}
+#resumeBtn {
+    vertical-align: middle;
+    display: block;
+}
+#mainBtn {
+    height: 100px;
+    width: 102px;
+    text-decoration: none;
+}
+.arLink {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #dddddd;
+    border: solid #222222 1px;
+    color: #222222;
+    transition: 0.5s;
+}
+.arLink:hover {
+    background-color: black;
+    color: #dddddd;
+    transition: 0.5s;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+.no-underline {
+    text-decoration: none !important;
+}
+.aboutUsText {
+    float: none;
+    margin: 0 auto;
+}
+.aboutUsName {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 22px;
+    float: none;
+    margin: 0 auto;
+}
+#summary {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* fonts */
+#aboutUsTitle, #portfolioTitle, #mainTitle, .modal-title, .aboutUsName {
+    font-family: 'Roboto Slab', sans-serif;
+}
+.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #modelingTab, #conway-info, #footer, #arLink, .projectTitle, .modal-text, #loading-text, .aboutUsText {
+    font-family: 'Roboto', sans-serif;
+}
+#titleRed {
+  color: #7f3737;
+}
+#titleGreen {
+  color: #377f3a;
+}
+#titleBlue {
+  color: #375a7f;
+}
