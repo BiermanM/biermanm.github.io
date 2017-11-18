@@ -32,7 +32,7 @@ function print2dArray(arr) {
 }
 function clone(arr) {
     var xCoordCells = arr.length;
-    var yCoordCells = arr[0].length;                
+    var yCoordCells = arr[0].length;
 
     var newArr = new Array(xCoordCells);
     for (var i = 0; i < xCoordCells; i++)
@@ -163,7 +163,7 @@ function initialState(canvas, gridSize) {
             else
                 cells[i][j] = 1;
         }
-    }           
+    }
 
     // Draw cells at their initial state
     for (var i = 0; i < xCoordCells; i++) {
@@ -369,7 +369,7 @@ function setAboutMePage() {
         profileWH = Math.ceil($("#aboutMeMainText").height() / 3);
 
     $("#profile").width(profileWH + "px");
-    $("#profile").height(profileWH + "px");                
+    $("#profile").height(profileWH + "px");
 
     // set correct sizing for "sent email" alert
     $(".alert").css("margin-left", $(window).width() * 0.1);
@@ -482,6 +482,10 @@ function setModalImageSizes() {
         $("#sketchfab-pg").width($("#modal-powerGenerator").find(".modal-body").width());
         $("#sketchfab-pg").height($("#modal-powerGenerator").find(".modal-body").width() * 0.75);
     }
+}
+function setVimeoSizes() {
+  $("#shVimeo").height($("#shVimeo").width() * (9/16));
+  $("#dhVimeo").height($("#dhVimeo").width() * (9/16));
 }
 
 setAboutMePage();
@@ -692,8 +696,13 @@ $("#openModal-powerGenerator").click(function() {
     $("#modal-powerGenerator").modal("show");
 });
 
-
 // Set image sizes inside modals
+$("#modal-shatteredHeaven").on("shown.bs.modal", function () {
+    setVimeoSizes();
+});
+$("#modal-darkHorizon").on("shown.bs.modal", function () {
+    setVimeoSizes();
+});
 $("#modal-homeVR").on("shown.bs.modal", function () {
     setModalImageSizes();
 });
@@ -728,6 +737,7 @@ $(window).resize(function() {
         setMainPage();
         setPortfolioPage();
         setModalImageSizes();
+        setVimeoSizes();
         setBackgroundSize();
         setCanvasGrid(canvas, gridSize, 0);
         cells = initialState(canvas, gridSize);

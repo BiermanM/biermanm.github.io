@@ -217,7 +217,7 @@ p {
 .object:nth-child(7) {
     -webkit-animation-delay: 0.7s;
     animation-delay: 0.7s;
-    }	
+    }
 .object:nth-child(6) {
     -webkit-animation-delay: 0.6s;
     animation-delay: 0.6s;
@@ -240,14 +240,14 @@ p {
     }
 @-webkit-keyframes object {
 50% {
-    -ms-transform: translate(0,-50px); 
+    -ms-transform: translate(0,-50px);
     -webkit-transform: translate(0,-50px);
     transform: translate(0,-50px);
     }
-}		
+}
 @keyframes object {
 50% {
-    -ms-transform: translate(0,-50px); 
+    -ms-transform: translate(0,-50px);
     -webkit-transform: translate(0,-50px);
     transform: translate(0,-50px);
     }
