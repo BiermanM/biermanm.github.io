@@ -440,7 +440,11 @@ function setModalImageSizes() {
     var innerW = 0;
     var multiplier = 0;
 
-    if ($("#modal-homeVR").find(".carousel-inner").width() != 100) {
+    if ($("#modal-viewar").find(".carousel-inner").width() != 100) {
+        innerW = $("#modal-viewar").find(".carousel-inner").width();
+        multiplier = 334 / 695;
+    }
+    else if ($("#modal-homeVR").find(".carousel-inner").width() != 100) {
         innerW = $("#modal-homeVR").find(".carousel-inner").width();
         multiplier = 334 / 695;
     }
@@ -626,6 +630,9 @@ $("#form").submit(function() {
 $("#contactFormBtn").click(function() {
     $("#contactFormModal").modal("show");
 });
+$("#openModal-viewar").click(function() {
+    $("#modal-viewar").modal("show");
+});
 $("#openModal-smartLock").click(function() {
     $("#modal-smartLock").modal("show");
 });
@@ -702,6 +709,9 @@ $("#modal-shatteredHeaven").on("shown.bs.modal", function () {
 });
 $("#modal-darkHorizon").on("shown.bs.modal", function () {
     setVimeoSizes();
+});
+$("#modal-viewar").on("shown.bs.modal", function () {
+    setModalImageSizes();
 });
 $("#modal-homeVR").on("shown.bs.modal", function () {
     setModalImageSizes();
