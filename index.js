@@ -648,6 +648,9 @@ $("#openModal-theDragonsLairCTF").click(function() {
 $("#openModal-cpScripts").click(function() {
     $("#modal-cpScripts").modal("show");
 });
+$("#openModal-visualAlbum").click(function() {
+    $("#modal-visualAlbum").modal("show");
+});
 $("#openModal-worldCupSimulator").click(function() {
     $("#modal-worldCupSimulator").modal("show");
 });
