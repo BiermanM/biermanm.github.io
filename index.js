@@ -706,6 +706,26 @@ $("#openModal-powerGenerator").click(function() {
     $("#modal-powerGenerator").modal("show");
 });
 
+// Display date and location captions for photography modals
+$('#canadaCaptionText').html($('.active > .canada-carousel-caption').html());
+$('#canadaCarousel').on('slid.bs.carousel', function () {
+  	$('#canadaCaptionText').html($('.active > .canada-carousel-caption').html());
+});
+$('#californiaCaptionText').html($('.active > .california-carousel-caption').html());
+$('#californiaCarousel').on('slid.bs.carousel', function () {
+  	$('#californiaCaptionText').html($('.active > .california-carousel-caption').html());
+});
+$('#alaskaCaptionText').html($('.active > .alaska-carousel-caption').html());
+$('#alaskaCarousel').on('slid.bs.carousel', function () {
+  	$('#alaskaCaptionText').html($('.active > .alaska-carousel-caption').html());
+});
+$('#nevadaCaptionText').html($('.active > .nevada-carousel-caption').html());
+$('#nevadaCarousel').on('slid.bs.carousel', function () {
+  	$('#nevadaCaptionText').html($('.active > .nevada-carousel-caption').html());
+});
+
+
+
 // Set image sizes inside modals
 $("#modal-shatteredHeaven").on("shown.bs.modal", function () {
     setVimeoSizes();

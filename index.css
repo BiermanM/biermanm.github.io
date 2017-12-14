@@ -151,6 +151,19 @@ p {
 .no-underline {
     text-decoration: none !important;
 }
+.canada-carousel-caption, .california-carousel-caption, .alaska-carousel-caption, .nevada-carousel-caption {
+    display: none;
+}
+.photo-caption-left {
+    color: #777777;
+    text-align: left;
+    padding-top: 15px;
+}
+.photo-caption-right {
+    color: #777777;
+    text-align: right;
+    padding-top: 15px;
+}
 
 /* loading screen */
 #loading {
