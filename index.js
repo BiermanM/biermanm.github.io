@@ -1,7 +1,6 @@
 // loading screen
 $(window).on('load', function() {
     $("#loading").fadeOut(500);
-    window.location.replace("#main");
 });
 
 // general functions
