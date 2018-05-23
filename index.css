@@ -175,11 +175,9 @@ p {
     background-color: #444;
     color: #fff;
 }
-
 .form-valid {
     border-color: #28a745;
 }
-
 .form-invalid {
     border-color: #dc3545;
 }
@@ -289,6 +287,6 @@ p {
 #aboutMeTitle, #portfolioTitle, #mainTitle, .modal-title {
     font-family: 'Roboto Slab', sans-serif;
 }
-.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text, #loading-text {
+.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #film-vfxTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text, #loading-text {
     font-family: 'Roboto', sans-serif;
 }
