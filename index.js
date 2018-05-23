@@ -469,23 +469,6 @@ function setModalImageSizes() {
         $(this).width(innerW);
         $(this).height(innerW * multiplier);
     });
-
-    if ($("#sketchfab-sfr").width() != 100) {
-        $("#sketchfab-sfr").width($("#modal-sciFiRevolver").find(".modal-body").width());
-        $("#sketchfab-sfr").height($("#modal-sciFiRevolver").find(".modal-body").width() * 0.75);
-    }
-    else if ($("#sketchfab-h").width() != 100) {
-        $("#sketchfab-h").width($("#modal-house").find(".modal-body").width());
-        $("#sketchfab-h").height($("#modal-house").find(".modal-body").width() * 0.75);
-    }
-    else if ($("#sketchfab-hu").width() != 100) {
-        $("#sketchfab-hu").width($("#modal-houseUntextured").find(".modal-body").width());
-        $("#sketchfab-hu").height($("#modal-houseUntextured").find(".modal-body").width() * 0.75);
-    }
-    else if ($("#sketchfab-pg").width() != 100) {
-        $("#sketchfab-pg").width($("#modal-powerGenerator").find(".modal-body").width());
-        $("#sketchfab-pg").height($("#modal-powerGenerator").find(".modal-body").width() * 0.75);
-    }
 }
 function setVimeoSizes() {
   $("#shVimeo").height($("#shVimeo").width() * (9/16));
@@ -666,18 +649,6 @@ $("#openModal-asciiIntro").click(function() {
 $("#openModal-sinisterMeeting").click(function() {
     $("#modal-sinisterMeeting").modal("show");
 });
-$("#openModal-sciFiRevolver").click(function() {
-    $("#modal-sciFiRevolver").modal("show");
-});
-$("#openModal-house").click(function() {
-    $("#modal-house").modal("show");
-});
-$("#openModal-houseUntextured").click(function() {
-    $("#modal-houseUntextured").modal("show");
-});
-$("#openModal-powerGenerator").click(function() {
-    $("#modal-powerGenerator").modal("show");
-});
 
 // Display date and location captions for photography modals
 $('#canadaCaptionText').html($('.active > .canada-carousel-caption').html());
@@ -696,8 +667,6 @@ $('#nevadaCaptionText').html($('.active > .nevada-carousel-caption').html());
 $('#nevadaCarousel').on('slid.bs.carousel', function () {
   	$('#nevadaCaptionText').html($('.active > .nevada-carousel-caption').html());
 });
-
-
 
 // Set image sizes inside modals
 $("#modal-shatteredHeaven").on("shown.bs.modal", function () {
@@ -722,18 +691,6 @@ $("#modal-nevada").on("shown.bs.modal", function () {
     setModalImageSizes();
 });
 $("#modal-canada").on("shown.bs.modal", function () {
-    setModalImageSizes();
-});
-$("#modal-sciFiRevolver").on("shown.bs.modal", function () {
-    setModalImageSizes();
-});
-$("#modal-house").on("shown.bs.modal", function () {
-    setModalImageSizes();
-});
-$("#modal-houseUntextured").on("shown.bs.modal", function () {
-    setModalImageSizes();
-});
-$("#modal-powerGenerator").on("shown.bs.modal", function () {
     setModalImageSizes();
 });
 

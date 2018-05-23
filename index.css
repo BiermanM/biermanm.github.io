@@ -116,6 +116,13 @@ p {
     margin-right: 5px;
     font-size: 160%;
     color: #dddddd;
+    
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+}
+.footer-icon:hover {
+    color: #aaaaaa;
 }
 #contactModalName, #contactModalEmail, #contactModalPhone, #contactModalWebsite, #contactModalBody {
     margin-top: 5px;
@@ -282,6 +289,6 @@ p {
 #aboutMeTitle, #portfolioTitle, #mainTitle, .modal-title {
     font-family: 'Roboto Slab', sans-serif;
 }
-.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #modelingTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text, #loading-text {
+.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #filmTab, #vfxTab, #conway-info, #footer, #githubLink, .projectTitle, .modal-text, #loading-text {
     font-family: 'Roboto', sans-serif;
 }
