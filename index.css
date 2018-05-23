@@ -164,6 +164,18 @@ p {
     text-align: right;
     padding-top: 15px;
 }
+.form-control, .form-control:focus {
+    background-color: #444;
+    color: #fff;
+}
+
+.form-valid {
+    border-color: #28a745;
+}
+
+.form-invalid {
+    border-color: #dc3545;
+}
 
 /* loading screen */
 #loading {

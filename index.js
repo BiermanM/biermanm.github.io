@@ -551,73 +551,46 @@ $("#linkToPortfolio").hover(function() {
 
 // Submit contact form and error checking
 $("#form").submit(function() {
-    if ($("#nameInput").val() == "")
-    {
-        $("#contactModalName").removeClass("has-success");
-        $("#contactModalName").addClass("has-danger");
-
-        $("#nameInput").removeClass("form-control-success");
-        $("#nameInput").addClass("form-control-danger");
+    if ($("#nameInput").val() == "") {
+        $("#nameInput").removeClass("form-valid");
+        $("#nameInput").addClass("form-invalid");
 
         $("#nameError").css("display", "block");
-    }
-    else
-    {
-        $("#contactModalName").removeClass("has-danger");
-        $("#contactModalName").addClass("has-success");
-
-        $("#nameInput").removeClass("form-control-danger");
-        $("#nameInput").addClass("form-control-success");
+    } else {
+        $("#nameInput").removeClass("form-invalid");
+        $("#nameInput").addClass("form-valid");
 
         $("#nameError").css("display", "none");
     }
 
-    if ($("#emailInput").val() == "")
-    {
-        $("#contactModalEmail").removeClass("has-success");
-        $("#contactModalEmail").addClass("has-danger");
-
-        $("#emailInput").removeClass("form-control-success");
-        $("#emailInput").addClass("form-control-danger");
+    if ($("#emailInput").val() == "") {
+        $("#emailInput").removeClass("form-valid");
+        $("#emailInput").addClass("form-invalid");
 
         $("#emailError").css("display", "block");
-    }
-    else
-    {
-        $("#contactModalEmail").removeClass("has-danger");
-        $("#contactModalEmail").addClass("has-success");
-
-        $("#emailInput").removeClass("form-control-danger");
-        $("#emailInput").addClass("form-control-success");
+    } else {
+        $("#emailInput").removeClass("form-invalid");
+        $("#emailInput").addClass("form-valid");
 
         $("#emailError").css("display", "none");
     }
+    
+    if ($("#phoneInput").val() != "")
+        $("#phoneInput").addClass("form-valid");
+    
+    if ($("#websiteInput").val() != "")
+        $("#websiteInput").addClass("form-valid");
 
-    if ($("#bodyInput").val() == "")
-    {
-        $("#contactModalBody").removeClass("has-success");
-        $("#contactModalBody").addClass("has-danger");
-
-        $("#bodyInput").removeClass("form-control-success");
-        $("#bodyInput").addClass("form-control-danger");
+    if ($("#bodyInput").val() == "") {
+        $("#bodyInput").removeClass("form-valid");
+        $("#bodyInput").addClass("form-invalid");
 
         $("#bodyError").css("display", "block");
-    }
-    else
-    {
-        $("#contactModalBody").removeClass("has-danger");
-        $("#contactModalBody").addClass("has-success");
-
-        $("#bodyInput").removeClass("form-control-danger");
-        $("#bodyInput").addClass("form-control-success");
+    } else {
+        $("#bodyInput").removeClass("form-invalid");
+        $("#bodyInput").addClass("form-valid");
 
         $("#bodyError").css("display", "none");
-    }
-
-    if ($("#websiteInput").val() != "")
-    {
-        $("#contactModalWebsite").addClass("has-success");
-        $("#websiteInput").addClass("form-control-success");
     }
 
     if ($("#nameInput").val() != "" && $("#emailInput").val() != "" && $("#bodyInput").val() != "")
