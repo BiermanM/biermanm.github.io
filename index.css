@@ -47,13 +47,18 @@ p {
     background-color: transparent;
     border: solid #dddddd 1px;
     color: #dddddd;
-    transition: 0.5s;
+    
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
 }
 #contactFormBtn:hover, #resumeBtn:hover {
     background-color: #dddddd;
     color: #222222;
-    transition: 0.5s;
+    transition: all 0.5s;
     transform: scale(1.05);
+    cursor: pointer;
 }
 #aboutMeBtn {
     text-align: center;
@@ -66,6 +71,7 @@ p {
     margin: 10px;
     padding: 0;
     background-color: black;
+    cursor: pointer;
 }
 .projectTitle {
     z-index: 100;
@@ -86,7 +92,11 @@ p {
 }
 .nav-link {
     color: #dddddd;
-    transition: 0.2s;
+    
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
 }
 .nav-link:hover {
     color: black;
@@ -119,6 +129,7 @@ p {
     
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
     transition: all 0.5s;
 }
 .footer-icon:hover {
@@ -146,12 +157,15 @@ p {
     background-color: #dddddd;
     border: solid #222222 1px;
     color: #222222;
-    transition: 0.5s;
+    
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
 }
 .githubLink:hover, .behanceLink:hover {
     background-color: black;
     color: #dddddd;
-    transition: 0.5s;
     transform: scale(1.05);
     text-decoration: none;
 }
