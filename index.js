@@ -601,9 +601,6 @@ $("#openModal-smartLock").click(function() {
 $("#openModal-homeVR").click(function() {
     $("#modal-homeVR").modal("show");
 });
-$("#openModal-domainNameChecker").click(function() {
-    $("#modal-domainNameChecker").modal("show");
-});
 $("#openModal-theDragonsLairCTF").click(function() {
     $("#modal-theDragonsLairCTF").modal("show");
 });
