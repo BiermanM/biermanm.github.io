@@ -613,12 +613,6 @@ $("#openModal-cpScripts").click(function() {
 $("#openModal-visualAlbum").click(function() {
     $("#modal-visualAlbum").modal("show");
 });
-$("#openModal-worldCupSimulator").click(function() {
-    $("#modal-worldCupSimulator").modal("show");
-});
-$("#openModal-leagueTableSimulator").click(function() {
-    $("#modal-leagueTableSimulator").modal("show");
-});
 $("#openModal-encryptScript").click(function() {
     $("#modal-encryptScript").modal("show");
 });
