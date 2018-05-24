@@ -464,6 +464,14 @@ function setModalImageSizes() {
         innerW = $("#modal-canada").find(".carousel-inner").width();
         multiplier = 0.75;
     }
+    else if ($("#modal-michigan").find(".carousel-inner").width() != 100) {
+        innerW = $("#modal-michigan").find(".carousel-inner").width();
+        multiplier = 0.75;
+    }
+    else if ($("#modal-texas").find(".carousel-inner").width() != 100) {
+        innerW = $("#modal-texas").find(".carousel-inner").width();
+        multiplier = 0.75;
+    }
 
     $(".img-fluid").each(function() {
         $(this).width(innerW);
@@ -610,9 +618,6 @@ $("#openModal-cpScripts").click(function() {
 $("#openModal-visualAlbum").click(function() {
     $("#modal-visualAlbum").modal("show");
 });
-$("#openModal-encryptScript").click(function() {
-    $("#modal-encryptScript").modal("show");
-});
 $("#openModal-tlcComputerSolutions").click(function() {
     $("#modal-tlcComputerSolutions").modal("show");
 });
@@ -627,6 +632,12 @@ $("#openModal-nevada").click(function() {
 });
 $("#openModal-canada").click(function() {
     $("#modal-canada").modal("show");
+});
+$("#openModal-michigan").click(function() {
+    $("#modal-michigan").modal("show");
+});
+$("#openModal-texas").click(function() {
+    $("#modal-texas").modal("show");
 });
 $("#openModal-theScientist").click(function() {
     $("#modal-theScientist").modal("show");
@@ -648,21 +659,29 @@ $("#openModal-sinisterMeeting").click(function() {
 });
 
 // Display date and location captions for photography modals
-$('#canadaCaptionText').html($('.active > .canada-carousel-caption').html());
-$('#canadaCarousel').on('slid.bs.carousel', function () {
-  	$('#canadaCaptionText').html($('.active > .canada-carousel-caption').html());
+$('#alaskaCaptionText').html($('.active > .alaska-carousel-caption').html());
+$('#alaskaCarousel').on('slid.bs.carousel', function () {
+  	$('#alaskaCaptionText').html($('.active > .alaska-carousel-caption').html());
 });
 $('#californiaCaptionText').html($('.active > .california-carousel-caption').html());
 $('#californiaCarousel').on('slid.bs.carousel', function () {
   	$('#californiaCaptionText').html($('.active > .california-carousel-caption').html());
 });
-$('#alaskaCaptionText').html($('.active > .alaska-carousel-caption').html());
-$('#alaskaCarousel').on('slid.bs.carousel', function () {
-  	$('#alaskaCaptionText').html($('.active > .alaska-carousel-caption').html());
-});
 $('#nevadaCaptionText').html($('.active > .nevada-carousel-caption').html());
 $('#nevadaCarousel').on('slid.bs.carousel', function () {
   	$('#nevadaCaptionText').html($('.active > .nevada-carousel-caption').html());
+});
+$('#canadaCaptionText').html($('.active > .canada-carousel-caption').html());
+$('#canadaCarousel').on('slid.bs.carousel', function () {
+  	$('#canadaCaptionText').html($('.active > .canada-carousel-caption').html());
+});
+$('#michiganCaptionText').html($('.active > .michigan-carousel-caption').html());
+$('#michiganCarousel').on('slid.bs.carousel', function () {
+  	$('#michiganCaptionText').html($('.active > .michigan-carousel-caption').html());
+});
+$('#texasCaptionText').html($('.active > .texas-carousel-caption').html());
+$('#texasCarousel').on('slid.bs.carousel', function () {
+  	$('#texasCaptionText').html($('.active > .texas-carousel-caption').html());
 });
 
 // Set image sizes inside modals
@@ -688,6 +707,12 @@ $("#modal-nevada").on("shown.bs.modal", function () {
     setModalImageSizes();
 });
 $("#modal-canada").on("shown.bs.modal", function () {
+    setModalImageSizes();
+});
+$("#modal-michigan").on("shown.bs.modal", function () {
+    setModalImageSizes();
+});
+$("#modal-texas").on("shown.bs.modal", function () {
     setModalImageSizes();
 });
 
