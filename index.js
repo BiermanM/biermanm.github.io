@@ -586,6 +586,12 @@ $("#form").submit(function() {
 $("#contactFormBtn").click(function() {
     $("#contactFormModal").modal("show");
 });
+$("#openModal-feelTheBreeze").click(function() {
+    $("#modal-feelTheBreeze").modal("show");
+});
+$("#openModal-offr").click(function() {
+    $("#modal-offr").modal("show");
+});
 $("#openModal-viewar").click(function() {
     $("#modal-viewar").modal("show");
 });
