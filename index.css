@@ -55,9 +55,7 @@ p {
 }
 #contactFormBtn:hover, #resumeBtn:hover {
     background-color: #dddddd;
-    color: #222222;
-    transition: all 0.5s;
-    transform: scale(1.05);
+    color: #303030;
     cursor: pointer;
 }
 #aboutMeBtn {
@@ -78,6 +76,7 @@ p {
     position: absolute;
     opacity: 0;
     color: #dddddd;
+    text-align: center;
 }
 .fill {
     display: flex;
@@ -155,8 +154,8 @@ p {
     padding: 10px;
     border-radius: 10px;
     background-color: #dddddd;
-    border: solid #222222 1px;
-    color: #222222;
+    border: solid #dddddd 1px;
+    color: #303030;
     
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
@@ -164,9 +163,9 @@ p {
     transition: all 0.5s;
 }
 .modalLink:hover {
-    background-color: black;
+    background-color: #303030;
     color: #dddddd;
-    transform: scale(1.05);
+    border: solid #dddddd 1px;
     text-decoration: none;
 }
 .no-underline {
