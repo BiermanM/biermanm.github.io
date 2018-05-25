@@ -151,7 +151,7 @@ p {
     width: 102px;
     text-decoration: none;
 }
-.githubLink, .behanceLink {
+.modalLink {
     padding: 10px;
     border-radius: 10px;
     background-color: #dddddd;
@@ -163,7 +163,7 @@ p {
     -o-transition: all 0.5s;
     transition: all 0.5s;
 }
-.githubLink:hover, .behanceLink:hover {
+.modalLink:hover {
     background-color: black;
     color: #dddddd;
     transform: scale(1.05);
@@ -301,6 +301,6 @@ p {
 #aboutMeTitle, #portfolioTitle, #mainTitle, .modal-title {
     font-family: 'Roboto Slab', sans-serif;
 }
-.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #film-vfxTab, #conway-info, #footer, .githubLink, .behanceLink, .projectTitle, .modal-text, #loading-text {
+.alert, #bio, #contactFormBtn, #aboutLinkText, #portfolioLinkText, #resumeBtn, #allTab, #softwareTab, #webTab, #photographyTab, #film-vfxTab, #conway-info, #footer, .modalLink, .projectTitle, .modal-text, #loading-text {
     font-family: 'Roboto', sans-serif;
 }

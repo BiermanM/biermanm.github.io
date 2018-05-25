@@ -163,7 +163,7 @@
                     </div>
                     <div class="row justify-content-center">
                         <a id="mainBtn" class="justify-content-center" target="_blank" href="resume.pdf">
-                            <button id="resumeBtn" type="submit">my resume</button>
+                            <button id="resumeBtn">my resume</button>
                         </a>
                     </div>
                 </div>
@@ -205,6 +205,10 @@
                     </li>
             </ul>
             <div id="portfolioContainer" class="row justify-content-center">
+                <div id="openModal-marchMadness" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
+                    <p class="projectTitle">March Madness 2018 Prediction</p>
+                    <img src="images/marchmadness.jpeg">
+                </div>
                 <div id="openModal-feelTheBreeze" class="project fill mix web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
                     <p class="projectTitle">Feel the Breeze</p>
                     <img src="images/feelthebreeze_1.png">
@@ -295,8 +299,42 @@
                 <div class="gap"></div>
             </div>
             
+            <div class="modal fade" id="modal-marchMadness" tabindex="-1" role="dialog">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div id="modalBody" class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">March Madness 2018 Prediction</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <p class="modal-text" style="margin-bottom: 15px">As part of my Big Data Management &amp; Analytics (CS 4301) course at UT Dallas in the Spring 2018 semester, I chose sports prediction for my final project. More specifically, I decided to predict the March Madness 2018 Men's Tournament. Since I was also taking an Introduction to Machine Learning (CS 4375) course at the time, I decided to use what I learned from both courses for this project: R and SparkR.</p>
+                                        <p class="modal-text" style="margin-bottom: 15px">I used my predictions to enter the <a href="https://www.kaggle.com/c/mens-machine-learning-competition-2018">Google Cloud &amp; NCAA ML Competition 2018-Men's</a> competition on Kaggle and the <a href="https://bracketchallenge.ncaa.com/">Capital One NCAA March Madness Bracket Challenge</a> competition. My results can be viewed in detail with the links below, but in summary, I placed in the top 1% for the Bracket Challenge and the top 30% for the Kaggle competition.</p>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row justify-content-center">
+                                                    <a class="modalLink" class="justify-content-center" target="_blank" href="report.pdf"><i class="fa fa-desktop"></i> View Report</a>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row justify-content-center">
+                                                    <a class="modalLink" href="https://github.com/BiermanM/marchmadness2018"><i class="fa fa-github"></i> GitHub</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="modal-feelTheBreeze" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Feel the Breeze</h5>
@@ -315,12 +353,12 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="http://ftbreeze.com"><i class="fa fa-desktop"></i> Demo</a>
+                                                    <a class="modalLink" href="http://ftbreeze.com"><i class="fa fa-desktop"></i> Demo</a>
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="https://github.com/BiermanM/feelthebreeze"><i class="fa fa-github"></i> GitHub</a>
+                                                    <a class="modalLink" href="https://github.com/BiermanM/feelthebreeze"><i class="fa fa-github"></i> GitHub</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -332,7 +370,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-offr" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Offr</h5>
@@ -351,12 +389,12 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="http://getoffr.com"><i class="fa fa-desktop"></i> Demo</a>
+                                                    <a class="modalLink" href="http://getoffr.com"><i class="fa fa-desktop"></i> Demo</a>
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="https://github.com/BiermanM/Offr"><i class="fa fa-github"></i> GitHub</a>
+                                                    <a class="modalLink" href="https://github.com/BiermanM/Offr"><i class="fa fa-github"></i> GitHub</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -368,7 +406,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-viewar" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">viewar</h5>
@@ -419,12 +457,12 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="https://biermanm.github.io/viewar"><i class="fa fa-desktop"></i> Demo</a>
+                                                    <a class="modalLink" href="https://biermanm.github.io/viewar"><i class="fa fa-desktop"></i> Demo</a>
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="https://github.com/BiermanM/viewar"><i class="fa fa-github"></i> GitHub</a>
+                                                    <a class="modalLink" href="https://github.com/BiermanM/viewar"><i class="fa fa-github"></i> GitHub</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -436,7 +474,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-smartLock" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Smart Lock</h5>
@@ -455,7 +493,7 @@
                                             <p class="modal-text">We designed our Smart Lock using a Raspberry Pi and a servo motor. To set up the device, the user must connect the Raspberry Pi to the home wireless network, and from there, users can navigate to a local address on any device (that is also on the network) and add/remove users on the access control list (ACL) by entering the MAC address of the user's device. Once it is set up, the Smart Lock will unlock the door when any user on the network is on the ACL and lock the door when there are no users from the ACL on the network. </p>
                                         </div>
                                         <div class="row justify-content-center" style="margin-top: 15px;">
-                                            <a class="githubLink" href="https://github.com/saipathuri/Smart_Lock"><i class="fa fa-github"></i> GitHub</a>
+                                            <a class="modalLink" href="https://github.com/saipathuri/Smart_Lock"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
                                     </div>
                                 </div>
@@ -465,7 +503,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-homeVR" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">HomeVR</h5>
@@ -515,7 +553,7 @@
                                             <p class="modal-text">HomeVR uses GearVR to allow you to tour a 3D home in virtual reality, without ever having to leaving your chair. We used Unreal Engine 4 to create the project, Blender and Google Sketch-Up to create some of the 3D models, and it runs on a Galaxy S7 with GearVR. Our inspiration for HomeVR was that we wanted to create a better alternative to real estate tours, one that removed the need for you to physically visit the house while also provided more than just photos, video tours, or 360 photos. This project was built during the <a class="no-underline" href="https://hackutd17.devpost.com/">HackUTD 17</a> hackathon.</p>
                                         </div>
                                         <div class="row justify-content-center">
-                                            <a class="githubLink" href="https://github.com/BiermanM/HomeVR"><i class="fa fa-github"></i> GitHub</a>
+                                            <a class="modalLink" href="https://github.com/BiermanM/HomeVR"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
                                     </div>
                                 </div>
@@ -525,7 +563,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-theDragonsLairCTF" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">The Dragon's Lair CTF</h5>
@@ -542,7 +580,7 @@
                                             <p class="modal-text">Red team and blue team compete in an Attack-and-Defend style Capture the Flag competition with Forensics challenges included. Both teams participate in attacking and defending; team colors are not associated with only attacking or only defending. There are six levels in the competition, each team receives points for completing levels and loses points for using hints to complete the levels. The host system displays the current scores and communicates with the two teams to give them each level as they unlock it. Each level contains a readme file for instructions. Now includes animations and ASCII art made entirely in bash!</p>
                                         </div>
                                         <div class="row justify-content-center">
-                                            <a class="githubLink" href="https://github.com/BiermanM/TheDragonsLairCTF"><i class="fa fa-github"></i> GitHub</a>
+                                            <a class="modalLink" href="https://github.com/BiermanM/TheDragonsLairCTF"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
                                     </div>
                                 </div>
@@ -552,7 +590,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-cpScripts" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">CyberPatriot VIII Scripts</h5>
@@ -629,9 +667,9 @@
                                         </ul>
 
                                         <h4 class="modal-title">Comparative Script</h4>
-                                        <p class="modal-text">Uses the program <kbd>Diffuse</kbd> to compare various system files between the current files and the default system files as of January 21, 2016. <kbd>Diffuse</kbd> shows the differences in text between the two files using colored highlighting.</p>
+                                        <p class="modal-text" style="margin-bottom: 15px">Uses the program <kbd>Diffuse</kbd> to compare various system files between the current files and the default system files as of January 21, 2016. <kbd>Diffuse</kbd> shows the differences in text between the two files using colored highlighting.</p>
                                         <div class="row justify-content-center">
-                                            <a class="githubLink" href="https://github.com/BiermanM/CyberPatriot-Scripts"><i class="fa fa-github"></i> GitHub</a>
+                                            <a class="modalLink" href="https://github.com/BiermanM/CyberPatriot-Scripts"><i class="fa fa-github"></i> GitHub</a>
                                         </div>
                                     </div>
                                 </div>
@@ -641,7 +679,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-visualAlbum" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Visual Album</h5>
@@ -663,7 +701,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-tlcComputerSolutions" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">TLC Computer Solutions</h5>
@@ -683,12 +721,12 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="https://biermanm.github.io/TLCComputerSolutions/"><i class="fa fa-desktop"></i> Demo</a>
+                                                    <a class="modalLink" href="https://biermanm.github.io/TLCComputerSolutions/"><i class="fa fa-desktop"></i> Demo</a>
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="row justify-content-center">
-                                                    <a class="githubLink" href="https://github.com/BiermanM/TLCComputerSolutions"><i class="fa fa-github"></i> GitHub</a>
+                                                    <a class="modalLink" href="https://github.com/BiermanM/TLCComputerSolutions"><i class="fa fa-github"></i> GitHub</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -700,7 +738,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-alaska" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Alaska</h5>
@@ -795,14 +833,14 @@
                             </div>
                             <div id="alaskaCaptionText"></div>
                             <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="behanceLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
+                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal fade" id="modal-california" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">California</h5>
@@ -897,14 +935,14 @@
                             </div>
                             <div id="californiaCaptionText"></div>
                             <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="behanceLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
+                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal fade" id="modal-nevada" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Nevada</h5>
@@ -999,14 +1037,14 @@
                             </div>
                             <div id="nevadaCaptionText"></div>
                             <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="behanceLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
+                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal fade" id="modal-canada" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Canada</h5>
@@ -1073,14 +1111,14 @@
                             </div>
                             <div id="canadaCaptionText"></div>
                             <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="behanceLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
+                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal fade" id="modal-michigan" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Michigan</h5>
@@ -1147,14 +1185,14 @@
                             </div>
                             <div id="michiganCaptionText"></div>
                             <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="behanceLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
+                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal fade" id="modal-texas" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Texas</h5>
@@ -1221,14 +1259,14 @@
                             </div>
                             <div id="texasCaptionText"></div>
                             <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="behanceLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
+                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal fade" id="modal-theScientist" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">The Scientist</h5>
@@ -1258,7 +1296,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-shatteredHeaven" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Shattered Heaven</h5>
@@ -1296,7 +1334,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-darkHorizon" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Dark Horizon</h5>
@@ -1336,12 +1374,12 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="row justify-content-center">
-                                            <a class="githubLink" href="http://www.imdb.com/name/nm6744517"><i class="fa fa-imdb"></i> My IMDB Page</a>
+                                            <a class="modalLink" href="http://www.imdb.com/name/nm6744517"><i class="fa fa-imdb"></i> My IMDB Page</a>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="row justify-content-center">
-                                            <a class="githubLink" href="http://www.imdb.com/title/tt3919136/"><i class="fa fa-imdb"></i> IMDB for Dark Horizon</a>
+                                            <a class="modalLink" href="http://www.imdb.com/title/tt3919136/"><i class="fa fa-imdb"></i> IMDB for Dark Horizon</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1351,7 +1389,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-holdingTheWire" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Holding the Wire</h5>
@@ -1381,7 +1419,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-asciiIntro" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">ASCII Intro</h5>
@@ -1403,7 +1441,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-sinisterMeeting" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-lg" role="document">
+                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div id="modalBody" class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Sinister Meeting</h5>

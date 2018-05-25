@@ -594,6 +594,9 @@ $("#form").submit(function() {
 $("#contactFormBtn").click(function() {
     $("#contactFormModal").modal("show");
 });
+$("#openModal-marchMadness").click(function() {
+    $("#modal-marchMadness").modal("show");
+});
 $("#openModal-feelTheBreeze").click(function() {
     $("#modal-feelTheBreeze").modal("show");
 });
