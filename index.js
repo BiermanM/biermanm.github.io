@@ -489,7 +489,7 @@ setPortfolioPage();
 setModalImageSizes();
 
 var gridSize = 50; // in pixels
-var stepDelay = 400; // in milliseconds
+var stepDelay = 2000; // in milliseconds
 var canvas = document.getElementById("gameOfLife");
 
 setCanvasGrid(canvas, gridSize, 1000);
