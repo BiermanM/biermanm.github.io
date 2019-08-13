@@ -173,3 +173,25 @@ $("input, textarea").on('input', function() {
     $(this).parent().parent().removeClass("invalid");
     $(this).parent().siblings(".error-message").css("display", "none");
 });
+
+// Smooth scrolling when returning to home page from projects page when clicking on menu link
+$(function() {
+    if (window.location.search.indexOf('?to=work') > -1) {
+        $('html, body').animate({
+            scrollTop: $("#work").offset().top + window.innerHeight
+        }, 800);
+        window.history.replaceState(null, null, window.location.pathname);
+    }
+    else if (window.location.search.indexOf('?to=about') > -1) {
+        $('html, body').animate({
+            scrollTop: $("#about").offset().top + window.innerHeight
+        }, 800);
+        window.history.replaceState(null, null, window.location.pathname);
+    }
+    else if (window.location.search.indexOf('?to=contact') > -1) {
+        $('html, body').animate({
+            scrollTop: $("#contact").offset().top + window.innerHeight + 150
+        }, 800);
+        window.history.replaceState(null, null, window.location.pathname);
+    }
+});
