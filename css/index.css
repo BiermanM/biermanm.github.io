@@ -1,0 +1,455 @@
+/* Work Page */
+
+#oscar-health.item > .image > a > img,
+#be-mindful-beverages.item > .image > a > img {
+    object-position: center top !important;
+}
+
+@media (min-width: 900px) {
+    #dot-slash-digital.left > .title {
+        width: 347px;
+        margin-left: calc(-347px / 2);
+    }
+
+    #oscar-health.right > .title {
+        width: 249px;
+        margin-right: calc(-249px / 2);
+    }
+
+    #march-madness-prediction.left > .title {
+        width: 383px;
+        margin-left: calc(-383px / 2);
+    }
+
+    #be-mindful-beverages.right > .title {
+        width: 401px;
+        margin-right: calc(-401px / 2);
+    }
+}
+
+@media (min-width: 550px) and (max-width: 899px) {
+    #dot-slash-digital.left > .title {
+        width: 290px;
+        margin-left: calc(-290px / 2);
+    }
+
+    #oscar-health.right > .title {
+        width: 207px;
+        margin-right: calc(-207px / 2);
+    }
+
+    #march-madness-prediction.left > .title {
+        width: 319px;
+        margin-left: calc(-319px / 2);
+    }
+
+    #be-mindful-beverages.right > .title {
+        width: 334px;
+        margin-right: calc(-334px / 2);
+    }
+}
+
+/* About Page */
+
+#bio > div:nth-child(1) {
+    margin-bottom: 15px;
+}
+
+.company {
+    margin-top: 37.5px;
+}
+
+.company > .image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 15px auto;
+    display: block;
+}
+
+.company > .image > img {
+    width: 100%;
+}
+
+.company > .name,
+.company > .position,
+.company > .date {
+    text-align: center;
+}
+
+#bio > div > span > a,
+.company > .name > a {
+    position: relative;
+    color: black;
+    text-decoration: none;
+    transition: 0.3s all ease-in-out;
+}
+
+#bio > div > span > a,
+.company > .name > a:hover {
+    color: #555 !important;
+}
+
+#bio > div > span > a:before,
+.company > .name > a:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 1px;
+    left: 0;
+    background-color: black;
+    visibility: hidden;
+    transition: 0.3s all ease-in-out;
+}
+
+#bio > div > span > a:hover:before,
+.company > .name.hover > a:before,
+.company > .name > a:hover:before {
+    visibility: visible;
+    width: 100%;
+    z-index: 0;
+    background-color: #555 !important;
+}
+
+.company > .position > span,
+.company > .date > span {
+    font-size: 12px;
+    font-weight: 300 !important;
+}
+
+@media (min-width: 800px) {
+    #bio {
+        padding: 0 30px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .company {
+        float: left;
+        width: 25%;
+    }
+}
+
+@media (min-width: 525px) and (max-width: 1099px) {
+    .company {
+        float: left;
+        width: 50%;
+    }
+    
+    .company:nth-child(3),
+    .company:nth-child(4) {
+        margin-top: 50px;
+    }
+}
+
+@media (min-width: 525px) and (max-width: 650px) {
+    .company:nth-child(3),
+    .company:nth-child(4) {
+        margin-top: 25px;
+    }
+}
+
+@media (max-width: 524px) {
+    .company {
+        float: left;
+        width: 100%;
+    }
+}
+
+@media (min-width: 900px) {    
+    #headshot.left > .title {
+        width: 316px;
+        margin-left: calc(-316px / 2) !important;
+    }
+}
+
+@media (min-width: 550px) and (max-width: 899px) {
+    #headshot.left > .title {
+        width: 264px;
+        margin-left: calc(-264px / 2) !important;
+    }
+}
+
+@media (max-width: 281px) {
+    #about > .item.full > .content {
+        padding-top: 108px !important;
+    }
+}
+
+/* Contact Page */
+
+.row {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.row:nth-child(2) {
+    margin-top: 10px !important;
+}
+
+.row:nth-child(3) {
+    margin-top: 26px !important;
+}
+
+.row:nth-child(1) > .input-container {
+    width: calc(50% - 8px);
+    float: left;
+}
+
+.row:nth-child(2) > .input-container {
+    width: 100%;
+    float: left;
+}
+
+.row:nth-child(1) > .input-container:nth-child(1) {
+    margin-right: 16px;
+}
+
+.row:nth-child(1) > .input-container > .error-message {
+    margin-top: 4px;
+}
+
+.row:nth-child(2) > .input-container > .error-message {
+    margin-top: -2px;
+}
+
+.input-container > label {
+    width: 100%;
+}
+
+.error-message {
+    display: none;
+    margin-left: 14px;
+}
+
+.error-message > span {
+    font-size: 12px;
+    color: red;
+}
+
+.row > button {
+    height: 56px;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 15px 45px;
+    color: white;
+    background-color: black;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+}
+
+.row > button:hover {
+    background-color: #555;
+}
+
+.row > button:focus {
+    outline: none;
+}
+
+@media (max-width: 550px) {
+    .row > button {
+        padding: 15px 30px;
+    }
+}
+
+@media (max-width: 700px) {
+    .row > .input-container {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    .row > .input-container:nth-child(2) {
+        margin-top: 10px !important;
+    }
+}
+
+@media (max-width: 332px) {
+    #contact > .item.full > .content {
+        padding-top: 108px !important;
+    }
+}
+
+/*       Contact Form (Contact Page)       */
+/* Based off Ben Szabo's Matter components */
+
+label {
+    --color-no-transp: rgb(0, 0, 0);
+    --color-light-transp: rgba(0, 0, 0, 0.6);
+    --color-heavy-transp: rgba(0, 0, 0, 0.87);
+    position: relative;
+    display: inline-block;
+    padding-top: 6px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+label > input,
+label > textarea {
+    box-sizing: border-box;
+    margin: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: transparent var(--color-light-transp) var(--color-light-transp);
+    border-radius: 4px;
+    padding: 15px 13px 15px;
+    width: 100%;
+    height: inherit;
+    color: var(--color-heavy-transp);
+    -webkit-text-fill-color: currentColor; /* for Safari */
+    background-color: transparent;
+    box-shadow: inset 1px 0 transparent, inset -1px 0 transparent, inset 0 -1px transparent;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    caret-color: var(--color-no-transp);
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+label > input:not(:focus):placeholder-shown,
+label > textarea:not(:focus):placeholder-shown {
+    border-top-color: var(--color-light-transp);
+}
+
+label > input + span,
+label > textarea + span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    max-height: 100%;
+    color: var(--color-light-transp);
+    font-size: 75%;
+    line-height: 15px;
+    cursor: text;
+    transition: color 0.2s, font-size 0.2s, line-height 0.2s;
+}
+
+label > input:not(:focus):placeholder-shown + span,
+label > textarea:not(:focus):placeholder-shown + span {
+    color: rgba(0, 0, 0, 0.6) !important;
+    font-size: inherit;
+    line-height: 68px;
+}
+
+label > input + span::before,
+label > input + span::after,
+label > textarea + span::before,
+label > textarea + span::after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    margin-top: 6px;
+    border-top: solid 1px var(--color-light-transp);
+    min-width: 10px;
+    height: 8px;
+    pointer-events: none;
+    box-shadow: inset 0 1px transparent;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+label > input + span::before,
+label > textarea + span::before {
+    margin-right: 4px;
+    border-left: solid 1px transparent;
+    border-radius: 4px 0;
+}
+
+label > input + span::after,
+label > textarea + span::after {
+    flex-grow: 1;
+    margin-left: 4px;
+    border-right: solid 1px transparent;
+    border-radius: 0 4px;
+}
+
+label > input:not(:focus):placeholder-shown + span::before,
+label > textarea:not(:focus):placeholder-shown + span::before,
+label > input:not(:focus):placeholder-shown + span::after,
+label > textarea:not(:focus):placeholder-shown + span::after {
+    border-top-color: transparent;
+}
+
+label:hover > input,
+label:hover > textarea {
+    border-color: transparent var(--color-heavy-transp) var(--color-heavy-transp);
+}
+
+label:hover > input + span::before,
+label:hover > textarea + span::before,
+label:hover > input + span::after,
+label:hover > textarea + span::after {
+    border-top-color: var(--color-heavy-transp);
+}
+
+label:hover > input:not(:focus):placeholder-shown,
+label:hover > textarea:not(:focus):placeholder-shown {
+    border-color: var(--color-heavy-transp);
+}
+
+label > input:focus,
+label > textarea:focus {
+    border-color: transparent var(--color-no-transp) var(--color-no-transp);
+    box-shadow: inset 1px 0 var(--color-no-transp), inset -1px 0 var(--color-no-transp), inset 0 -1px var(--color-no-transp);
+    outline: none;
+}
+
+label > input:focus + span,
+label > textarea:focus + span {
+    color: var(--color-no-transp);
+}
+
+label > input:focus + span::before,
+label > input:focus + span::after,
+label > textarea:focus + span::before,
+label > textarea:focus + span::after {
+    border-top-color: var(--color-no-transp) !important;
+    box-shadow: inset 0 1px var(--color-no-transp);
+}
+
+.input-container.valid > label {
+    --color-no-transp: rgb(40, 167, 69);
+    --color-light-transp: rgba(40, 167, 69);
+    --color-heavy-transp: rgba(40, 167, 69);
+}
+
+.input-container.valid > label > input,
+.input-container.valid > label > textarea {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: top 14px right 13px;
+    background-size: 24px 24px;
+}
+
+.input-container.invalid > label {
+    --color-no-transp: rgb(220, 53, 69);
+    --color-light-transp: rgba(220, 53, 69);
+    --color-heavy-transp: rgba(220, 53, 69);
+}
+
+.input-container.invalid > label > input,
+.input-container.invalid > label > textarea {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23dc3545' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+    background-repeat: no-repeat;
+    background-position: top 14px right 13px;
+    background-size: 24px 24px;
+}
+
+/* Fix font-size transition issue on Safari */
+@media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance:none) {
+        label > input,
+        label > input + span,
+        label > textarea,
+        label > textarea + span,
+        label > input + span::before,
+        label > input + span::after,
+        label > textarea + span::before,
+        label > textarea + span::after {
+            transition-duration: 0.1s;
+        }
+    }
+}

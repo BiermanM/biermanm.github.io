@@ -1,1519 +1,285 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Google Analytics - Global site tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108086121-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'UA-108086121-1');
-        </script>
-        
-        <!-- Hotjar Tracking Code -->
-        <script>
-            (function(h,o,t,j,a,r){
-                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                h._hjSettings={hjid:730744,hjsv:6};
-                a=o.getElementsByTagName('head')[0];
-                r=o.createElement('script');r.async=1;
-                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-                a.appendChild(r);
-            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-        </script>
-
-        <title>Matthew Bierman</title>
-        <meta name="author" content="Matthew Bierman">
-        <meta name="description" content="">
+        <title>Matt Bierman</title>
+        <meta name="author" content="Matt Bierman">
+        <meta name="description" content="Portfolio of Matt Bierman">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+        
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/shared.css">
+        
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,800&display=swap" rel="stylesheet">
+        
+        <!-- FontAwesome Icons -->
+        <link href="css/fontawesome.css" rel="stylesheet">
+        
         <!-- Favicons -->
         <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
         <link rel="manifest" href="favicons/site.webmanifest">
-        <link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#222222">
-        <link rel="shortcut icon" href="favicons/favicon.ico">
-        <meta name="msapplication-TileColor" content="#222222">
-        <meta name="msapplication-config" content="favicons/browserconfig.xml">
-        <meta name="theme-color" content="#ffffff">
-
-        <!-- Redirect to center of page on load -->
-        <script>
-            window.location.replace("#main");
-        </script>
-
-        <!-- Bootstrap with Darkly Theme -->
-        <link href="https://bootswatch.com/4/darkly/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Font Awesome (Icons) -->
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
-
-        <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#000000">
+        <meta name="msapplication-TileColor" content="#000000">
+        <meta name="theme-color" content="#000000">
     </head>
     <body>
-        <!-- Loading screen/animation is based off of tutorial from http://simbyone.com/ -->
-        <div id="loading">
-            <div id="loading-center">
-                <div id="loading-center-absolute">
-                    <div class="object"></div>
-                    <div class="object"></div>
-                    <div class="object"></div>
-                    <div class="object"></div>
-                    <div class="object"></div>
-                    <div class="object"></div>
-                    <div class="object"></div>
-                    <div class="object"></div>
-                    <div class="object"></div>
+        <div id="background">
+            <div class="container">
+                <div id="logo">
+                    <span>MB</span>
                 </div>
-                <p id="loading-text">loading, please wait...</p>
-            </div>
-        </div>
-
-        <div id="background"></div>
-        <canvas id="gameOfLife"></canvas>
-
-        <div id="aboutMe">
-            <p id="aboutMeTitle">About Me</p>
-            <div id="aboutMeMainText">
-                <div class="bcg"></div>
-                <img id="profile" src="images/profile.jpg">
-                <p id="bio">Hi, my name is Matthew Bierman! I am a junior at The University of Texas at Dallas, majoring in Computer Science. In May 2018, I founded a digital agency called <a href="https://dotslashdigital.com">Dot Slash Digital</a>. I also work at AT&amp;T in Dallas, Texas as a Software Development Co-op. Some of my interests include frontend web development, data science, and project management. Additionally, I am the Vice President for the <a href="https://acmutd.co">Association for Computing Machinery</a> (ACM), the largest computer science student organization at UT Dallas.</p>
-            </div>
-            <div id="aboutMeBtn">
-                <button id="contactFormBtn">want to work together?</button>
-            </div>
-
-            <div class="modal fade" id="contactFormModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <form id="form" action="https://formspree.io/matthew.bierman2@gmail.com" method="POST">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Let's work together!</h5>
-                                <button type="button" class="close" data-dismiss="modal">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container-fluid">
-                                    <div class="row form-group" style="margin-bottom: 0">
-                                        <div id="contactModalName" class="col-sm">
-                                            <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="nameInput" type="text" class="form-control" name="name" placeholder="Full Name">
-                                                <div id="nameError" class="form-control-feedback" style="color: #dc3545">Please fill out this field.</div>
-                                            </div>
-                                        </div>
-                                        <div id="contactModalEmail" class="col-sm">
-                                            <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="emailInput" type="email" class="form-control" name="_replyto" placeholder="Email Address">
-                                                <div id="emailError" class="form-control-feedback" style="color: #dc3545">Please fill out this field.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group" style="margin-bottom: 0">
-                                        <div id="contactModalPhone" class="col-sm">
-                                            <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="phoneInput" type="text" class="form-control" name="phoneNumber" placeholder="Phone Number">
-                                            </div>
-                                        </div>
-                                        <div id="contactModalWebsite" class="col-sm">
-                                            <div class="form-group" style="margin-bottom: 0px">
-                                                <input id="websiteInput" type="text" class="form-control" name="website" placeholder="Website">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group" style="margin-bottom: 0">
-                                        <div id="contactModalBody" class="col-sm">
-                                            <div class="form-group" style="margin-bottom: 0px">
-                                                <textarea id="bodyInput" class="form-control" rows="5" name="message" placeholder="Tell me about yourself, why you want to work together, and any project ideas you might have!"></textarea>
-                                                <div id="bodyError" class="form-control-feedback" style="color: #dc3545">Please fill out this field.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="sendEmail" type="submit" class="btn btn-primary" value="Send">Send</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="main">
-            <div id="linkToAbout">
-                <div id="aboutLinkText" style="width: 86px">
-                    <a class="no-underline" href="#aboutMe" style="color: #dddddd">
-                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                        <br>
-                        <span>About Me</span>
-                    </a>
-                </div>
-            </div>
-            <div id="name" class="container-fluid">
-                <div class="col">
-                    <div class="row justify-content-center">
-                        <span id="mainTitle" style="text-align: center">Matthew Bierman</span>
-                    </div>
-                    <div class="row justify-content-center">
-                        <a id="mainBtn" class="justify-content-center" target="_blank" href="resume.pdf">
-                            <button id="resumeBtn">my resume</button>
+                <nav>
+                    <div id="link-work" class="link">
+                        <a href="#work">
+                            <span>work</span>
                         </a>
                     </div>
-                </div>
+                    <div id="link-resume" class="link">
+                        <a href="documents/resume.pdf" target="_blank">
+                            <span>resume</span>
+                        </a>
+                    </div>
+                    <div id="link-about" class="link">
+                        <a href="#about">
+                            <span>about</span>
+                        </a>
+                    </div>
+                    <div id="link-contact" class="link">
+                        <a href="#contact">
+                            <span>contact</span>
+                        </a>
+                    </div>
+                </nav>
             </div>
-            <div id="linkToPortfolio">
-                <div id="portfolioLinkText" style="width: 86px">
-                    <a class="no-underline" href="#portfolio" style="color: #dddddd">
-                        <span>My Portfolio</span>
-                        <br>
-                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        </div>
+        <div id="work">
+            <div id="dot-slash-digital" class="item left">
+                <div class="title">
+                    <a href="work/dot-slash-digital.html">
+                        <h1>Dot Slash Digital</h1>
                     </a>
                 </div>
+                <div class="image">
+                    <a href="work/dot-slash-digital.html">
+                        <img src="images/projects/dsd_cover.png">
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="oscar-health" class="item right">
+                <div class="title">
+                    <a href="work/oscar-health.html">
+                        <h1>Oscar Health</h1>
+                    </a>
+                </div>
+                <div class="image">
+                    <a href="work/oscar-health.html">
+                        <img src="images/projects/oscar_cover.jpg">
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="march-madness-prediction" class="item left">
+                <div class="title">
+                    <a href="work/march-madness-prediction.html">
+                        <h1>March Madness Prediction</h1>
+                    </a>
+                </div>
+                <div class="image">
+                    <a href="work/march-madness-prediction.html">
+                        <!-- https://unsplash.com/photos/YWI8pZdcuAA -->
+                        <img src="images/projects/mmp_cover.jpg">
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="be-mindful-beverages" class="item right">
+                <div class="title">
+                    <a href="work/be-mindful-beverages.html">
+                        <h1>be mindful beverages</h1>
+                    </a>
+                </div>
+                <div class="image">
+                    <a href="work/be-mindful-beverages.html">
+                        <img src="images/projects/bmb_cover.jpg">
+                    </a>
+                </div>
+                <div class="clear"></div>
             </div>
         </div>
-        <div id="portfolio" class="container-fluid" style="height: auto">
-            <div class="row">
-                <div class="col-sm-12">
-                    <p id="portfolioTitle">Portfolio</p>
+        <div id="about">
+            <div id="headshot" class="item left no-link">
+                <div class="title">
+                    <h1>Matt Bierman</h1>
+                </div>
+                <div class="image">
+                    <img src="images/headshot.jpg">
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="item full right">
+                <div class="title">
+                    <h1>About Me</h1>
+                </div>
+                <div class="content">
+                    <div id="bio">
+                        <div>
+                            <span>Hi, I'm Matt! Originally from Las Vegas, I am currently studying in Dallas and just finished an internship in New York City. I love exploring how technology can change the world around us, whether that be growing local small businesses at <a href="work/dot-slash-digital.html">Dot Slash Digital</a>, disrupting the beverage industry at <a href="work/be-mindful-beverages.html">be mindful beverages</a>, or refactoring healthcare at <a href="work/oscar-health.html">Oscar Health</a>.</span>
+                        </div>
+                        <div>
+                            <span>I will be graduating from UT Dallas in December 2019 and am currently in search of full-time opportunities. I am primarily interested in frontend development and UI design, but I am also intrigued by project management and data science.</span>
+                        </div>
+                    </div>
+                    <div id="work-experience">
+                        <div class="company">
+                            <a class="image" href="https://hioscar.com" target="_blank">
+                                <img src="images/companies/oscar.png">
+                            </a>
+                            <div class="name">
+                                <a href="https://hioscar.com" target="_blank">
+                                    <span>Oscar Health</span>
+                                </a>
+                            </div>
+                            <div class="position">
+                                <span>Software Engineer Intern</span>
+                            </div>
+                            <div class="date">
+                                <span>May 2019 &ndash; August 2019</span>
+                            </div>
+                        </div>
+                        <div class="company">
+                            <a class="image" href="https://bemindfulbeverages.com" target="_blank">
+                                <img src="images/companies/bmb.png">
+                            </a>
+                            <div class="name">
+                                <a href="https://bemindfulbeverages.com" target="_blank">
+                                    <span>be mindful beverages</span>
+                                </a>
+                            </div>
+                            <div class="position">
+                                <span>CIO</span>
+                            </div>
+                            <div class="date">
+                                <span>August 2018 &ndash; Present</span>
+                            </div>
+                        </div>
+                        <div class="company">
+                            <a class="image" href="https://dotslashdigital.com" target="_blank">
+                                <img src="images/companies/dsd.png">
+                            </a>
+                            <div class="name">
+                                <a href="https://dotslashdigital.com" target="_blank">
+                                    <span>Dot Slash Digital</span>
+                                </a>
+                            </div>
+                            <div class="position">
+                                <span>CEO/Founder</span>
+                            </div>
+                            <div class="date">
+                                <span>May 2018 &ndash; Present</span>
+                            </div>
+                        </div>
+                        <div class="company">
+                            <a class="image" href="https://att.com" target="_blank">
+                                <img src="images/companies/att.png">
+                            </a>
+                            <div class="name">
+                                <a href="https://att.com" target="_blank">
+                                    <span>AT&amp;T</span>
+                                </a>
+                            </div>
+                            <div class="position">
+                                <span>Software Development Intern</span>
+                            </div>
+                            <div class="date">
+                                <span>June 2018 &ndash; May 2019</span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
             </div>
-            <ul class="nav nav-pills nav-justified flex-column flex-sm-row" role="tablist">
-                    <li class="nav-item" data-filter="all" style="margin-left: 2.5px; margin-right: 2.5px">
-                        <a id="allTab" class="nav-link active" data-toggle="tab" href="#0">All</a>
-                    </li>
-                    <li class="nav-item" data-filter=".software" style="margin-left: 2.5px; margin-right: 2.5px">
-                        <a id="softwareTab" class="nav-link" data-toggle="tab" href="#0">Software</a>
-                    </li>
-                    <li class="nav-item" data-filter=".web" style="margin-left: 2.5px; margin-right: 2.5px">
-                        <a id="webTab" class="nav-link" data-toggle="tab" href="#0">Web Dev</a>
-                    </li>
-                    <li class="nav-item" data-filter=".arvr" style="margin-left: 2.5px; margin-right: 2.5px">
-                        <a id="arvrTab" class="nav-link" data-toggle="tab" href="#0">AR/VR</a>
-                    </li>
-                    <li class="nav-item" data-filter=".photography" style="margin-left: 2.5px; margin-right: 2.5px">
-                        <a id="photographyTab" class="nav-link" data-toggle="tab" href="#0">Photography</a>
-                    </li>
-                    <li class="nav-item" data-filter=".film-vfx" style="margin-left: 2.5px; margin-right: 2.5px">
-                        <a id="film-vfxTab" class="nav-link" data-toggle="tab" href="#0">Film/VFX</a>
-                    </li>
-            </ul>
-            <div id="portfolioContainer" class="row justify-content-center">
-                <a id="openModal-dotSlashDigital" href="https://dotslashdigital.com" target="_blank" class="project fill mix software web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Dot Slash Digital</p>
-                    <img src="images/dotslashdigital.png">
+        </div>
+        <div id="contact">
+            <div class="item full left">
+                <div class="title">
+                    <h1>Contact Me</h1>
+                </div>
+                <form class="content" action="https://formspree.io/matt@bierman.io" method="POST">
+                    <div class="row">
+                        <div id="full-name" class="input-container">
+                            <label>
+                                <input placeholder=" " type="text" name="Full Name">
+                                <span>Full Name *</span>
+                            </label>
+                            <div class="error-message">
+                                <span>Enter full name</span>
+                            </div>
+                        </div>
+                        <div id="email-address" class="input-container">
+                            <label>
+                                <input placeholder=" " type="email" name="Email Address">
+                                <span>Email Address *</span>
+                            </label>
+                            <div class="error-message">
+                                <span>Enter email address</span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="row">
+                        <div id="message" class="input-container">
+                            <label>
+                                <textarea placeholder=" " rows="5" name="Message"></textarea>
+                                <span>Message *</span>
+                            </label>
+                            <div class="error-message">
+                                <span>Enter message</span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="row">
+                        <button type="submit" value="Send">
+                            <span>Send</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <div id="social-links">
+                <a href="mailto:matt@bierman.io">
+                    <i class="fas fa-envelope-square"></i>
                 </a>
-                <div id="openModal-marchMadness" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">March Madness<br>2018 Prediction</p>
-                    <img src="images/marchmadness.jpeg">
-                </div>
-                <div id="openModal-feelTheBreeze" class="project fill mix web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Feel the Breeze</p>
-                    <img src="images/feelthebreeze_1.png">
-                </div>
-                <div id="openModal-offr" class="project fill mix web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                      <p class="projectTitle">Offr</p>
-                      <img src="images/offr_1.png">
-              </div>
-                <div id="openModal-viewar" class="project fill mix software arvr web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                      <p class="projectTitle">viewar</p>
-                      <img src="images/viewar_1.jpg">
-              </div>
-                <div id="openModal-smartLock" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                        <p class="projectTitle">Smart Lock</p>
-                        <img src="images/smartLock.png">
-                </div>
-                <div id="openModal-homeVR" class="project fill mix arvr col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">HomeVR</p>
-                    <img src="images/homeVR_01.jpg">
-                </div>
-                <div id="openModal-theDragonsLairCTF" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">The Dragon's Lair CTF</p>
-                    <img src="images/theDragonsLairCTF.gif">
-                </div>
-                <div id="openModal-cpScripts" class="project fill mix software col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">CyberPatriot Scripts</p>
-                    <img src="images/cpScripts.jpg">
-                </div>
-                <div id="openModal-visualAlbum" class="project fill mix film-vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Visual Album</p>
-                    <img src="images/visualAlbum.png">
-                </div>
-                <div id="openModal-tlcComputerSolutions" class="project fill mix web col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">TLC Computer Solutions</p>
-                    <img src="images/tlcComputerSolutions_1.png">
-                </div>
-                <div id="openModal-alaska" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Alaska</p>
-                    <img src="images/alaska_02.png">
-                </div>
-                <div id="openModal-california" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">California</p>
-                    <img src="images/california_01.jpg">
-                </div>
-                <div id="openModal-nevada" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Nevada</p>
-                    <img src="images/nevada_04.jpg">
-                </div>
-                <div id="openModal-canada" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Canada</p>
-                    <img src="images/canada_01.png">
-                </div>
-                <div id="openModal-michigan" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Michigan</p>
-                    <img src="images/michigan_01.jpg">
-                </div>
-                <div id="openModal-texas" class="project fill mix photography col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Texas</p>
-                    <img src="images/texas_01.jpg">
-                </div>
-                <div id="openModal-theScientist" class="project fill mix film-vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">The Scientist</p>
-                    <img src="images/theScientist.png">
-                </div>
-                <div id="openModal-shatteredHeaven" class="project fill mix film-vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Shattered Heaven</p>
-                    <img src="images/shatteredHeaven.png">
-                </div>
-                <div id="openModal-darkHorizon" class="project fill mix film-vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Dark Horizon</p>
-                    <img src="images/darkHorizon.png">
-                </div>
-                <div id="openModal-holdingTheWire" class="project fill mix film-vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Holding the Wire</p>
-                    <img src="images/holdingTheWire.png">
-                </div>
-                <div id="openModal-asciiIntro" class="project fill mix film-vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">ASCII Intro</p>
-                    <img src="images/asciiIntro.png">
-                </div>
-                <div id="openModal-sinisterMeeting" class="project fill mix film-vfx col-xl-2 col-lg-3 col-sm-4 col-xs-6">
-                    <p class="projectTitle">Sinister Meeting</p>
-                    <img src="images/sinisterMeeting.png">
-                </div>
-
-                <div class="gap"></div>
-                <div class="gap"></div>
-                <div class="gap"></div>
+                <a href="https://www.linkedin.com/in/biermanm">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="http://github.com/biermanm">
+                    <i class="fab fa-github-square"></i>
+                </a>
             </div>
-            
-            <div class="modal fade" id="modal-marchMadness" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">March Madness 2018 Prediction</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <p class="modal-text" style="margin-bottom: 15px">As part of my Big Data Management &amp; Analytics (CS 4301) course at UT Dallas in the Spring 2018 semester, I chose sports prediction for my final project. More specifically, I decided to predict the March Madness 2018 Men's Tournament. Since I was also taking an Introduction to Machine Learning (CS 4375) course at the time, I decided to use what I learned from both courses for this project: R and SparkR.</p>
-                                        <p class="modal-text" style="margin-bottom: 15px">I used my predictions to enter the <a href="https://www.kaggle.com/c/mens-machine-learning-competition-2018">Google Cloud &amp; NCAA ML Competition 2018-Men's</a> competition on Kaggle and the <a href="https://bracketchallenge.ncaa.com/">Capital One NCAA March Madness Bracket Challenge</a> competition. My results can be viewed in detail with the links below, but in summary, I placed in the top 1% for the Bracket Challenge and the top 30% for the Kaggle competition.</p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" class="justify-content-center" target="_blank" href="report.pdf"><i class="fa fa-desktop"></i> View Report</a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="https://github.com/BiermanM/marchmadness2018"><i class="fa fa-github"></i> GitHub</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div id="copyright">
+                <div>
+                    <span>&copy; 2019 Made with</span>
+                </div>
+                <div>
+                    <span><i id="heart" class="fas fa-heart"></i></span>
+                </div>
+                <div>
+                    <span>by Matt Bierman</span>
                 </div>
             </div>
-            <div class="modal fade" id="modal-feelTheBreeze" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Feel the Breeze</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <img style="width: 100%" src="images/feelthebreeze_2.png">
-                                        <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p class="modal-text">This custom website was created for Feel the Breeze, a Las Vegas company that sells hair products to give back to orphans around the world. This website features a one-page, minimalistic design that is responsive for all devices. The website supports a photo gallery, contact form, and PayPal payment/donation integration.</p>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="http://ftbreeze.com"><i class="fa fa-desktop"></i> Demo</a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="https://github.com/BiermanM/feelthebreeze"><i class="fa fa-github"></i> GitHub</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-offr" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Offr</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <img style="width: 100%" src="images/offr_2.png">
-                                        <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p class="modal-text">Offr is a tech startup based out of Dallas, Texas that allows college students to find weaknesses in their resumes and see what exactly recruiters are looking for in internship and job postings. This custom website is a landing page that allows users to sign up for beta access to Offr's newest software. The website features a responsive design for viewing on all screen sizes, both desktop and mobile.</p>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="http://getoffr.com"><i class="fa fa-desktop"></i> Demo</a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="https://github.com/BiermanM/Offr"><i class="fa fa-github"></i> GitHub</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-viewar" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">viewar</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <div id="viewarCarousel" class="carousel slide" data-ride="carousel">
-                                            <ol class="carousel-indicators">
-                                                <li data-target="#viewarCarousel" data-slide-to="0" class="active"></li>
-                                                <li data-target="#viewarCarousel" data-slide-to="1"></li>
-                                                <li data-target="#viewarCarousel" data-slide-to="2"></li>
-                                            </ol>
-                                            <div class="carousel-inner" role="listbox">
-                                                <div class="carousel-item active">
-                                                    <img class="d-block img-fluid" src="images/viewar_2.jpg">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block img-fluid" src="images/viewar_3.jpg">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block img-fluid" src="images/viewar_4.jpg">
-                                                </div>
-                                            </div>
-                                            <a class="carousel-control-prev" href="#viewarCarousel" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#viewarCarousel" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </div>
-                                        <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p class="modal-text">We were inspired to create viewar by expensive, lengthy workflows that companies have to go through to display their products online, so that users can see what the product looks like without needing to see it inside a store. Some companies hire photographers to take photoshoots of various furniture pieces on a staged set, which can be quite expensive, but most companies use photorealistic renders of 3d models, which is a time intensive process. Viewar is an inexpensive, quick, and simple solution. Companies can send us the 3d model, which they already have, and we give them a QR code that they can place on their website. The user can download our viewar app and see the product in augmented reality, meaning they can view it from any angle and in any lighting they so desire, giving them a more authentic experience. This project was built during the <a class="no-underline" href="https://codered-exploration.devpost.com/">CodeRED Exploration</a> hackathon.</p>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <h5 class="modal-title">Awards</h5>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <p class="modal-text">Second Place Overall</p>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="https://biermanm.github.io/viewar"><i class="fa fa-desktop"></i> Demo</a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="https://github.com/BiermanM/viewar"><i class="fa fa-github"></i> GitHub</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-smartLock" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Smart Lock</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <iframe src="https://www.youtube.com/embed/Thjo40bg6f0?ecver=2" width="360" height="480" frameborder="0" style="width: 100%; left:0" allowfullscreen></iframe>
-                                    </div>
-                                    <div class="col-md">
-                                        <div class="row vertical-align">
-                                            <p class="modal-text">We designed our Smart Lock using a Raspberry Pi and a servo motor. To set up the device, the user must connect the Raspberry Pi to the home wireless network, and from there, users can navigate to a local address on any device (that is also on the network) and add/remove users on the access control list (ACL) by entering the MAC address of the user's device. Once it is set up, the Smart Lock will unlock the door when any user on the network is on the ACL and lock the door when there are no users from the ACL on the network. </p>
-                                        </div>
-                                        <div class="row justify-content-center" style="margin-top: 15px;">
-                                            <a class="modalLink" href="https://github.com/saipathuri/Smart_Lock"><i class="fa fa-github"></i> GitHub</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-homeVR" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">HomeVR</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <div id="homeVRCarousel" class="carousel slide" data-ride="carousel">
-                                            <ol class="carousel-indicators">
-                                                <li data-target="#homeVRCarousel" data-slide-to="0" class="active"></li>
-                                                <li data-target="#homeVRCarousel" data-slide-to="1"></li>
-                                                <li data-target="#homeVRCarousel" data-slide-to="2"></li>
-                                                <li data-target="#homeVRCarousel" data-slide-to="3"></li>
-                                                <li data-target="#homeVRCarousel" data-slide-to="4"></li>
-                                            </ol>
-                                            <div class="carousel-inner" role="listbox">
-                                                <div class="carousel-item active">
-                                                    <img class="d-block img-fluid" src="images/homeVR_01.jpg">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block img-fluid" src="images/homeVR_02.jpg">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block img-fluid" src="images/homeVR_03.jpg">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block img-fluid" src="images/homeVR_04.jpg">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block img-fluid" src="images/homeVR_05.jpg">
-                                                </div>
-                                            </div>
-                                            <a class="carousel-control-prev" href="#homeVRCarousel" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#homeVRCarousel" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </div>
-                                        <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p class="modal-text">HomeVR uses GearVR to allow you to tour a 3D home in virtual reality, without ever having to leaving your chair. We used Unreal Engine 4 to create the project, Blender and Google Sketch-Up to create some of the 3D models, and it runs on a Galaxy S7 with GearVR. Our inspiration for HomeVR was that we wanted to create a better alternative to real estate tours, one that removed the need for you to physically visit the house while also provided more than just photos, video tours, or 360 photos. This project was built during the <a class="no-underline" href="https://hackutd17.devpost.com/">HackUTD 17</a> hackathon.</p>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <a class="modalLink" href="https://github.com/BiermanM/HomeVR"><i class="fa fa-github"></i> GitHub</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-theDragonsLairCTF" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">The Dragon's Lair CTF</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <img style="width: 100%" src="images/theDragonsLairCTF.gif">
-                                        <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p class="modal-text">Red team and blue team compete in an Attack-and-Defend style Capture the Flag competition with Forensics challenges included. Both teams participate in attacking and defending; team colors are not associated with only attacking or only defending. There are six levels in the competition, each team receives points for completing levels and loses points for using hints to complete the levels. The host system displays the current scores and communicates with the two teams to give them each level as they unlock it. Each level contains a readme file for instructions. Now includes animations and ASCII art made entirely in bash!</p>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <a class="modalLink" href="https://github.com/BiermanM/TheDragonsLairCTF"><i class="fa fa-github"></i> GitHub</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-cpScripts" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">CyberPatriot VIII Scripts</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <p class="modal-text" style="margin-bottom: 15px">These scripts were created for the <a class="no-underline" href="https://www.uscyberpatriot.org">Air Force Association's CyberPatriot VIII</a> competition. Overall, our team ranked 1st in Nevada, 2nd in the Western Region of the U.S., and 15th overall, out of over 3200 teams in our school's first year competing.</p>
-                                        <h4 class="modal-title">Ubuntu Script / Debian Script / Mint Script / Fedora Script</h4>
-                                        <h6 class="modal-text">Features:</h6>
-                                        <ul class="modal-text">
-                                            <li>Log file is created to date and describe all events</li>
-                                            <li>Verify script is being run as <kbd>root</kbd></li>
-                                            <li>Backs up all critical files</li>
-                                            <li>Add/Remove users</li>
-                                            <li>Modify user privileges</li>
-                                            <li>Change user passwords</li>
-                                            <li>Remove alias</li>
-                                            <li>Lock <kbd>root</kbd> account</li>
-                                            <li>Set correct permissions for <kbd>shadow</kbd></li>
-                                            <li>Remove unnecessary user directories in <kbd>/home/</kbd></li>
-                                            <li>Remove startup scripts</li>
-                                            <li>Enable firewall</li>
-                                            <li>Fix Shellshock Bash vulnerability</li>
-                                            <li>Set hosts file to defaults</li>
-                                            <li>Secure <kbd>LightDM</kbd></li>
-                                            <li>Remove scripts in <kbd>/bin/</kbd></li>
-                                            <li>Disable IRQ Balance</li>
-                                            <li>Configure <kbd>sysctl</kbd></li>
-                                            <li>Enable/Disable IPv6</li>
-                                            <li>Add (and configure)/Remove <kbd>samba</kbd></li>
-                                            <li>Add (and configure)/Remove <kbd>ftp</kbd></li>
-                                            <li>Add (and configure)/Remove <kbd>ssh</kbd></li>
-                                            <li>Add (and configure)/Remove <kbd>telnet</kbd></li>
-                                            <li>Add (and configure)/Remove mail</li>
-                                            <li>Add (and configure)/Remove printing</li>
-                                            <li>Add (and configure)/Remove <kbd>MySQL</kbd></li>
-                                            <li>Add (and configure)/Remove web servers</li>
-                                            <li>Add (and configure)/Remove <kbd>dns</kbd></li>
-                                            <li>Remove all media files</li>
-                                            <li>List all files with a file permission of 700-777</li>
-                                            <li>List all <kbd>PHP</kbd> files</li>
-                                            <li>Remove <kbd>netcat</kbd>, <kbd>John the Ripper</kbd>, <kbd>Hydra</kbd>, <kbd>Aircrack-NG</kbd>, <kbd>FCrackZIP</kbd>, <kbd>LCrack</kbd>, <kbd>OphCrack</kbd>, <kbd>PDFCrack</kbd>, <kbd>Pyrit</kbd>, <kbd>RARCrack</kbd>, <kbd>SipCrack</kbd>, <kbd>IRPAS</kbd>, <kbd>LogKeys</kbd>, <kbd>Zeitgeist</kbd>, <kbd>NFS</kbd>, <kbd>NGINX</kbd>, <kbd>Inetd</kbd>, <kbd>VNC</kbd>, and <kbd>SNMP</kbd></li>
-                                            <li>Set <kbd>login.defs</kbd> and <kbd>pam.d</kbd> password policies</li>
-                                            <li>Deny false loopback packets</li>
-                                            <li>Disable Ctrl-Alt-Del reboot</li>
-                                            <li>Install <kbd>AppArmor</kbd></li>
-                                            <li>Remove startup tasks from <kbd>crontab</kbd></li>
-                                            <li>Allow only <kbd>root</kbd> in <kbd>cron</kbd></li>
-                                            <li>Add apt repositories</li>
-                                            <li>Check and perform updates and operating system upgrades</li>
-                                            <li>Remove unused packages</li>
-                                            <li>Fix <kbd>OpenSSL</kbd> Heart Bleed bug</li>
-                                            <li>Set UID 0 to <kbd>root</kbd></li>
-                                            <li>Create backups/logs for comparatives script</li>
-                                        </ul>
-
-                                        <h4 class="modal-title">Ubuntu, Mint, Debian Options Script / Fedora Options Script</h4>
-                                        <h6 class="modal-text">Allows the user to use the following programs:</h6>
-                                        <ul class="modal-text">
-                                            <li><kbd>HTOP</kbd> (Task Manager)</li>
-                                            <li><kbd>Nmap</kbd> (Network Mapper)</li>
-                                            <li><kbd>ClamAV</kbd> (Anti-Virus)</li>
-                                            <li><kbd>RKHunter</kbd> (Anti-Rootkit)</li>
-                                            <li><kbd>CHKRootkit</kbd> (Anti-Rootkit)</li>
-                                            <li><kbd>Unhide</kbd> (Shows Hidden Processes &amp; TCP/UDP Ports)</li>
-                                            <li><kbd>Lynis</kbd> (Security Auditing)</li>
-                                            <li><kbd>Bum</kbd> (GUI for Startup Scripts &amp; Services)</li>
-                                            <li><kbd>HardInfo</kbd> (Hardware Analysis, System Benchmark, &amp; Report Generator)</li>
-                                        </ul>
-
-                                        <h4 class="modal-title">Comparative Script</h4>
-                                        <p class="modal-text" style="margin-bottom: 15px">Uses the program <kbd>Diffuse</kbd> to compare various system files between the current files and the default system files as of January 21, 2016. <kbd>Diffuse</kbd> shows the differences in text between the two files using colored highlighting.</p>
-                                        <div class="row justify-content-center">
-                                            <a class="modalLink" href="https://github.com/BiermanM/CyberPatriot-Scripts"><i class="fa fa-github"></i> GitHub</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-visualAlbum" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Visual Album</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div style="position:relative;height:0;padding-bottom:56.25%;margin-bottom:5px">
-                                <iframe src="https://www.youtube.com/embed/janjH4mSnL4?rel=0&amp;showinfo=0" width="100%" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
-                            </div>
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <p class="modal-text">An animation created using Adobe After Effects CS6.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-tlcComputerSolutions" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">TLC Computer Solutions</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <!-- Image modified from http://www.freepik.com/free-vector/technological-devices-design_953321.htm by Freepik -->
-                                        <img style="width: 100%" src="images/tlcComputerSolutions_2.png">
-                                        <div class="row vertical-align" style="margin-top: 15px; margin-bottom: 15px">
-                                            <p class="modal-text">A revamped website for <a class="no-underline" href="http://www.tlcpcsolutions.com">TLC Computer Solutions</a>, a tech support store in Las Vegas, that includes interactivity and a modern, minimalistic design. The front-end uses HTML, CSS, JavaScript, jQuery, and Bootstrap. The back-end uses PHP, Google Maps API, and, once the website goes live, Google Analytics and Hotjar. The website offers a simple one-page layout, responsiveness for all devices, reviews from happy customers, and much more!</p>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="https://biermanm.github.io/TLCComputerSolutions/"><i class="fa fa-desktop"></i> Demo</a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row justify-content-center">
-                                                    <a class="modalLink" href="https://github.com/BiermanM/TLCComputerSolutions"><i class="fa fa-github"></i> GitHub</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-alaska" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Alaska</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="alaskaCarousel" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#alaskaCarousel" data-slide-to="0" class="active"></li>
-                                    <li data-target="#alaskaCarousel" data-slide-to="1"></li>
-                                    <li data-target="#alaskaCarousel" data-slide-to="2"></li>
-                                    <li data-target="#alaskaCarousel" data-slide-to="3"></li>
-                                    <li data-target="#alaskaCarousel" data-slide-to="4"></li>
-                                </ol>
-                                <div class="carousel-inner" role="listbox">
-                                    <div class="carousel-item active">
-                                        <img class="d-block img-fluid" src="images/alaska_01.png">
-                                        <div class="container alaska-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 6, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Juneau, Alaska, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/alaska_02.png">
-                                        <div class="container alaska-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 6, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Juneau, Alaska, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/alaska_03.png">
-                                        <div class="container alaska-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 7, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Skagway, Alaska, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/alaska_04.png">
-                                        <div class="container alaska-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 7, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Skagway, Alaska, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/alaska_05.png">
-                                        <div class="container alaska-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 7, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Skagway, Alaska, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a class="carousel-control-prev" href="#alaskaCarousel" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#alaskaCarousel" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                            <div id="alaskaCaptionText"></div>
-                            <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-california" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">California</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="californiaCarousel" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#californiaCarousel" data-slide-to="0" class="active"></li>
-                                    <li data-target="#californiaCarousel" data-slide-to="1"></li>
-                                    <li data-target="#californiaCarousel" data-slide-to="2"></li>
-                                    <li data-target="#californiaCarousel" data-slide-to="3"></li>
-                                    <li data-target="#californiaCarousel" data-slide-to="4"></li>
-                                </ol>
-                                <div class="carousel-inner" role="listbox">
-                                    <div class="carousel-item active">
-                                        <img id="california1" class="d-block img-fluid" src="images/california_01.jpg">
-                                        <div class="container california-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">August 1, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Laguna Beach at the Montage, California, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/california_02.jpg">
-                                        <div class="container california-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">August 4, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Crystal Cove State Park, California, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/california_03.jpg">
-                                        <div class="container california-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">August 2, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">1000 Steps Beach, California, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/california_04.jpg">
-                                        <div class="container california-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">August 2, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">1000 Steps Beach, California, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/california_05.jpg">
-                                        <div class="container california-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">August 2, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Dana Point Harbor, California, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a class="carousel-control-prev" href="#californiaCarousel" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#californiaCarousel" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                            <div id="californiaCaptionText"></div>
-                            <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-nevada" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Nevada</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="nevadaCarousel" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#nevadaCarousel" data-slide-to="0" class="active"></li>
-                                    <li data-target="#nevadaCarousel" data-slide-to="1"></li>
-                                    <li data-target="#nevadaCarousel" data-slide-to="2"></li>
-                                    <li data-target="#nevadaCarousel" data-slide-to="3"></li>
-                                    <li data-target="#nevadaCarousel" data-slide-to="4"></li>
-                                </ol>
-                                <div class="carousel-inner" role="listbox">
-                                    <div class="carousel-item active">
-                                        <img class="d-block img-fluid" src="images/nevada_01.jpg">
-                                        <div class="container nevada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">December 29, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Canyon Creek, Nevada, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/nevada_02.jpg">
-                                        <div class="container nevada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 15, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Las Vegas, Nevada, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/nevada_03.jpg">
-                                        <div class="container nevada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 15, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Las Vegas, Nevada, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/nevada_04.jpg">
-                                        <div class="container nevada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">December 29, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Canyon Creek, Nevada, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/nevada_05.jpg">
-                                        <div class="container nevada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">December 29, 2016</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Canyon Creek, Nevada, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a class="carousel-control-prev" href="#nevadaCarousel" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#nevadaCarousel" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                            <div id="nevadaCaptionText"></div>
-                            <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-canada" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Canada</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="canadaCarousel" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#canadaCarousel" data-slide-to="0" class="active"></li>
-                                    <li data-target="#canadaCarousel" data-slide-to="1"></li>
-                                    <li data-target="#canadaCarousel" data-slide-to="2"></li>
-                                </ol>
-                                <div class="carousel-inner" role="listbox">
-                                    <div class="carousel-item active">
-                                        <img class="d-block img-fluid" src="images/canada_01.png">
-                                        <div class="container canada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 9, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Victoria, British Columbia, Canada</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/canada_02.png">
-                                        <div class="container canada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 9, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Victoria, British Columbia, Canada</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/canada_03.png">
-                                        <div class="container canada-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 9, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Victoria, British Columbia, Canada</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a class="carousel-control-prev" href="#canadaCarousel" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#canadaCarousel" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                            <div id="canadaCaptionText"></div>
-                            <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-michigan" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Michigan</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="michiganCarousel" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#michiganCarousel" data-slide-to="0" class="active"></li>
-                                    <li data-target="#michiganCarousel" data-slide-to="1"></li>
-                                    <li data-target="#michiganCarousel" data-slide-to="2"></li>
-                                </ol>
-                                <div class="carousel-inner" role="listbox">
-                                    <div class="carousel-item active">
-                                        <img class="d-block img-fluid" src="images/michigan_01.jpg">
-                                        <div class="container michigan-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">January 22, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">East Lansing, Michigan, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/michigan_02.jpg">
-                                        <div class="container michigan-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">January 22, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">East Lansing, Michigan, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/michigan_03.jpg">
-                                        <div class="container michigan-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">January 22, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">East Lansing, Michigan, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a class="carousel-control-prev" href="#michiganCarousel" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#michiganCarousel" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                            <div id="michiganCaptionText"></div>
-                            <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-texas" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Texas</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="texasCarousel" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#texasCarousel" data-slide-to="0" class="active"></li>
-                                    <li data-target="#texasCarousel" data-slide-to="1"></li>
-                                    <li data-target="#texasCarousel" data-slide-to="2"></li>
-                                </ol>
-                                <div class="carousel-inner" role="listbox">
-                                    <div class="carousel-item active">
-                                        <img class="d-block img-fluid" src="images/texas_01.jpg">
-                                        <div class="container texas-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">July 17, 2015</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Southfork Ranch, Texas, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/texas_02.jpg">
-                                        <div class="container texas-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">December 13, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">DFW Airport, Texas, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="d-block img-fluid" src="images/texas_03.jpg">
-                                        <div class="container texas-carousel-caption">
-                                            <div class="row justify-content-center">
-                                                <div class="col">
-                                                    <p class="modal-text photo-caption-left">December 13, 2017</p>
-                                                </div>
-                                                <div class="col justify-content-center">
-                                                    <p class="modal-text photo-caption-right">Dallas, Texas, USA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a class="carousel-control-prev" href="#texasCarousel" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#texasCarousel" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                            <div id="texasCaptionText"></div>
-                            <div class="row justify-content-center" style="margin-top: 5px">
-                                <a class="modalLink" href="https://www.behance.net/biermanm"><i class="fa fa-camera"></i> View More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-theScientist" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">The Scientist</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row" style="position:relative;height:0;padding-bottom:56.25%">
-                                    <iframe src="https://www.youtube.com/embed/lUp-OrGMM60?rel=0&amp;showinfo=0" width="100%" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <p class="modal-text">A scientist's attempt to create thee perfect human being goes terribly wrong. A short film by Austin Lien and Matthew Bierman. Special thanks to AKM & Faith Lutheran Middle and High School! Starring: Austin Lien, Gage Badger, and Jackson Langford.</p>
-                                </div>
-                                <br>
-                                <div class="row justify-content-center">
-                                    <h5 class="modal-title">My Roles</h5>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <p class="modal-text">producer, editor, production manager, visual effects producer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-shatteredHeaven" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Shattered Heaven</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <iframe id="shVimeo" src="https://player.vimeo.com/video/170060140?byline=0&portrait=0" width="1000" height="300" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <p class="modal-text">A young detective must get his suspect to confess to gruesome murders before time runs out. Starring Ashton Alexander, Kyle Goulston, and Chaunsi Heatley.</p>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row justify-content-center">
-                                            <h5 class="modal-title">My Roles</h5>
-                                            <p class="modal-text" style="text-align: center">producer, cinematographer, editor, colorist, boom operator, assistant script editor</p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="row justify-content-center">
-                                            <h5 class="modal-title">Awards</h5>
-                                            <p class="modal-text" style="text-align: center">All American High School Film Festival Official Selection 2016</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-darkHorizon" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Dark Horizon</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <iframe id="dhVimeo" src="https://player.vimeo.com/video/119813903?byline=0&portrait=0" width="1000" height="300" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <p class="modal-text">After a close encounter in suburban Las Vegas, NV, Scott Goodlight and his grandfather must embark on a harrowing journey, one that will alter the history of the earth as they know it.</p>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row justify-content-center">
-                                            <h5 class="modal-title">My Roles</h5>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <p class="modal-text" style="text-align: center">lighting tester</p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="row justify-content-center">
-                                            <h5 class="modal-title">Awards</h5>
-                                            <p class="modal-text" style="text-align: center">All American High School Film Festival Official Selection 2015</p>
-                                            <br>
-                                            <p class="modal-text" style="text-align: center">All American High School Film Festival Best Visual FX 2015</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row justify-content-center">
-                                            <a class="modalLink" href="http://www.imdb.com/name/nm6744517"><i class="fa fa-imdb"></i> My IMDB Page</a>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="row justify-content-center">
-                                            <a class="modalLink" href="http://www.imdb.com/title/tt3919136/"><i class="fa fa-imdb"></i> IMDB for Dark Horizon</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-holdingTheWire" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Holding the Wire</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row" style="position:relative;height:0;padding-bottom:56.25%">
-                                    <iframe src="https://www.youtube.com/embed/aeZd4hpLWxE?rel=0&amp;showinfo=0" width="100%" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <p class="modal-text">Iacon Pictures announces <a class="no-underline" href="http://www.holdingthewire.com/">Holding the Wire</a>, a unique portrait of tournament paintball during an economically turbulent time. Jose Diaz, a veteran high school teacher, sets out to document the lives and experiences of tournament paintball players. Along the way, he encounters a variety of individuals, young and old, from different walks of life, all united by a fierce passion for tournament paintball.</p>
-                                </div>
-                                <br>
-                                <div class="row justify-content-center">
-                                    <h5 class="modal-title">My Roles</h5>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <p class="modal-text">editor, visual effects producer, 3D modeling rigger, animator</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-asciiIntro" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">ASCII Intro</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div style="position:relative;height:0;padding-bottom:56.25%;margin-bottom:5px">
-                                <iframe src="https://www.youtube.com/embed/kLA6ZwP6O0E?rel=0&amp;showinfo=0" width="100%" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
-                            </div>
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <p class="modal-text">An animation created using Adobe After Effects CS6.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-sinisterMeeting" tabindex="-1" role="dialog">
-                <div id="modalOuterBody" class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div id="modalBody" class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Sinister Meeting</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div style="position:relative;height:0;padding-bottom:56.25%;margin-bottom:5px">
-                                <iframe src="https://www.youtube.com/embed/Spf7pcFcHUo?rel=0&amp;showinfo=0" width="100%" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
-                            </div>
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <p class="modal-text">An animation created using Adobe After Effects CS6 and Video Copilot's Element 3D plugin.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="conway-info" class="container-fluid" style="background-color: white">
-            <div class="row justify-content-end" style="margin: 5px">
-                <p class="col" style="text-align: right; color: #dddddd"><a class="no-underline" target="_blank" href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">What is Conway's Game of Life?</a></p>
-            </div>
-        </div>
-        <div id="footer" class="container-fluid">
-            <div class="row">
-                <!-- Made by -->
-                <div class="col">
-                    <p class="col" style="text-align: left; color: #dddddd">Made with <span style="color: lightpink">&hearts;</span> by Matthew Bierman</p>
-                </div>
-
-                <!-- Social Media Links -->
-                <div class="col">
-                    <p class="col" style="text-align: right">
-                        <!-- Email -->
-                        <a class="icon-size" href="mailto:matthew.bierman2@gmail.com"><i class="fa fa-envelope footer-icon"></i></a>
-
-                        <!-- Behance -->
-                        <a class="icon-size" href="https://www.behance.net/biermanm"><i class="fa fa-behance-square footer-icon"></i></a>
-
-                        <!-- GitHub -->
-                        <a class="icon-size" href="https://www.github.com/BiermanM"><i class="fa fa-github-square footer-icon"></i></a>
-
-                        <!-- LinkedIn -->
-                        <a class="icon-size" href="https://www.linkedin.com/in/biermanm"><i class="fa fa-linkedin-square footer-icon"></i></a>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-
-        <!-- Popper.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-
-        <!-- Bootstrap -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-
-        <!-- MixItUp -->
-        <script src="mixitup.min.js"></script>
-
-        <!-- jQuery Transit -->
-        <script src="jquery.transit.min.js"></script>
-
-        <!-- JavaScript -->
-        <script type="text/javascript" src="index.js"></script>
+        </footer>
     </body>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    
+    <!-- JavaScript -->
+    <script src="js/index.js"></script>
 </html>
