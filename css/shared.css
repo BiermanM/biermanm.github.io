@@ -353,6 +353,84 @@ html, #background {
     }
 }
 
+@media (min-width: 751px) {
+    #oscar-health.item > .image > a > img,
+    #oscar-health > .item:nth-child(2) > .image > img,
+    #oscar-health > .item:nth-child(3) > .image > img,
+    #oscar-health > .item:nth-child(4) > .image > img,
+    #oscar-health > .item:nth-child(7) > .image > img {
+        object-position: 0px -115px !important;
+    }
+    
+    #oscar-health > .item:nth-child(5) > .image > img,
+    #oscar-health > .item:nth-child(6) > .image > img {
+        object-position: 0px -440px !important;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 750px) {
+    #oscar-health.item > .image > a > img,
+    #oscar-health > .item:nth-child(2) > .image > img,
+    #oscar-health > .item:nth-child(3) > .image > img,
+    #oscar-health > .item:nth-child(4) > .image > img,
+    #oscar-health > .item:nth-child(7) > .image > img {
+        object-position: 0px -100px !important;
+    }
+    
+    #oscar-health > .item:nth-child(5) > .image > img,
+    #oscar-health > .item:nth-child(6) > .image > img {
+        object-position: 0px -400px !important;
+    }
+}
+
+@media (min-width: 351px) and (max-width: 640px) {
+    #oscar-health.item > .image > a > img,
+    #oscar-health > .item:nth-child(2) > .image > img,
+    #oscar-health > .item:nth-child(3) > .image > img,
+    #oscar-health > .item:nth-child(4) > .image > img,
+    #oscar-health > .item:nth-child(7) > .image > img {
+        object-position: 0px -50px !important;
+    }
+}
+
+@media (min-width: 441px) and (max-width: 640px) {
+    #oscar-health > .item:nth-child(5) > .image > img,
+    #oscar-health > .item:nth-child(6) > .image > img {
+        object-position: 0px -310px !important;
+    }
+
+}
+
+@media (min-width: 351px) and (max-width: 440px) {
+    #oscar-health > .item:nth-child(5) > .image > img,
+    #oscar-health > .item:nth-child(6) > .image > img {
+        object-position: 0px -215px !important;
+    }
+
+}
+
+@media (min-width: 271px) and (max-width: 350px) {    
+    #oscar-health.item > .image > a > img,
+    #oscar-health > .item:nth-child(2) > .image > img,
+    #oscar-health > .item:nth-child(3) > .image > img,
+    #oscar-health > .item:nth-child(4) > .image > img,
+    #oscar-health > .item:nth-child(7) > .image > img {
+        object-position: top center !important;
+    }
+    
+    #oscar-health > .item:nth-child(5) > .image > img,
+    #oscar-health > .item:nth-child(6) > .image > img {
+        object-position: bottom center !important;
+    }
+}
+
+@media (max-width: 270px) {
+    #oscar-health.item > .image > a > img,
+    #oscar-health > .item > .image > img {
+        object-position: center center !important;
+    }
+}
+
 /* Background */
 
 #background {
