@@ -537,6 +537,7 @@ footer {
 
 #copyright > div > span {
     line-height: 24px;
+    white-space: pre;
 }
 
 #copyright > div:nth-child(1) {
