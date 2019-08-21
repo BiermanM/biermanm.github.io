@@ -455,20 +455,12 @@ nav > .link {
 }
 
 #logo {
-    width: auto;
-    height: 200px;
-    margin: 0 auto 5px auto;
+    width: 350px;
+    margin: 0 auto 15px auto;
 }
 
-#logo > span {
-    font-size: 200px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 800;
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: black;
-    
+#logo > img {
+    width: 100%;    
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
