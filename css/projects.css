@@ -19,12 +19,23 @@
     font-weight: 300 !important;
 }
 
+.content > .description a,
+.content > .description a:hover {
+    color: #555 !important;
+}
+
+.content > .description a,
 .additional > .col > .info > a {
     position: relative;
     text-decoration: none;
     color: black;
 }
 
+.content > .description a:before {
+    background-color: #555 !important;
+}
+
+.content > .description a:before,
 .additional > .col > .info > a:before {
     content: "";
     position: absolute;
@@ -37,6 +48,7 @@
     transition: 0.3s all ease-in-out;
 }
 
+.content > .description a:hover:before,
 .additional > .col > .info > a:hover:before {
     visibility: visible;
     width: 100%;
