@@ -35,27 +35,14 @@ $("nav > .link > a").on("click", function(e) {
         var newHash = $(this).parent().attr("id").replace("link-", "");
         
         if (
-            !(
-                window.pageYOffset < ($("#work").offset().top + window.innerHeight)
-                &&
-                newHash === "work"
-            )
-            &&
-            !(
-                ($("#about").offset().top - 200) < window.pageYOffset
-                &&
-                window.pageYOffset < ($("#about").offset().top + window.innerHeight)
-                &&
-                newHash === "about"
-            )
-            &&
-            !(
-                ($("#contact").offset().top - 200) < window.pageYOffset
-                &&
-                window.pageYOffset < ($("#contact").offset().top + window.innerHeight)
-                &&
-                newHash === "contact"
-            )
+            !(window.pageYOffset < ($("#about").offset().top + window.innerHeight) &&
+                newHash === "about") &&
+            !(($("#work").offset().top - 200) < window.pageYOffset &&
+                window.pageYOffset < ($("#work").offset().top + window.innerHeight) &&
+                newHash === "work") &&
+            !(($("#contact").offset().top - 200) < window.pageYOffset &&
+                window.pageYOffset < ($("#contact").offset().top + window.innerHeight) &&
+                newHash === "contact")
         )
             window.location.hash = this.hash;
         
@@ -70,56 +57,47 @@ $(document).on("scroll", function(e) {
     setTimeout(
         changeHash(
             window.innerHeight * 0.75,
-            $("#work").offset().top,
             $("#about").offset().top,
+            $("#work").offset().top,
             $("#contact").offset().top,
             window.location.hash.replace("#", "")
         ), 200
     );
 });
 
-// Match hash in URL with current scroll position on page 
-function changeHash(vh, workTop, aboutTop, contactTop, prevHash) {
+// Match hash in URL with current scroll position on page
+function changeHash(vh, aboutTop, workTop, contactTop, prevHash) {
     if (
-        window.pageYOffset <= (workTop + vh)
-        ||
-        ((aboutTop - 200) <= window.pageYOffset && window.pageYOffset <= (aboutTop + vh))
-        ||
+        window.pageYOffset <= (aboutTop + vh) ||
+        ((workTop - 200) <= window.pageYOffset && window.pageYOffset <= (workTop + vh)) ||
         ((contactTop - 200) <= window.pageYOffset && window.pageYOffset <= (contactTop + vh))
     ) {
-        $("#link-work").removeClass("active");
         $("#link-about").removeClass("active");
+        $("#link-work").removeClass("active");
         $("#link-contact").removeClass("active");
         history.pushState(null, null, "#");
     } else if (
-        ((workTop + vh) < window.pageYOffset)
-        &&
-        (window.pageYOffset < aboutTop - 200)
-        &&
-        prevHash !== "work"
-    ) {
-        $("#link-work").addClass("active");
-        $("#link-about").removeClass("active");
-        $("#link-contact").removeClass("active");
-        history.pushState(null, null, "#work");
-    } else if (
-        ((aboutTop + vh) < window.pageYOffset)
-        &&
-        (window.pageYOffset < (contactTop - 200))
-        &&
+        ((aboutTop + vh) < window.pageYOffset) && (window.pageYOffset < workTop - 200) &&
         prevHash !== "about"
     ) {
-        $("#link-work").removeClass("active");
         $("#link-about").addClass("active");
+        $("#link-work").removeClass("active");
         $("#link-contact").removeClass("active");
         history.pushState(null, null, "#about");
     } else if (
-        ((contactTop + vh) < window.pageYOffset)
-        &&
+        ((workTop + vh) < window.pageYOffset) && (window.pageYOffset < (contactTop - 200)) &&
+        prevHash !== "work"
+    ) {
+        $("#link-about").removeClass("active");
+        $("#link-work").addClass("active");
+        $("#link-contact").removeClass("active");
+        history.pushState(null, null, "#work");
+    } else if (
+        ((contactTop + vh) < window.pageYOffset) &&
         prevHash !== "contact"
     ) {
-        $("#link-work").removeClass("active");
         $("#link-about").removeClass("active");
+        $("#link-work").removeClass("active");
         $("#link-contact").addClass("active");
         history.pushState(null, null, "#contact");
     }
@@ -176,15 +154,15 @@ $("input, textarea").on('input', function() {
 
 // Smooth scrolling when returning to home page from projects page when clicking on menu link
 $(function() {
-    if (window.location.search.indexOf('?to=work') > -1) {
+    if (window.location.search.indexOf('?to=about') > -1) {
         $('html, body').animate({
-            scrollTop: $("#work").offset().top + window.innerHeight
+            scrollTop: $("#about").offset().top + window.innerHeight
         }, 800);
         window.history.replaceState(null, null, window.location.pathname);
     }
-    else if (window.location.search.indexOf('?to=about') > -1) {
+    else if (window.location.search.indexOf('?to=work') > -1) {
         $('html, body').animate({
-            scrollTop: $("#about").offset().top + window.innerHeight
+            scrollTop: $("#work").offset().top + window.innerHeight
         }, 800);
         window.history.replaceState(null, null, window.location.pathname);
     }

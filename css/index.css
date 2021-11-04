@@ -50,11 +50,9 @@
 
 /* About Page */
 
-#bio > div:nth-child(1) {
-    margin-bottom: 15px;
-}
-
-.company {
+#work-experience {
+    display: grid;
+    grid-gap: 36px 24px;
     margin-top: 37.5px;
 }
 
@@ -122,40 +120,31 @@
     }
 }
 
-@media (min-width: 1100px) {
-    .company {
-        float: left;
-        width: 25%;
+@media (min-width: 1180px) {
+    #work-experience {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media (min-width: 525px) and (max-width: 1099px) {
-    .company {
-        float: left;
-        width: 50%;
-    }
-    
-    .company:nth-child(3),
-    .company:nth-child(4) {
-        margin-top: 50px;
+@media (min-width: 950px) and (max-width: 1179px) {
+    #work-experience {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media (min-width: 525px) and (max-width: 650px) {
-    .company:nth-child(3),
-    .company:nth-child(4) {
-        margin-top: 25px;
+@media (min-width: 525px) and (max-width: 949px) {
+    #work-experience {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 524px) {
-    .company {
-        float: left;
-        width: 100%;
+@media (max-width: 540px) {
+    #work-experience {
+        grid-gap: 24px 12px;
     }
 }
 
-@media (min-width: 900px) {    
+@media (min-width: 900px) {
     #headshot.left > .title {
         width: 316px;
         margin-left: calc(-316px / 2) !important;

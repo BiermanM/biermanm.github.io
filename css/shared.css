@@ -517,6 +517,17 @@ nav > .link > a > span {
     z-index: 1;
 }
 
+@media (max-width: 400px) {
+    #logo {
+        width: 80vw;
+    }
+
+    nav > .link {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
 /* Footer */
 
 footer {
@@ -611,10 +622,22 @@ footer > #social-links > a:hover {
     }
 }
 
+@media (min-width: 901px) {
+    footer {
+        width: 75vw;
+    }
+}
+
+@media (max-width: 900px) {
+    footer {
+        width: 85vw;
+    }
+}
+
 @media (max-width: 500px) {
     footer {
-        margin-top: 0;
-        margin-bottom: 0;
+        margin: 0 auto;
+        width: 100vw;
     }
     
     #social-links,
@@ -635,17 +658,5 @@ footer > #social-links > a:hover {
     #copyright {
         width: 285px;
         margin-bottom: 20px;
-    }
-}
-
-@media (min-width: 901px) {
-    footer {
-        width: 75vw;
-    }
-}
-
-@media (max-width: 900px) {
-    footer {
-        width: 85vw;
     }
 }
