@@ -262,7 +262,7 @@ html, #background {
 @media (min-width: 476px) {
     .item > .title h1 {
         margin: 0;
-        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-width: 1.5px;
     }
 }
 
