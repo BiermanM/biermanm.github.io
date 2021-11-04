@@ -1,7 +1,7 @@
 /* Work Page */
 
 #be-mindful-beverages.item > .image > a > img {
-    object-position: center top !important;
+    object-position: bottom top !important;
 }
 
 @media (min-width: 900px) {
