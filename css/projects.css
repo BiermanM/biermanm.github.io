@@ -110,6 +110,70 @@
 
 /* Oscar Health */
 
+@media (min-width: 901px) {
+    #oscar-health > .item:nth-child(2) > .title {
+        width: 260px;
+        right: calc(-260px / 4);
+    }
+
+    #oscar-health > .item:nth-child(3) > .title {
+        width: 240px;
+        left: calc(-240px / 4);
+    }
+
+    #oscar-health > .item:nth-child(4) > .title {
+        width: 320px;
+        right: calc(-320px / 4);
+    }
+
+    #oscar-health > .item:nth-child(5) > .title {
+        width: 260px;
+        left: calc(-260px / 4);
+    }
+
+    #oscar-health > .item:nth-child(6) > .title {
+        width: 400px;
+        right: calc(-400px / 4);
+    }
+
+    #oscar-health > .item:nth-child(7) > .title {
+        width: 300px;
+        left: calc(-300px / 4);
+    }
+}
+
+@media (min-width: 550px) and (max-width: 900px) {
+    #oscar-health > .item:nth-child(2) > .title {
+        width: 220px;
+        right: 0;
+    }
+
+    #oscar-health > .item:nth-child(3) > .title {
+        width: 190px;
+        left: 0;
+    }
+
+    #oscar-health > .item:nth-child(4) > .title {
+        width: 260px;
+        right: 0;
+    }
+
+    #oscar-health > .item:nth-child(5) > .title {
+        width: 210px;
+        left: 0;
+    }
+
+    #oscar-health > .item:nth-child(6) > .title {
+        width: 320px;
+        right: 0;
+    }
+
+    #oscar-health > .item:nth-child(7) > .title {
+        width: 250px;
+        left: 0;
+    }
+}
+
 @media (min-width: 551px) and (max-width: 641px) {
     /* 162px = (72px * 0.5) + 72px + (72 * 0.75) */
     #oscar-health > .item.full > .content {
