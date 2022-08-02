@@ -1,100 +1,121 @@
-import * as THREE from "three";
-import {forwardRef} from "react";
+import {useState} from "react";
 import {Canvas, useFrame, useThree} from "@react-three/fiber";
-import {useGLTF, softShadows, ScrollControls, useScroll, useTexture} from "@react-three/drei";
+import {Center, softShadows, ScrollControls, useScroll, useTexture} from "@react-three/drei";
 import useRefs from "react-use-refs";
+
+import {caseStudies} from "./constants";
+import MacBook3DModel from "./macbook";
+import {getCameraPositionZ, getPagesScrollPerc, numPages, range, setCameraPositionZ} from "./utils";
 
 import "./App.css";
 
+/*
+storyboard:
+    0vh         =   full-screen closed laptop
+    100vh       =   camera zoomed out, laptop fills 50vw
+    200vh       =   laptop rotates so the base is visible
+    300vh       =   laptop lid opens
+    400vh       =   case study #1
+    ...         =   case study #n
+    (n+1)*100vh =   all case studies close via genie effect
+    (n+2)*100vh =   laptop lid closes
+    (n+3)*100vh =   camera zooms in, fit to container
+    (n+4)*100vh =   laptop slides up to reveal footer
+*/
+
 softShadows();
-const rsqw = (t, delta = 0.1, a = 1, f = 1 / (2 * Math.PI)) =>
-    (a / Math.atan(1 / delta)) * Math.atan(Math.sin(2 * Math.PI * t * f) / delta);
+
+const Composition = () => {
+    const scroll = useScroll();
+    const {camera, /* size, */ viewport} = useThree(state => state);
+    const [macbook, lid, /* keyLight, stripLight, */ fillLight] = useRefs();
+    const [laptopScreen] = useTexture(["/Chroma Red.jpg"]);
+    const [cameraToObjectPos, setCameraToObjectPos] = useState(null);
+
+    useFrame((/*state, delta*/) => {
+        const {currentPage} = getPagesScrollPerc(scroll);
+
+        // once model exists, calculate position between camera and model in
+        // order for model to fill entire window
+        if (
+            macbook.current &&
+            (cameraToObjectPos === null ||
+                cameraToObjectPos.vw !== viewport.width ||
+                cameraToObjectPos.vh !== viewport.height)
+        ) {
+            const {cameraZPosition: cameraZPosition100, modelBottomZ} = getCameraPositionZ(camera, macbook.current);
+            const {cameraZPosition: cameraZPosition50} = getCameraPositionZ(camera, macbook.current, 0.5);
+
+            setCameraToObjectPos({
+                cameraZPos: {
+                    50: cameraZPosition50,
+                    100: cameraZPosition100,
+                },
+                modelBottomZPos: modelBottomZ,
+                vw: viewport.width,
+                vh: viewport.height,
+            });
+        }
+
+        // set camera position once 3D model exists and is at top of page
+        // (including on screen resize)
+        if (cameraToObjectPos !== null && currentPage.index === 0 && currentPage.position < 0.001) {
+            setCameraPositionZ(camera, cameraToObjectPos.cameraZPos[100], cameraToObjectPos.modelBottomZPos);
+        }
+
+        // if camera-to-model calculations do not yet exist, don't start animations
+        if (!cameraToObjectPos) {
+            return;
+        }
+
+        // page 1: zoom out camera; laptop transitions from 100vw to 50vw
+        if (currentPage.index === 0) {
+            const cameraPos = {
+                start: cameraToObjectPos.cameraZPos[100],
+                end: cameraToObjectPos.cameraZPos[50],
+            };
+
+            setCameraPositionZ(
+                camera,
+                cameraPos.start - (cameraPos.start - cameraPos.end) * currentPage.position,
+                cameraToObjectPos.modelBottomZPos
+            );
+        }
+
+        // page 2: laptop rotates so the base is visible; rotate entire laptop 180deg -> 45deg
+        else if (currentPage.index === 1) {
+            macbook.current.rotation.x = Math.PI * 0.5 - Math.PI * 0.375 * currentPage.position;
+        }
+
+        // page 3: laptop lid opens; rotate laptop lid 360deg -> 225deg
+        else if (currentPage.index === 2) {
+            lid.current.rotation.x = Math.PI - Math.PI * 0.625 * currentPage.position;
+            macbook.current.position.y = -10 * currentPage.position;
+        }
+    });
+
+    return (
+        <>
+            <spotLight ref={fillLight} position={[0, 0, 100]} angle={0.2} penumbra={1} intensity={0.1} />
+            <Center>
+                <MacBook3DModel
+                    ref={{macbook, lid}}
+                    texture={laptopScreen}
+                    rotation={[Math.PI / 2, 0, 0]} // set initial rotation so lid is facing the camera
+                />
+            </Center>
+        </>
+    );
+};
 
 const App = () => {
     return (
-        <Canvas shadows dpr={[1, 2]} camera={{position: [0, -3.2, 40], fov: 12}}>
-            <ScrollControls pages={5}>
+        <Canvas shadows dpr={[1, 2]} camera={{fov: 12}}>
+            <ScrollControls pages={numPages + 8}>
                 <Composition />
             </ScrollControls>
         </Canvas>
     );
 };
-
-const Composition = props => {
-    const scroll = useScroll();
-    const {width, height} = useThree(state => state.viewport);
-    const [group, macbook, keyLight, stripLight, fillLight] = useRefs();
-    const [textureRed] = useTexture(["/Chroma Red.jpg"]);
-
-    useFrame((state, delta) => {
-        const r1 = scroll.range(0 / 4, 1 / 4);
-        const r2 = scroll.range(1 / 4, 1 / 4);
-        macbook.current.rotation.x = Math.PI - (Math.PI / 2) * rsqw(r1) + r2 * 0.33;
-        group.current.rotation.y = THREE.MathUtils.damp(group.current.rotation.y, (-Math.PI / 1.45) * r2, 4, delta);
-        group.current.position.x = THREE.MathUtils.damp(group.current.position.x, (-width / 7) * r2, 4, delta);
-        group.current.scale.x =
-            group.current.scale.y =
-            group.current.scale.z =
-                THREE.MathUtils.damp(group.current.scale.z, 1 + 0.24 * (1 - rsqw(r1)), 4, delta);
-        keyLight.current.position.set(0.25 + -15 * (1 - r1), 4 + 11 * (1 - r1), 3 + 2 * (1 - r1));
-    });
-
-    return (
-        <>
-            <spotLight position={[0, -width * 0.7, 0]} intensity={0.5} />
-            <directionalLight ref={keyLight} castShadow intensity={6}>
-                <orthographicCamera attachObject={["shadow", "camera"]} args={[-10, 10, 10, -10, 0.5, 30]} />
-            </directionalLight>
-            <group ref={group} position={[0, -height / 2.65, 0]} {...props}>
-                <spotLight
-                    ref={stripLight}
-                    position={[width * 2.5, 0, width]}
-                    angle={0.19}
-                    penumbra={1}
-                    intensity={0.25}
-                />
-                <spotLight
-                    ref={fillLight}
-                    position={[0, -width / 2.4, -width * 2.2]}
-                    angle={0.2}
-                    penumbra={1}
-                    intensity={2}
-                    distance={width * 3}
-                />
-                <MacBook3DModel ref={macbook} texture={textureRed} scale={width / 45} />
-            </group>
-        </>
-    );
-};
-
-/*
-Auto-generated by: https://github.com/pmndrs/gltfjsx
-author: akshatmittal (https://sketchfab.com/akshatmittal)
-license: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
-source: https://sketchfab.com/3d-models/2021-macbook-pro-14-m1-pro-m1-max-f6b0b940fb6a4286b18a674ef32af2d3
-title: 2021 Macbook Pro 14" (M1 Pro / M1 Max)
-*/
-const MacBook3DModel = forwardRef(({texture, children, ...props}, ref) => {
-    const {nodes, materials} = useGLTF("/mbp-v1-pipe.glb");
-    return (
-        <group {...props} dispose={null}>
-            <group ref={ref} position={[0, -0.43, -11.35]} rotation={[Math.PI / 2, 0, 0]}>
-                <mesh geometry={nodes.back_1.geometry} material={materials.blackmatte} />
-                <mesh receiveShadow castShadow geometry={nodes.back_2.geometry} material={materials.aluminium} />
-                <mesh geometry={nodes.matte.geometry}>
-                    <meshLambertMaterial map={texture} toneMapped={false} />
-                </mesh>
-            </group>
-            {children}
-            <mesh
-                geometry={nodes.body_1.geometry}
-                material={materials.aluminium}
-                material-color="#aaaaaf"
-                material-envMapIntensity={0.2}
-            />
-            <mesh geometry={nodes.body_2.geometry} material={materials.blackmatte} />
-        </group>
-    );
-});
 
 export default App;
