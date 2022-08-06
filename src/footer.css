@@ -1,0 +1,155 @@
+.footer {
+    position: absolute;
+    width: 100%;
+    padding-top: 60px;
+    padding-bottom: 24px;
+}
+
+.companies-and-selected-clients {
+    margin-bottom: 80px;
+}
+
+.companies-and-selected-clients .title {
+    font-size: 40px;
+    line-height: 48px;
+    margin-bottom: 20px;
+    color: var(--black);
+}
+
+.companies-and-selected-clients .list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.companies-and-selected-clients .company {
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.companies-and-selected-clients .name {
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--black);
+}
+
+.companies-and-selected-clients .circle-separator {
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.companies-and-selected-clients .circle {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    background-color: var(--black);
+}
+
+@keyframes carousel-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.email-carousel {
+    margin-bottom: 108px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.email-carousel .carousel-track {
+    display: flex;
+    animation: carousel-scroll 20s linear infinite;
+}
+
+.email-carousel a {
+    font-size: 128px;
+    line-height: 155px;
+    color: var(--black);
+    margin-right: 400px;
+    text-decoration: none;
+}
+
+.personal-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.personal-info .left {
+    z-index: 1;
+}
+
+.personal-info .center {
+    position: absolute;
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.personal-info .center .copyright {
+    margin-right: 6px;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--black);
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+    12.5% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1);
+    }
+    37.5% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(1);
+    }
+    62.5% {
+        transform: scale(1.2);
+    }
+    75% {
+        transform: scale(1);
+    }
+    87.5% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.personal-info .center .heart-icon {
+    animation: heartbeat 1.4s infinite;
+}
+
+.personal-info .right {
+    display: flex;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.social-media {
+    display: flex;
+    border: 2px solid var(--black);
+    padding: 16px 40px;
+    border-radius: 8px;
+}
+
+.social-media:not(:last-child) {
+    margin-right: 24px;
+}

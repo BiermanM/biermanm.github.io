@@ -1,0 +1,38 @@
+.loading-screen {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 39vh - 27vh);
+    background-color: var(--black);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: 1s opacity;
+    padding: 39vh 0 27vh 0;
+}
+
+.loading-screen .logo {
+    margin-bottom: calc(15vh - 8px);
+}
+
+.loading-screen .progress-bar {
+    width: 18vw;
+    height: 8px;
+    border-radius: 4px;
+    background-color: var(--dark-gray);
+}
+
+.loading-screen .progress-bar .current-progress {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: var(--pure-white);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    transition: 2s clip-path, 2s box-shadow;
+}
+
+.loading-screen .progress-bar.complete .current-progress {
+    box-shadow: 0 0 24px rgba(255, 255, 255, 1);
+}

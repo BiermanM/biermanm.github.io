@@ -6,4 +6,15 @@ main,
     height: 100%;
     margin: 0;
     padding: 0;
+
+    --pure-white: #ffffff;
+    --white: #fafafa;
+    --gray: #666666;
+    --dark-gray: #474747;
+    --black: #050505;
+    --red: #ff6666;
+}
+
+body {
+    overflow: hidden;
 }

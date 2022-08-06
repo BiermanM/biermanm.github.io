@@ -1,14 +1,26 @@
 import * as THREE from "three";
+import {useEffect, useState} from "react";
 
 import {caseStudies} from "./constants";
 
 // start: inclusive, end: exclusive
 export const range = (end, start = 0) => [...Array(end).keys()].filter(num => num >= start);
 
+export const freezeScroll = () => {
+    document.body.style.overflow = "hidden";
+};
+
+export const unfreezeScroll = () => {
+    document.body.style.overflow = "unset";
+};
+
 export const rsqw = (t, delta = 0.1, a = 1, f = 1 / (2 * Math.PI)) =>
     (a / Math.atan(1 / delta)) * Math.atan(Math.sin(2 * Math.PI * t * f) / delta);
 
-export const numPages = 8 + caseStudies.length;
+// convert degrees to radians
+export const degToRad = degrees => Math.PI * (degrees / 360);
+
+export const numPages = 7 + caseStudies.length;
 export const pageLength = 1 / numPages; // used for 0.0-1.0 ranges
 
 /*
@@ -78,6 +90,7 @@ export const getCameraPositionZ = (camera, object, size = 1) => {
     const dy = boundingBoxSize.z / 2 + Math.abs(boundingBoxSize.y / 2 / Math.tan(fovW / 2));
 
     return {
+        boundingBoxSize,
         /*
             Math.max = fits object so object always fits entirely within the screen
             Math.min = fits object so the object's smallest side always fits within the screen
@@ -94,4 +107,31 @@ export const setCameraPositionZ = (camera, cameraZ, minZ) => {
 
     camera.far = cameraToFarEdge * 3;
     camera.updateProjectionMatrix();
+};
+
+export const useWindowSize = () => {
+    const [windowSize, setWindowSize] = useState({
+        width: undefined,
+        height: undefined,
+    });
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+        };
+
+        window.addEventListener("resize", handleResize);
+        handleResize();
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return windowSize;
+};
+
+export const wait = seconds => {
+    return new Promise(res => setTimeout(res, seconds * 1000));
 };
