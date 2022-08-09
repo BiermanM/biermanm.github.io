@@ -18,3 +18,15 @@ main,
 body {
     overflow: hidden;
 }
+
+@font-face {
+    font-family: "Rubik";
+    src: url("./fonts/Rubik.ttf") format("truetype");
+    font-weight: 300 900;
+}
+
+@font-face {
+    font-family: "Volkhov";
+    src: url("./fonts/Volkhov - Bold.ttf") format("truetype");
+    font-weight: 700;
+}

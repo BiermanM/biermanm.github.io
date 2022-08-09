@@ -1,23 +1,23 @@
-import {Fragment, Suspense, useState} from "react";
+import * as THREE from "three";
+import {Fragment, Suspense, useRef, useState} from "react";
 import {Canvas, useFrame, useThree} from "@react-three/fiber";
-import {
-    Center,
-    // ContactShadows,
-    // Html,
-    Scroll,
-    ScrollControls,
-    softShadows,
-    useProgress,
-    useScroll,
-    useTexture,
-} from "@react-three/drei";
+import {Center, Scroll, ScrollControls, softShadows, useProgress, useScroll, useTexture} from "@react-three/drei";
 import useRefs from "react-use-refs";
 
 import {caseStudies} from "./constants";
+import Background from "./background";
 import Footer from "./footer";
 import LoadingScreen from "./loading-screen";
 import MacBook3DModel from "./macbook";
-import {degToRad, getCameraPositionZ, getPagesScrollPerc, numPages, range, setCameraPositionZ} from "./utils";
+import {
+    cameraParallax,
+    degToRad,
+    getCameraPositionZ,
+    getPagesScrollPerc,
+    numPages,
+    range,
+    setCameraPositionZ,
+} from "./utils";
 
 import "./App.css";
 
@@ -36,14 +36,16 @@ storyboard:
 
 softShadows();
 
-const Composition = ({setProgress}) => {
+const Composition = ({background, setProgress}) => {
+    // get progress of 3D model and textures loading
     useProgress(state => setProgress(state.progress));
 
     const scroll = useScroll();
-    const {camera, size, viewport} = useThree(state => state);
-    const [macbook, lid, /* keyLight, stripLight, */ fillLight, footer] = useRefs();
+    const {camera, mouse, size, viewport} = useThree(state => state);
+    const [macbook, lid, footer] = useRefs();
     const [laptopScreen] = useTexture(["/Chroma Red.jpg"]);
     const [cameraToObjectPos, setCameraToObjectPos] = useState(null);
+    const cameraVector = new THREE.Vector3();
 
     useFrame((/*state, delta*/) => {
         const {currentPage} = getPagesScrollPerc(scroll);
@@ -107,27 +109,64 @@ const Composition = ({setProgress}) => {
             macbook.current.rotation.x = degToRad(180) - degToRad(135) * currentPage.position;
             lid.current.rotation.x = degToRad(360) - degToRad(225) * currentPage.position;
             macbook.current.position.y = -10 * currentPage.position;
+            background.current.children[0].style.opacity = 0;
+
+            // reset camera position from parallax during case studies
+            cameraParallax(camera, cameraVector, mouse, true);
         }
 
-        // pages 4 to (n+4): each case study
+        // pages 3 to (n+3): each case study
         else if (range(caseStudies.length + 2, 2).includes(currentPage.index)) {
             macbook.current.position.y = -10;
-            console.log("case study #" + (currentPage.index - 2));
+
+            const currentCaseStudyIndex = currentPage.index - 2;
+
+            /*
+                set background color based on current case study
+                    0.0-0.05:   0% opacity
+                    0.05-0.2:  scale from 0% to 100%
+                    0.2-0.8:  100% opacity
+                    0.8-0.95:  scale from 100% to 0%
+                    0.95-1.0:   0% opacity
+            */
+            let opacity = 1;
+            if (currentPage.position < 0.05 || currentPage.position > 0.95) {
+                opacity = 0;
+            } else if (currentPage.position < 0.2) {
+                opacity = 1 - (0.2 - currentPage.position) * 10;
+            } else if (currentPage.position > 0.8) {
+                opacity = 1 - (currentPage.position - 0.8) * 10;
+            }
+
+            Array.from(background.current.children).forEach((caseStudyRef, index) => {
+                caseStudyRef.style.opacity = index === currentCaseStudyIndex ? opacity : 0;
+            });
+
+            // camera parallax based on cursor position
+            cameraParallax(camera, cameraVector, mouse);
+
+            console.log("case study #" + currentCaseStudyIndex);
         }
 
-        // page (n+5): all case studies close via genie effect
+        // page (n+4): all case studies close via genie effect
         else if (currentPage.index === caseStudies.length + 3) {
+            background.current.children[caseStudies.length - 1].style.opacity = 0;
+
+            // reset camera position from parallax during case studies
+            cameraParallax(camera, cameraVector, mouse, true);
+
             console.log("all case studies close via genie effect");
         }
 
-        // page (n+6): laptop lid closes; rotate laptop lid 135deg -> 360deg
+        // page (n+5): laptop lid closes; rotate laptop lid 135deg -> 360deg
         else if (currentPage.index === caseStudies.length + 4) {
             macbook.current.rotation.x = degToRad(45) + degToRad(135) * currentPage.position;
             lid.current.rotation.x = degToRad(135) + degToRad(225) * currentPage.position;
             macbook.current.position.y = -10 + 10 * currentPage.position;
         }
 
-        // page (n+7): camera zooms in, fit to container
+        // page (n+6): camera zooms in, fit to screen
+        // TO-DO: fit to container
         else if (currentPage.index === caseStudies.length + 5) {
             lid.current.rotation.x = degToRad(360); // make sure laptop lid is fully closed
             macbook.current.position.y = 0; // make sure macbook is at origin
@@ -144,7 +183,7 @@ const Composition = ({setProgress}) => {
             );
         }
 
-        // page (n+8): laptop slides up to reveal footer
+        // page (n+7): laptop slides up to reveal footer
         else if (currentPage.index === caseStudies.length + 6) {
             macbook.current.position.y =
                 (footer.current.clientHeight / size.height) *
@@ -156,7 +195,7 @@ const Composition = ({setProgress}) => {
     return (
         <Suspense fallback={null}>
             <ambientLight intensity={0.5} />
-            <spotLight ref={fillLight} position={[0, 0, 100]} angle={0.2} penumbra={1} intensity={0.1} />
+            <spotLight position={[0, 0, 100]} angle={0.2} penumbra={1} intensity={0.1} />
             <Center>
                 <MacBook3DModel
                     ref={{macbook, lid}}
@@ -164,9 +203,6 @@ const Composition = ({setProgress}) => {
                     rotation={[degToRad(180), 0, 0]} // set initial rotation so lid is facing the camera
                 />
             </Center>
-            {/*
-            <ContactShadows position={[0, -1.4, 0]} opacity={0.75} scale={10} blur={2.5} far={4} />
-            */}
             <Scroll html style={{width: "100%"}}>
                 <Footer
                     ref={footer}
@@ -186,15 +222,17 @@ const Composition = ({setProgress}) => {
 
 const App = () => {
     const [progress, setProgress] = useState(0);
+    const backgroundRef = useRef(null);
 
     return (
         <>
             <LoadingScreen {...{progress}} />
             <Canvas shadows dpr={[1, 2]} camera={{fov: 12}}>
                 <ScrollControls pages={numPages}>
-                    <Composition {...{setProgress}} />
+                    <Composition {...{setProgress}} background={backgroundRef} />
                 </ScrollControls>
             </Canvas>
+            <Background ref={backgroundRef} />
         </>
     );
 };

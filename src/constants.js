@@ -1,6 +1,11 @@
 import {GitHubLogo, LinkedInLogo, WorkingNotWorkingLogo} from "./icons";
 
-export const caseStudies = ["SiriusXM 2022 Trend Report", "Ares Security Corp", "SeedAI", "Cast It Reach"];
+export const caseStudies = [
+    {name: "SiriusXM 2022 Trend Report", color: "blue"},
+    {name: "Ares Security Corp", color: "red"},
+    {name: "SeedAI", color: "lightblue"},
+    {name: "Cast It Reach", color: "purple"},
+];
 
 export const companiesAndSelectedClients = [
     "SeedAI",

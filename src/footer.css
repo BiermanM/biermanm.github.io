@@ -10,6 +10,8 @@
 }
 
 .companies-and-selected-clients .title {
+    font-family: "Rubik", sans-serif;
+    font-weight: 600;
     font-size: 40px;
     line-height: 48px;
     margin-bottom: 20px;
@@ -29,8 +31,10 @@
 }
 
 .companies-and-selected-clients .name {
+    font-family: "Rubik", sans-serif;
+    font-weight: 400;
     font-size: 24px;
-    line-height: 29px;
+    line-height: 30px;
     color: var(--black);
 }
 
@@ -70,6 +74,8 @@
 }
 
 .email-carousel a {
+    font-family: "Rubik", sans-serif;
+    font-weight: 600;
     font-size: 128px;
     line-height: 155px;
     color: var(--black);
@@ -84,6 +90,10 @@
 }
 
 .personal-info .left {
+    font-family: "Volkhov", serif;
+    font-size: 32px;
+    line-height: 40px;
+    color: var(--black);
     z-index: 1;
 }
 
@@ -97,6 +107,8 @@
 }
 
 .personal-info .center .copyright {
+    font-family: "Rubik", sans-serif;
+    font-weight: 400;
     margin-right: 6px;
     font-size: 16px;
     line-height: 20px;

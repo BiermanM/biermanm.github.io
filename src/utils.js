@@ -135,3 +135,15 @@ export const useWindowSize = () => {
 export const wait = seconds => {
     return new Promise(res => setTimeout(res, seconds * 1000));
 };
+
+export const cameraParallax = (camera, cameraVector, mouse, reset = false) => {
+    let x = 0;
+    let y = 0;
+
+    if (!reset) {
+        x = mouse.x * (camera.aspect > 1 ? camera.aspect : 1);
+        y = mouse.y * (camera.aspect > 1 ? 1 : camera.aspect);
+    }
+
+    camera.position.lerp(cameraVector.set(x * 0.5, y * 0.5, camera.position.z), 0.02);
+};
