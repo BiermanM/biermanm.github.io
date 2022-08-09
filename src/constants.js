@@ -38,3 +38,15 @@ export const socialMedia = [
         name: "Working Not Working",
     },
 ];
+
+export const CursorState = {
+    COPY_EMAIL: "COPY_EMAIL",
+    OPEN_LINK: "OPEN_LINK",
+    VIEW_LIVE_SITE: "VIEW_LIVE_SITE",
+};
+
+export const cursorStateText = {
+    COPY_EMAIL: "copy email",
+    OPEN_LINK: "open link",
+    VIEW_LIVE_SITE: "view live site",
+};

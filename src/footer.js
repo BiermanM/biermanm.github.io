@@ -1,12 +1,12 @@
 import {forwardRef, useEffect, useRef, useState} from "react";
 
-import {companiesAndSelectedClients, email, socialMedia} from "./constants";
+import {companiesAndSelectedClients, CursorState, email, socialMedia} from "./constants";
 import {Heart} from "./icons";
-import {range, useWindowSize} from "./utils";
+import {copyToClipboard, range, useWindowSize} from "./utils";
 
 import "./footer.css";
 
-const Footer = forwardRef(({style}, ref) => {
+const Footer = forwardRef(({setCursorState, style}, ref) => {
     const windowSize = useWindowSize();
     const currentYear = new Date().getFullYear();
 
@@ -77,13 +77,20 @@ const Footer = forwardRef(({style}, ref) => {
                 >
                     {range(4).map(index => (
                         <div key={index}>
-                            <a
-                                href={`mailto:${email}`}
-                                onMouseOver={() => setEmailHover(true)}
-                                onMouseOut={() => setEmailHover(false)}
+                            <div
+                                className="email"
+                                onClick={() => copyToClipboard(email)}
+                                onMouseOver={() => {
+                                    setEmailHover(true);
+                                    setCursorState(CursorState.COPY_EMAIL);
+                                }}
+                                onMouseOut={() => {
+                                    setEmailHover(false);
+                                    setCursorState(null);
+                                }}
                             >
                                 {email}
-                            </a>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -102,6 +109,8 @@ const Footer = forwardRef(({style}, ref) => {
                             className="social-media"
                             href={social.destination}
                             key={social.name}
+                            onMouseOver={() => setCursorState(CursorState.OPEN_LINK)}
+                            onMouseOut={() => setCursorState(null)}
                             rel="noreferrer"
                             target="_blank"
                         >

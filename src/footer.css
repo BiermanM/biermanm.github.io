@@ -73,14 +73,14 @@
     animation: carousel-scroll 20s linear infinite;
 }
 
-.email-carousel a {
+.email-carousel .email {
     font-family: "Rubik", sans-serif;
     font-weight: 600;
     font-size: 128px;
     line-height: 155px;
     color: var(--black);
     margin-right: 400px;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .personal-info {

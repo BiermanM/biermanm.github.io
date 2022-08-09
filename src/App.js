@@ -1,11 +1,12 @@
 import * as THREE from "three";
-import {Fragment, Suspense, useRef, useState} from "react";
+import {Fragment, Suspense, useEffect, useRef, useState} from "react";
 import {Canvas, useFrame, useThree} from "@react-three/fiber";
 import {Center, Scroll, ScrollControls, softShadows, useProgress, useScroll, useTexture} from "@react-three/drei";
 import useRefs from "react-use-refs";
 
-import {caseStudies} from "./constants";
+import {caseStudies, CursorState} from "./constants";
 import Background from "./background";
+import Cursor from "./cursor";
 import Footer from "./footer";
 import LoadingScreen from "./loading-screen";
 import MacBook3DModel from "./macbook";
@@ -36,7 +37,7 @@ storyboard:
 
 softShadows();
 
-const Composition = ({background, setProgress}) => {
+const Composition = ({background, setCursorState, setProgress}) => {
     // get progress of 3D model and textures loading
     useProgress(state => setProgress(state.progress));
 
@@ -45,7 +46,25 @@ const Composition = ({background, setProgress}) => {
     const [macbook, lid, footer] = useRefs();
     const [laptopScreen] = useTexture(["/Chroma Red.jpg"]);
     const [cameraToObjectPos, setCameraToObjectPos] = useState(null);
+    const [isLaptopHovered, setLaptopHovered] = useState(false);
     const cameraVector = new THREE.Vector3();
+
+    // only make laptop clickable if a case study is open
+    useEffect(() => {
+        if (isLaptopHovered) {
+            const {currentPage} = getPagesScrollPerc(scroll);
+
+            if (
+                range(caseStudies.length + 2, 2).includes(currentPage.index) &&
+                currentPage.position > 0.15 &&
+                currentPage.position < 0.85
+            ) {
+                setCursorState(CursorState.VIEW_LIVE_SITE);
+            }
+        } else {
+            setCursorState(null);
+        }
+    }, [isLaptopHovered]);
 
     useFrame((/*state, delta*/) => {
         const {currentPage} = getPagesScrollPerc(scroll);
@@ -201,10 +220,13 @@ const Composition = ({background, setProgress}) => {
                     ref={{macbook, lid}}
                     texture={laptopScreen}
                     rotation={[degToRad(180), 0, 0]} // set initial rotation so lid is facing the camera
+                    onPointerOver={() => setLaptopHovered(true)}
+                    onPointerOut={() => setLaptopHovered(false)}
                 />
             </Center>
             <Scroll html style={{width: "100%"}}>
                 <Footer
+                    {...{setCursorState}}
                     ref={footer}
                     style={
                         footer.current
@@ -223,13 +245,17 @@ const Composition = ({background, setProgress}) => {
 const App = () => {
     const [progress, setProgress] = useState(0);
     const backgroundRef = useRef(null);
+    const [cursorState, setCursorState] = useState(CursorState.COPY_EMAIL);
+
+    console.log(cursorState);
 
     return (
         <>
+            <Cursor {...{cursorState}} />
             <LoadingScreen {...{progress}} />
             <Canvas shadows dpr={[1, 2]} camera={{fov: 12}}>
                 <ScrollControls pages={numPages}>
-                    <Composition {...{setProgress}} background={backgroundRef} />
+                    <Composition {...{setCursorState, setProgress}} background={backgroundRef} />
                 </ScrollControls>
             </Canvas>
             <Background ref={backgroundRef} />
