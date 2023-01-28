@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import {Fragment, Suspense, useEffect, useRef, useState} from "react";
+import {Suspense, useEffect, useRef, useState} from "react";
 import {Canvas, useFrame, useThree} from "@react-three/fiber";
-import {Center, Scroll, ScrollControls, softShadows, useProgress, useScroll, useTexture} from "@react-three/drei";
+import {Scroll, ScrollControls, softShadows, useProgress, useScroll, useTexture} from "@react-three/drei";
 import useRefs from "react-use-refs";
 
 import {caseStudies, CursorState} from "./constants";
@@ -45,7 +45,6 @@ const Composition = ({background, setCursorState, setProgress}) => {
     const {camera, mouse, size, viewport} = useThree(state => state);
     const [macbook, lid, footer] = useRefs();
     const [laptopScreen] = useTexture(["/Chroma Red.jpg"]);
-    const [cameraToObjectPos, setCameraToObjectPos] = useState(null);
     const [isLaptopHovered, setLaptopHovered] = useState(false);
     const cameraVector = new THREE.Vector3();
 
@@ -68,6 +67,7 @@ const Composition = ({background, setCursorState, setProgress}) => {
 
     useFrame((/*state, delta*/) => {
         const {currentPage} = getPagesScrollPerc(scroll);
+        let cameraToObjectPos = null;
 
         // once model exists, calculate position between camera and model in
         // order for model to fill entire window
@@ -84,7 +84,7 @@ const Composition = ({background, setCursorState, setProgress}) => {
             } = getCameraPositionZ(camera, macbook.current);
             const {cameraZPosition: cameraZPosition50} = getCameraPositionZ(camera, macbook.current, 0.5);
 
-            setCameraToObjectPos({
+            cameraToObjectPos = {
                 boundingBoxSize,
                 cameraZPos: {
                     50: cameraZPosition50,
@@ -93,7 +93,7 @@ const Composition = ({background, setCursorState, setProgress}) => {
                 modelBottomZPos: modelBottomZ,
                 vw: viewport.width,
                 vh: viewport.height,
-            });
+            };
         }
 
         // set camera position once 3D model exists and is at top of page
@@ -215,15 +215,13 @@ const Composition = ({background, setCursorState, setProgress}) => {
         <Suspense fallback={null}>
             <ambientLight intensity={0.5} />
             <spotLight position={[0, 0, 100]} angle={0.2} penumbra={1} intensity={0.1} />
-            <Center>
-                <MacBook3DModel
-                    ref={{macbook, lid}}
-                    texture={laptopScreen}
-                    rotation={[degToRad(180), 0, 0]} // set initial rotation so lid is facing the camera
-                    onPointerOver={() => setLaptopHovered(true)}
-                    onPointerOut={() => setLaptopHovered(false)}
-                />
-            </Center>
+            <MacBook3DModel
+                ref={{macbook, lid}}
+                texture={laptopScreen}
+                rotation={[degToRad(180), 0, 0]} // set initial rotation so lid is facing the camera
+                onPointerOver={() => setLaptopHovered(true)}
+                onPointerOut={() => setLaptopHovered(false)}
+            />
             <Scroll html style={{width: "100%"}}>
                 <Footer
                     {...{setCursorState}}

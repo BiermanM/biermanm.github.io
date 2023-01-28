@@ -145,7 +145,7 @@ export const cameraParallax = (camera, cameraVector, mouse, reset = false) => {
         y = mouse.y * (camera.aspect > 1 ? 1 : camera.aspect);
     }
 
-    camera.position.lerp(cameraVector.set(x * 0.5, y * 0.5, camera.position.z), 0.02);
+    camera.position.lerp(cameraVector.set(x * 1.1, y * 1.1, camera.position.z), 0.02);
 };
 
 export const copyToClipboard = s => navigator.clipboard.writeText(s);
