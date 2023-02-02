@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
 
-import {unfreezeScroll, wait} from "./utils";
+import {Logo} from "./icons";
+import {unfreezeScroll, useWindowSize, wait} from "./utils";
 
 import "./loading-screen.css";
 
-const Logo = () => <div style={{width: 200, height: "19vh", backgroundColor: "var(--dark-gray)"}}></div>;
-
 const LoadingScreen = ({progress}) => {
     const [styling, setStyling] = useState({});
+    const windowSize = useWindowSize();
 
     useEffect(() => {
         const hideAnimation = async () => {
@@ -26,7 +26,7 @@ const LoadingScreen = ({progress}) => {
     return (
         <div className="loading-screen" style={styling}>
             <div className="logo">
-                <Logo />
+                <Logo height={(windowSize.height || 0) * 0.19} />
             </div>
             <div className={`progress-bar ${progress === 100 ? "complete" : ""}`}>
                 <div
