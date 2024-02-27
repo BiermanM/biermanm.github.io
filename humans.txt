@@ -1,0 +1,16 @@
+/* MADE BY */
+Site: https://bierman.io
+Contact: matt[at]bierman.io
+Location: NYC
+
+/* THANKS */
+Fonts: https://rajputrajesh-448.gumroad.com, https://fonts.google.com
+Icons: https://fonts.google.com/icons
+Laptop 3D model: https://pmnd.rs
+CSS Accessibility: https://kittygiraudel.com/
+
+/* SITE */
+Version: 1
+Launched: February 25, 2024
+Last update: February 25, 2024
+Tools and tech stack: HTML5, CSS3, JavaScript, Three.js, GitHub Pages, VSCode, Figma, Blender

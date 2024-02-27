@@ -1,372 +1,333 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Matt Bierman</title>
-        <meta name="author" content="Matt Bierman">
-        <meta name="description" content="Portfolio of Matt Bierman">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108086121-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'UA-108086121-1');
-        </script>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Matt Bierman</title>
+    <meta
+      name="description"
+      content="Experiential developer and senior frontend engineer at Lido. Based in NYC."
+    />
+    <meta name="author" content="Matt Bierman" />
 
-        <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <link rel="stylesheet" type="text/css" href="css/shared.css">
+    <meta property="og:title" content="Matt Bierman" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://bierman.io/images/screenshot.png"
+    />
+    <meta property="og:url" content="https://bierman.io" />
+    <meta
+      name="twitter:card"
+      content="https://bierman.io/images/screenshot.png"
+    />
+    <meta
+      property="og:description"
+      content="Experiential developer and senior frontend engineer at Lido. Based in NYC."
+    />
+    <meta property="og:site_name" content="Matt Bierman" />
+    <meta
+      name="twitter:image:alt"
+      content="Screenshot of website's home page"
+    />
 
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,800&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon-black.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon-white.png"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#050505" />
+    <meta name="msapplication-TileColor" content="#fafbfb" />
+    <meta name="theme-color" content="#fafbfb" />
 
-        <!-- FontAwesome Icons -->
-        <link href="css/fontawesome.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.webmanifest" />
 
-        <!-- Favicons -->
-        <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
-        <link rel="manifest" href="favicons/site.webmanifest">
-        <link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#000000">
-        <meta name="msapplication-TileColor" content="#000000">
-        <meta name="theme-color" content="#000000">
-    </head>
-    <body>
-        <div id="background">
-            <div class="container">
-                <div id="logo">
-                    <img src="images/logo.png">
-                </div>
-                <nav>
-                    <div id="link-about" class="link">
-                        <a href="#about">
-                            <span>about</span>
-                        </a>
-                    </div>
-                    <div id="link-resume" class="link">
-                        <a href="documents/resume.pdf" target="_blank">
-                            <span>resume</span>
-                        </a>
-                    </div>
-                    <div id="link-work" class="link">
-                        <a href="#work">
-                            <span>work</span>
-                        </a>
-                    </div>
-                    <div id="link-contact" class="link">
-                        <a href="#contact">
-                            <span>contact</span>
-                        </a>
-                    </div>
-                </nav>
-            </div>
+    <link type="text/plain" rel="author" href="humans.txt" />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <script
+      src="https://cdn.usefathom.com/script.js"
+      data-site="TWVQHLHX"
+      defer
+    ></script>
+  </head>
+
+  <body>
+    <div id="cursor"></div>
+    <div id="cursor-action"></div>
+    <div id="loading-screen">
+      <p class="mobile-start-button hide">tap to enter</p>
+      <h1 class="percentage">
+        <span class="value">0</span>
+        <span>%</span>
+      </h1>
+    </div>
+    <div id="jumbotron">
+      <h1 class="title top-left">matt</h1>
+      <h1 class="title bottom-right">bierman</h1>
+      <div class="description">
+        <p>
+          senior frontend engineer at
+          <a href="https://lido.app" target="_blank">lido</a>
+        </p>
+        <p>based in nyc</p>
+      </div>
+      <div class="scroll-down hidden">
+        <div class="scroll-wheel"></div>
+      </div>
+      <div id="ascii-logo">
+        <div class="mobile-overlay"></div>
+      </div>
+    </div>
+    <div id="footer">
+      <div class="background"></div>
+      <div class="email-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <a class="email" href="mailto:matt@bierman.io">matt@bierman.io</a>
+          </div>
+          <div class="carousel-slide">
+            <a class="email" href="mailto:matt@bierman.io">matt@bierman.io</a>
+          </div>
         </div>
-        <div id="about">
-            <div id="headshot" class="item left no-link">
-                <div class="title">
-                    <h1>Matt Bierman</h1>
-                </div>
-                <div class="image">
-                    <img src="images/headshot.jpg">
-                </div>
-                <div class="clear"></div>
+      </div>
+      <div class="personal-info">
+        <div class="left">
+          <div class="footer-logo">
+            <svg viewBox="0 0 11.28 9.6" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="m11.25,3.89c-.04-.55-.15-1.06-.32-1.52-.18-.46-.44-.87-.8-1.21-.36-.34-.81-.6-1.37-.79s-3.59-.37-4.39-.37c-.68,0-1.28.1-1.79.3-.52.2-.95.47-1.31.82-.36.35-.64.75-.85,1.21-.2.46-.33.94-.39,1.46,0,.1-.01.25-.02.43s0,.38,0,.59,0,.4,0,.59,0,.33.02.44c.08.74.29,1.4.63,1.97s.83,1.01,1.46,1.32c.64.31,1.43.47,2.37.47.66,0,3.17-.07,3.65-.2.48-.14.89-.31,1.22-.53.34-.22.62-.46.84-.71.02-.02.03-.05.05-.08.02-.03.02-.06.02-.09,0-.09-.03-.16-.08-.22-.06-.06-.12-.08-.2-.08h-.76c-.08,0-.14.02-.19.05-.05.03-.1.07-.17.12-.14.1-.29.2-.47.31s-.42.2-.73.26c-.31.07-2.66.1-3.18.1-1.04,0-1.83-.24-2.37-.72-.54-.48-.86-1.15-.95-2.02-.02-.15-.03-.35-.03-.61s0-.5,0-.75.01-.44.03-.58c.06-.56.22-1.05.47-1.46.25-.41.6-.73,1.05-.96.45-.23,1.01-.34,1.69-.34.81,0,3.8.2,4.29.4.48.2.84.51,1.07.92.23.41.36.93.4,1.54.02.26.03.5.02.74,0,.24-.01.44-.01.6,0,.11-.02.23-.05.37-.04.13-.1.25-.2.34-.1.1-.24.14-.42.14-.2,0-.36-.07-.48-.22-.11-.13-.16-.32-.17-.56v-.82s0-.07,0-.1c-.01-.34-.07-.63-.18-.85-.13-.25-.3-.43-.51-.55-.13-.08-.28-.12-.44-.15-.09-.02-.18-.03-.28-.03-.27,0-.51.06-.73.19-.22.13-.39.29-.51.49-.22-.46-.63-.69-1.22-.67-.25,0-.47.06-.65.16-.18.1-.32.23-.43.37v-.26c0-.06-.02-.1-.06-.14-.04-.04-.08-.05-.13-.05h-.71c-.05,0-.09.02-.13.05s-.05.08-.05.14v3.61c0,.06.02.1.05.14s.08.05.13.05h.77c.05,0,.09-.02.13-.05.04-.04.05-.08.05-.14v-2.13c0-.2.03-.37.1-.48.06-.12.15-.2.25-.26.1-.05.21-.08.31-.08.12,0,.23.03.33.08.1.05.18.14.24.26.06.12.09.29.09.49v2.13c0,.06.02.1.05.14.04.04.08.05.14.05h.75c.06,0,.1-.02.14-.05.04-.04.05-.08.05-.14v-2.13c0-.21.03-.37.1-.49.06-.12.15-.21.25-.26.1-.05.2-.08.31-.08.12,0,.23.03.33.08.1.05.18.14.24.26.06.12.09.29.09.49,0,1.79.3,1.9.77,2.32.1.06.19.13.33.18.19.08.42.11.68.11.32,0,.61-.07.87-.2.26-.14.47-.34.64-.61.16-.27.26-.6.28-1,0-.1.01-.24.02-.41s0-.36,0-.55,0-.38-.02-.56Z"
+              />
+            </svg>
+          </div>
+          <div class="copyright">
+            <p class="copyright-text">&copy; 2024, made with</p>
+            <div class="beating-heart">
+              <svg viewBox="0 0 16 14" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M8 14L1.20924 7.12986C0.429511 6.34101 0 5.29209 0 4.17662C0 3.06097 0.429511 2.01223 1.20924 1.22338C1.98898 0.434532 3.0256 0 4.12836 0C5.23111 0 6.26773 0.434532 7.04747 1.22338L8 2.18705L8.95253 1.22338C9.73227 0.434532 10.7691 0 11.8716 0C12.9744 0 14.011 0.434532 14.7908 1.22338C15.5707 2.01223 16 3.06097 16 4.17662C16 5.29227 15.5707 6.34101 14.7908 7.12986L8 14Z"
+                />
+              </svg>
             </div>
-            <div class="item full right">
-                <div class="title">
-                    <h1>About Me</h1>
-                </div>
-                <div class="content">
-                    <div id="bio">
-                        <div>
-                            <span>Hi, I'm Matt! Originally from Las Vegas, I graduated from UT Dallas, and am now working as a software engineer in New York City. I love exploring how technology can change the world around us, whether that be building brands and digital experiences at <a href="https://dotslashdigital.com" target="_blank">Dot Slash Digital</a>, disrupting the beverage industry at <a href="https://bemindfulbeverages.com" target="_blank">be mindful beverages</a>, or inspiring future software engineers at <a href="https://tailwindtalent.co" target="_blank">Tailwind Talent</a>.</span>
-                        </div>
-                    </div>
-                    <div id="work-experience">
-                        <div class="company">
-                            <a class="image" href="https://macro.com" target="_blank">
-                                <img src="images/companies/macro.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://safegraph.com" target="_blank">
-                                    <span>Macro</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Software Engineer, Founding Team</span>
-                            </div>
-                            <div class="date">
-                                <span>August 2022 &ndash; Present</span>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://dotslashdigital.com" target="_blank">
-                                <img src="images/companies/dsd.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://dotslashdigital.com" target="_blank">
-                                    <span>Dot Slash Digital</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Founder, CEO</span>
-                            </div>
-                            <div class="date">
-                                <span>May 2018 &ndash; Present</span>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://safegraph.com" target="_blank">
-                                <img src="images/companies/safegraph.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://safegraph.com" target="_blank">
-                                    <span>SafeGraph</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Frontend Engineer</span>
-                            </div>
-                            <div class="date">
-                                <span>October 2021 &ndash; June 2022</span>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://tailwindtalent.co" target="_blank">
-                                <img src="images/companies/tailwind.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://tailwindtalent.co" target="_blank">
-                                    <span>Tailwind Talent</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Co-Founder, CEO</span>
-                            </div>
-                            <div class="date">
-                                <span>May 2021 &ndash; May 2022</span>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://hioscar.com" target="_blank">
-                                <img src="images/companies/oscar.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://hioscar.com" target="_blank">
-                                    <span>Oscar Health</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Software Engineer</span>
-                            </div>
-                            <div class="date">
-                                <span>February 2020 &ndash; October 2021</span>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://hioscar.com" target="_blank">
-                                <img src="images/companies/oscar.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://hioscar.com" target="_blank">
-                                    <span>Oscar Health</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Software Engineer Intern</span>
-                            </div>
-                            <div class="date">
-                                <span>May 2019 &ndash; August 2019</span>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://bemindfulbeverages.com" target="_blank">
-                                <img src="images/companies/bmb.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://bemindfulbeverages.com" target="_blank">
-                                    <span>be mindful beverages</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Chief Information Officer</span>
-                            </div>
-                            <div class="date">
-                                <span>August 2018 &ndash; August 2022</span>
-                                <br />
-                                <div style="height: 18px"></div>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://att.com" target="_blank">
-                                <img src="images/companies/att.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://att.com" target="_blank">
-                                    <span>AT&amp;T</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Software Development Co-op</span>
-                            </div>
-                            <div class="date">
-                                <span>August 2018 &ndash; May 2019</span>
-                            </div>
-                        </div>
-                        <div class="company">
-                            <a class="image" href="https://att.com" target="_blank">
-                                <img src="images/companies/att.png">
-                            </a>
-                            <div class="name">
-                                <a href="https://att.com" target="_blank">
-                                    <span>AT&amp;T</span>
-                                </a>
-                            </div>
-                            <div class="position">
-                                <span>Software Development Intern</span>
-                            </div>
-                            <div class="date">
-                                <span>June 2018 &ndash; August 2018</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-        <div id="work">
-            <div id="dot-slash-digital" class="item left">
-                <div class="title">
-                    <a href="work/dot-slash-digital.html">
-                        <h1>Dot Slash Digital</h1>
-                    </a>
-                </div>
-                <div class="image">
-                    <a href="work/dot-slash-digital.html">
-                        <img src="images/projects/dsd_cover.png">
-                    </a>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div id="oscar-health" class="item right">
-                <div class="title">
-                    <a href="work/oscar-health.html">
-                        <h1>Oscar Health</h1>
-                    </a>
-                </div>
-                <div class="image">
-                    <a href="work/oscar-health.html">
-                        <img src="images/projects/oscar_cover.jpg">
-                    </a>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div id="march-madness-prediction" class="item left">
-                <div class="title">
-                    <a href="work/march-madness-prediction.html">
-                        <h1>March Madness Prediction</h1>
-                    </a>
-                </div>
-                <div class="image">
-                    <a href="work/march-madness-prediction.html">
-                        <!-- https://unsplash.com/photos/YWI8pZdcuAA -->
-                        <img src="images/projects/mmp_cover.jpg">
-                    </a>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div id="be-mindful-beverages" class="item right">
-                <div class="title">
-                    <a href="work/be-mindful-beverages.html">
-                        <h1>be mindful beverages</h1>
-                    </a>
-                </div>
-                <div class="image">
-                    <a href="work/be-mindful-beverages.html">
-                        <img src="images/projects/bmb_cover.jpg">
-                    </a>
-                </div>
-                <div class="clear"></div>
-            </div>
+        <div class="right">
+          <a
+            class="button social-media"
+            href="https://linkedin.com/in/biermanm"
+            rel="noreferrer"
+            target="_blank"
+            title="LinkedIn"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 1.4325C0 0.64125 0.6575 0 1.46875 0H18.5312C19.3425 0 20 0.64125 20 1.4325V18.5675C20 19.3588 19.3425 20 18.5312 20H1.46875C0.6575 20 0 19.3588 0 18.5675V1.4325ZM6.17875 16.7425V7.71125H3.1775V16.7425H6.17875ZM4.67875 6.4775C5.725 6.4775 6.37625 5.785 6.37625 4.9175C6.3575 4.03125 5.72625 3.3575 4.69875 3.3575C3.67125 3.3575 3 4.0325 3 4.9175C3 5.785 3.65125 6.4775 4.65875 6.4775H4.67875V6.4775ZM10.8138 16.7425V11.6988C10.8138 11.4288 10.8337 11.1587 10.9137 10.9662C11.13 10.4275 11.6238 9.86875 12.4538 9.86875C13.54 9.86875 13.9738 10.6963 13.9738 11.9113V16.7425H16.975V11.5625C16.975 8.7875 15.495 7.4975 13.52 7.4975C11.9275 7.4975 11.2138 8.3725 10.8138 8.98875V9.02H10.7938C10.8004 9.00957 10.8071 8.99915 10.8138 8.98875V7.71125H7.81375C7.85125 8.55875 7.81375 16.7425 7.81375 16.7425H10.8138Z"
+              />
+            </svg>
+            <span class="sr-only">LinkedIn</span>
+          </a>
+          <a
+            class="button social-media"
+            href="https://github.com/BiermanM"
+            rel="noreferrer"
+            target="_blank"
+            title="GitHub"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 21 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.2529 0C4.58819 0 0 4.58819 0 10.2529C0 14.7899 2.9349 18.6219 7.01045 19.9804C7.52309 20.0701 7.71534 19.7625 7.71534 19.4934C7.71534 19.2499 7.70252 18.4425 7.70252 17.5838C5.12647 18.058 4.46003 16.9558 4.25497 16.3791C4.13962 16.0843 3.63979 15.1743 3.20404 14.9308C2.84519 14.7386 2.33254 14.2644 3.19123 14.2516C3.99865 14.2388 4.57537 14.9949 4.76762 15.3025C5.69038 16.8533 7.16424 16.4175 7.75378 16.1484C7.8435 15.4819 8.11264 15.0334 8.40741 14.777C6.12613 14.5207 3.74232 13.6364 3.74232 9.71466C3.74232 8.59965 4.13962 7.67689 4.79325 6.95918C4.69072 6.70286 4.33187 5.65193 4.89578 4.24215C4.89578 4.24215 5.75446 3.97301 7.71534 5.29308C8.53557 5.06239 9.40707 4.94704 10.2786 4.94704C11.1501 4.94704 12.0216 5.06239 12.8418 5.29308C14.8027 3.9602 15.6614 4.24215 15.6614 4.24215C16.2253 5.65193 15.8664 6.70286 15.7639 6.95918C16.4175 7.67689 16.8148 8.58684 16.8148 9.71466C16.8148 13.6492 14.4182 14.5207 12.1369 14.777C12.5086 15.0975 12.829 15.7126 12.829 16.6738C12.829 18.0452 12.8162 19.1474 12.8162 19.4934C12.8162 19.7625 13.0084 20.0829 13.5211 19.9804C15.5566 19.2935 17.3253 17.9854 18.5784 16.2403C19.8314 14.4953 20.5055 12.4012 20.5059 10.2529C20.5059 4.58819 15.9177 0 10.2529 0Z"
+              />
+            </svg>
+            <span class="sr-only">GitHub</span>
+          </a>
+          <a
+            class="button social-media"
+            href="https://workingnotworking.com/108158-matthew"
+            rel="noreferrer"
+            target="_blank"
+            title="Working Not Working"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 30 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 0H2.7603L4.18586 12.492L5.65881 0H8.0795L9.51297 12.492L10.9425 0H13.7028L10.9978 20H8.11505L6.85534 8.504L5.49296 20H2.7682L0 0ZM30 9.264H27.5477L28.7995 0H26.0392L24.977 9.264H24.2385L23.1763 0H20.7556L19.6617 9.264H18.9114L17.8531 0H15.0928L16.3723 9.264H13.8923V11.38H16.6684L17.861 20H20.5858L21.6085 11.38H22.2641L23.2078 20H26.0945L27.2594 11.38H30V9.264ZM19.2787 12.492L19.1523 11.376H19.409L19.2787 12.492ZM21.8613 9.264L21.9521 8.508L22.035 9.264H21.8613ZM24.6058 12.492L24.4794 11.376H24.7361L24.6058 12.492Z"
+              />
+            </svg>
+            <span class="sr-only">Working Not Working</span>
+          </a>
         </div>
-        <div id="contact">
-            <div class="item full left">
-                <div class="title">
-                    <h1>Contact Me</h1>
-                </div>
-                <form class="content" action="https://formspree.io/matt@bierman.io" method="POST">
-                    <div class="row">
-                        <div id="full-name" class="input-container">
-                            <label>
-                                <input placeholder=" " type="text" name="Full Name">
-                                <span>Full Name *</span>
-                            </label>
-                            <div class="error-message">
-                                <span>Enter full name</span>
-                            </div>
-                        </div>
-                        <div id="email-address" class="input-container">
-                            <label>
-                                <input placeholder=" " type="email" name="email">
-                                <span>Email Address *</span>
-                            </label>
-                            <div class="error-message">
-                                <span>Enter email address</span>
-                            </div>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="row">
-                        <div id="message" class="input-container">
-                            <label>
-                                <textarea placeholder=" " rows="5" name="Message"></textarea>
-                                <span>Message *</span>
-                            </label>
-                            <div class="error-message">
-                                <span>Enter message</span>
-                            </div>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="row">
-                        <button type="submit" value="Send">
-                            <span>Send</span>
-                        </button>
-                    </div>
-                </form>
+      </div>
+    </div>
+    <div id="placeholders">
+      <div class="jumbotron"></div>
+      <div class="selected-work">
+        <div id="selected-work">
+          <div class="slide slide-1">
+            <h2 class="title">cinespace</h2>
+            <p class="description">
+              Fullstack development for the redefining rebrand of one of the
+              largest sound stage and facilities operators in the world.
+              Cinespace supports top productions throughout the entertainment
+              industry. Created in collaboration with And Company.
+            </p>
+            <a
+              class="button"
+              href="https://cinespace.com"
+              target="_blank"
+              title="Cinespace"
+            >
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 -960 960 960"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div class="slide slide-2">
+            <h2 class="title">spotlight</h2>
+            <p class="description">
+              Fullstack development for the illuminating rebrand of the largest
+              casting resource platform in the UK. Spotlight connects performers
+              with roles in theatre, television, and film productions. Created
+              in collaboration with And Company.
+            </p>
+            <a
+              class="button"
+              href="https://spotlight.com"
+              target="_blank"
+              title="Spotlight"
+            >
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 -960 960 960"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div class="slide slide-3">
+            <h2 class="title">the 2022 podcast trends report by siriusxm</h2>
+            <p class="description">
+              Frontend development for SiriusXM's first interactive website
+              highlighting the latest trends for podcast listeners, creators,
+              and advertisers. Created in collaboration with Inkling Agency and
+              work x work.
+            </p>
+            <a
+              class="button"
+              href="https://podcastreport2022.siriusxmmedia.com"
+              target="_blank"
+              title="The 2022 Podcast Trends Report by SiriusXM"
+            >
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 -960 960 960"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div id="screen-content">
+            <div class="info-popup">
+              <p class="text hide">click me!</p>
             </div>
+            <div class="slide-images">
+              <svg class="slide-image">
+                <filter id="pixelate-1" x="0" y="0">
+                  <feFlood x="4" y="4" height="1" width="1" />
+                  <feComposite class="pixel-size" />
+                  <feTile result="p1" />
+                  <feComposite in="SourceGraphic" in2="p1" operator="in" />
+                  <feMorphology operator="dilate" />
+                </filter>
+                <image
+                  preserveAspectRatio="xMidYMid slice"
+                  href="images/cinespace.jpg"
+                />
+              </svg>
+              <svg class="slide-image">
+                <filter id="pixelate-2" x="0" y="0">
+                  <feFlood x="4" y="4" height="1" width="1" />
+                  <feComposite class="pixel-size" />
+                  <feTile result="p2" />
+                  <feComposite in="SourceGraphic" in2="p2" operator="in" />
+                  <feMorphology operator="dilate" />
+                </filter>
+                <image
+                  preserveAspectRatio="xMidYMid slice"
+                  href="images/spotlight.jpg"
+                />
+              </svg>
+              <svg class="slide-image">
+                <filter id="pixelate-3" x="0" y="0">
+                  <feFlood x="4" y="4" height="1" width="1" />
+                  <feComposite class="pixel-size" />
+                  <feTile result="p3" />
+                  <feComposite in="SourceGraphic" in2="p3" operator="in" />
+                  <feMorphology operator="dilate" />
+                </filter>
+                <image
+                  preserveAspectRatio="xMidYMid slice"
+                  href="images/sirius-xm.jpg"
+                />
+              </svg>
+            </div>
+          </div>
+          <div id="laptop-screen"></div>
+          <div id="laptop"></div>
         </div>
-        <footer>
-            <div id="social-links">
-                <a href="mailto:matt@bierman.io">
-                    <i class="fas fa-envelope-square"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/biermanm">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="http://github.com/biermanm">
-                    <i class="fab fa-github-square"></i>
-                </a>
-            </div>
-            <div id="copyright">
-                <div>
-                    <span>&copy; 2023 Made with</span>
-                </div>
-                <div>
-                    <span><i id="heart" class="fas fa-heart"></i></span>
-                </div>
-                <div>
-                    <span>by Matt Bierman</span>
-                </div>
-            </div>
-        </footer>
-    </body>
+      </div>
+      <div class="footer"></div>
+    </div>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-
-    <!-- JavaScript -->
-    <script src="js/index.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="script.js" type="module"></script>
+  </body>
 </html>
