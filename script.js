@@ -449,13 +449,13 @@ const createCamera = (z, container) => {
 };
 
 const createScene = (background) => {
-  const s = new THREE.Scene();
+  const scene = new THREE.Scene();
 
   if (background) {
-    s.background = background;
+    scene.background = background;
   }
 
-  return s;
+  return scene;
 };
 
 const createRenderer = (container, alpha) => {
@@ -476,11 +476,11 @@ const createRenderer = (container, alpha) => {
 const createCss3dRenderer = () => {
   const { height, width } = getWindowSize();
 
-  const r = new CSS3DRenderer();
-  r.setSize(width, height);
-  applyStyles(r.domElement, { position: "absolute", top: 0 });
+  const renderer = new CSS3DRenderer();
+  renderer.setSize(width, height);
+  applyStyles(renderer.domElement, { position: "absolute", top: 0 });
 
-  return r;
+  return renderer;
 };
 
 const createRendererWithAsciiShader = (
@@ -689,7 +689,6 @@ const load3DModels = async () => {
   asciiLogoScene.geometryFile = await gltfLoader.loadAsync(
     ASCII_LOGO_FILE,
     (progress) => {
-      console.log(progress.loaded);
       currentLoadingPercentages.ascii =
         progress.loaded / ASCII_LOGO_FILE_SIZE_BYTES;
     }
@@ -716,14 +715,27 @@ const createAsciiLogoMesh = (geometryFile) => {
   return mesh;
 };
 
+const setLaptopMeshMaterials = (mesh) => {
+  if (mesh.name === "Cube008_2") {
+    mesh.material.side = THREE.FrontSide;
+  } else if (mesh.name === "keyboard") {
+    mesh.material = new THREE.MeshPhongMaterial({
+      color: 0x1a1a1a,
+      emissive: 0x000000,
+      specular: 0x111111,
+      shininess: 100,
+      side: THREE.FrontSide,
+    });
+  }
+
+  (mesh.children || []).forEach((child) => setLaptopMeshMaterials(child));
+};
+
 const createLaptopMesh = (geometryFile) => {
   const base = geometryFile.scene;
-  base.children[1].material = new THREE.MeshPhongMaterial({
-    color: 0x1a1a1a,
-    emissive: 0x000000,
-    specular: 0x111111,
-    shininess: 100,
-  });
+
+  setLaptopMeshMaterials(base);
+
   const lid = base.children[0];
   const screen = lid.children[0].children[2];
 
