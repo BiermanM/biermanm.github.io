@@ -125,7 +125,7 @@ const ASCII_LOGO_FILE = "./models/logo.glb";
 const LAPTOP_FILE = "./models/laptop.glb";
 const DRACO_DECODER_URL =
   "https://www.gstatic.com/draco/versioned/decoders/1.5.6/";
-const ASCII_LOGO_FILE_SIZE_BYTES = 49464;
+const ASCII_LOGO_FILE_SIZE_BYTES = 203996;
 const LAPTOP_FILE_SIZE_BYTES = 70344;
 
 const LOADING_WEIGHTS = {
@@ -478,8 +478,7 @@ const createCss3dRenderer = () => {
 
   const r = new CSS3DRenderer();
   r.setSize(width, height);
-  r.domElement.style.position = "absolute";
-  r.domElement.style.top = 0;
+  applyStyles(r.domElement, { position: "absolute", top: 0 });
 
   return r;
 };
@@ -654,7 +653,7 @@ const initPage = () => {
       window.scrollTo(0, 0);
     };
   }
-  html.style.scrollBehavior = "smooth";
+  applyStyles(html, { scrollBehavior: "smooth" });
 
   if (IS_TOUCH_DEVICE) {
     document.body.classList.add("is-touch-device");
@@ -1067,12 +1066,11 @@ const zoomTransitionJumbotronToSelectedWork = () => {
     pointerEvents: percentageScrolled < 0.7 ? "all" : "none",
   });
 
-  placeholders.jumbotron.style.backgroundColor = `color-mix(in srgb, var(--white), var(--light-gray) ${
+  const backgroundColor = `color-mix(in srgb, var(--white), var(--light-gray) ${
     percentageScrolled * 100
   }%)`;
-  placeholders.selectedWork.style.backgroundColor = `color-mix(in srgb, var(--white), var(--light-gray) ${
-    percentageScrolled * 100
-  }%)`;
+  applyStyles(placeholders.jumbotron, { backgroundColor });
+  applyStyles(placeholders.selectedWork, { backgroundColor });
 
   if (
     percentageScrolled === 1 &&
@@ -1109,9 +1107,9 @@ const laptopLidEntrance = () => {
     LAPTOP_LID_ROTATION_X.close,
   ]);
   laptopScene.mesh.lid.rotation.set(lidRotationX, 0, 0);
-  laptopScreen.style.filter = `brightness(${scrolledPercentage})`;
+  applyStyles(laptopScreen, { filter: `brightness(${scrolledPercentage})` });
 
-  selectedWorkSlides[0].style.opacity = 0;
+  applyStyles(selectedWorkSlides[0], { opacity: 0 });
 };
 
 const setImagePixelation = (currentSlideIndex, percentage) => {
@@ -1167,8 +1165,8 @@ const slideLaptop = (slideIndex, origin, destination) => {
     const translation = `translateY(${
       (slideIndex === 1 ? percentage : 1) * vh * 0.2 * -1
     }px)`;
-    laptopContainer.style.transform = translation;
-    laptopScreen.style.transform = translation;
+    applyStyles(laptopContainer, { transform: translation });
+    applyStyles(laptopScreen, { transform: translation });
 
     // slide 1
     let slide1Opacity = 0;
@@ -1224,12 +1222,18 @@ const slideLaptop = (slideIndex, origin, destination) => {
       slide3Transform = (1 - slide3Percentage) * SLIDE_TEXT_TRANSFORM_SCALAR;
     }
 
-    selectedWorkSlides[0].style.opacity = slide1Opacity;
-    selectedWorkSlides[0].style.transform = `translateY(${slide1Transform}px)`;
-    selectedWorkSlides[1].style.opacity = slide2Opacity;
-    selectedWorkSlides[1].style.transform = `translateY(${slide2Transform}px)`;
-    selectedWorkSlides[2].style.opacity = slide3Opacity;
-    selectedWorkSlides[2].style.transform = `translateY(${slide3Transform}px)`;
+    applyStyles(selectedWorkSlides[0], {
+      opacity: slide1Opacity,
+      transform: `translateY(${slide1Transform}px)`,
+    });
+    applyStyles(selectedWorkSlides[1], {
+      opacity: slide2Opacity,
+      transform: `translateY(${slide2Transform}px)`,
+    });
+    applyStyles(selectedWorkSlides[2], {
+      opacity: slide3Opacity,
+      transform: `translateY(${slide3Transform}px)`,
+    });
   } else {
     const percentage =
       destination === SlideLocation.CENTER
@@ -1243,9 +1247,9 @@ const slideLaptop = (slideIndex, origin, destination) => {
     const maxDist = vw * TRANSLATE_X_SCALAR;
     const revealBound = vw / 2 - maxDist - LAPTOP_3D_MODEL_WIDTH;
 
-    selectedWorkSlides[0].style.padding = `0 ${revealBound}px 0 0`;
-    selectedWorkSlides[1].style.padding = `0 0 0 ${revealBound}px`;
-    selectedWorkSlides[2].style.padding = `0 ${revealBound}px 0 0`;
+    applyStyles(selectedWorkSlides[0], { padding: `0 ${revealBound}px 0 0` });
+    applyStyles(selectedWorkSlides[1], { padding: `0 0 0 ${revealBound}px` });
+    applyStyles(selectedWorkSlides[2], { padding: `0 ${revealBound}px 0 0` });
 
     // slide 1
     let slide1Opacity = 0;
@@ -1332,9 +1336,9 @@ const updateScreenCurrentSlide = () => {
           ]) /
             2;
 
-    slideImages[0].style.opacity = opacityPercentage;
-    slideImages[1].style.opacity = 1;
-    slideImages[2].style.opacity = 1;
+    applyStyles(slideImages[0], { opacity: opacityPercentage });
+    applyStyles(slideImages[1], { opacity: 1 });
+    applyStyles(slideImages[2], { opacity: 1 });
   } else if (slideIndex === 3) {
     pixelationPercentage =
       percentageScrolledThroughSection >= SLIDE_PIXELATION_THRESHOLD
@@ -1354,9 +1358,9 @@ const updateScreenCurrentSlide = () => {
             ])) /
           2;
 
-    slideImages[0].style.opacity = opacityPercentage;
-    slideImages[1].style.opacity = 1;
-    slideImages[2].style.opacity = 1;
+    applyStyles(slideImages[0], { opacity: opacityPercentage });
+    applyStyles(slideImages[1], { opacity: 1 });
+    applyStyles(slideImages[2], { opacity: 1 });
   } else if (slideIndex === 4) {
     pixelationPercentage =
       percentageScrolledThroughSection <= SLIDE_PIXELATION_THRESHOLD
@@ -1375,9 +1379,9 @@ const updateScreenCurrentSlide = () => {
           ]) /
             2;
 
-    slideImages[0].style.opacity = 0;
-    slideImages[1].style.opacity = opacityPercentage;
-    slideImages[2].style.opacity = 1;
+    applyStyles(slideImages[0], { opacity: 0 });
+    applyStyles(slideImages[1], { opacity: opacityPercentage });
+    applyStyles(slideImages[2], { opacity: 1 });
   } else if (slideIndex === 5) {
     pixelationPercentage =
       percentageScrolledThroughSection >= SLIDE_PIXELATION_THRESHOLD
@@ -1397,9 +1401,9 @@ const updateScreenCurrentSlide = () => {
             ])) /
           2;
 
-    slideImages[0].style.opacity = 0;
-    slideImages[1].style.opacity = opacityPercentage;
-    slideImages[2].style.opacity = 1;
+    applyStyles(slideImages[0], { opacity: 0 });
+    applyStyles(slideImages[1], { opacity: opacityPercentage });
+    applyStyles(slideImages[2], { opacity: 1 });
   }
 
   if (pixelationPercentage === undefined) {
@@ -1413,9 +1417,9 @@ const updateScreenCurrentSlide = () => {
     setImagePixelation(2, pixelationPercentage);
   } else {
     const blur = `brightness(1.25) blur(${pixelationPercentage * 40}px)`;
-    slideImages[0].style.filter = blur;
-    slideImages[1].style.filter = blur;
-    slideImages[2].style.filter = blur;
+    applyStyles(slideImages[0], { filter: blur });
+    applyStyles(slideImages[1], { filter: blur });
+    applyStyles(slideImages[2], { filter: blur });
   }
 };
 
