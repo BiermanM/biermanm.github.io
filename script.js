@@ -1,12 +1,9 @@
 import * as THREE from "three";
-import { AsciiEffect } from "three/addons/effects/AsciiEffect.js";
-import Stats from "three/addons/libs/stats.module.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import {
-  CSS3DRenderer,
-  CSS3DObject,
-} from "three/addons/renderers/CSS3DRenderer.js";
+import { AsciiEffect } from "three-ascii-effect";
+import Stats from "three-stats";
+import { DRACOLoader } from "three-draco-loader";
+import { GLTFLoader } from "three-gltf-loader";
+import { CSS3DRenderer, CSS3DObject } from "three-css-3d-renderer";
 
 // ------------------------------------
 // ------------- elements -------------
@@ -1567,7 +1564,7 @@ const scrollToTop = () => window.scroll({ top: 0, behavior: "smooth" });
 
 const initEventListeners = () => {
   if (IS_TOUCH_DEVICE) {
-    onTouch(document);
+    onTouch();
   } else {
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mousedown", onGlobalMouseDown);
@@ -1769,15 +1766,15 @@ const connectDeviceOrientationControls = () => {
   );
 };
 
-const onTouch = (element) => {
+const onTouch = () => {
   let hasMoved = false;
-  element.addEventListener("touchstart", () => {
+  document.addEventListener("touchstart", () => {
     hasMoved = false;
   });
-  element.addEventListener("touchmove", () => {
+  document.addEventListener("touchmove", () => {
     hasMoved = true;
   });
-  element.addEventListener("touchend", (e) => {
+  document.addEventListener("touchend", (e) => {
     const prevClickAction = mousePosition.action;
     const hasClickedScrollDownIndicator = !!e.target.closest(
       SCROLL_DOWN_INDICATOR_SELECTOR
