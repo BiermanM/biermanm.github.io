@@ -97,11 +97,12 @@ const currentLoadingPercentages = {
 };
 let displayedTotalLoadingPercentage = 0;
 const mousePosition = {
-  x: 0,
-  y: 0,
+  x: window.innerWidth / 2,
+  y: window.innerHeight / 2,
   action: null,
   clicked: false,
   hoveredProject: undefined,
+  hasMoved: false,
 };
 let hasScrolledPastJumbotronThreshold = false;
 let infoPopupWaitStatus;
@@ -825,29 +826,37 @@ const initAllScenes = () => {
 
 const renderLoop = () => {
   const newScrollPosition = window.scrollY;
+  const hasScrolled = scrollPosition !== newScrollPosition;
+  const hasScrolledOrMovedCursorOrIsTouchDevice =
+    (IS_TOUCH_DEVICE && asciiLogoScene.controls) ||
+    hasScrolled ||
+    mousePosition.hasMoved;
 
-  if (scrollPosition !== newScrollPosition) {
-    scrollPosition = newScrollPosition;
-    onScroll();
-  }
-
-  if (shouldRenderLaptopScene()) {
-    renderScene(laptopScene);
-    renderScene(laptopScreenScene, laptopScene.camera);
-    if (IS_TOUCH_DEVICE) {
-      syncLaptopScreen();
+  if (hasScrolledOrMovedCursorOrIsTouchDevice) {
+    if (hasScrolled) {
+      scrollPosition = newScrollPosition;
+      onScroll();
     }
-  }
 
-  if (shouldRenderAsciiLogoScene()) {
-    renderScene(asciiLogoScene);
-    updateAsciiLogoRotation();
+    if (shouldRenderLaptopScene()) {
+      renderScene(laptopScene);
+      renderScene(laptopScreenScene, laptopScene.camera);
+      if (IS_TOUCH_DEVICE) {
+        syncLaptopScreen();
+      }
+    }
+
+    if (shouldRenderAsciiLogoScene()) {
+      renderScene(asciiLogoScene);
+      updateAsciiLogoRotation();
+    }
   }
 
   if (statsScene) {
     renderStats();
   }
 
+  mousePosition.hasMoved = false;
   requestAnimationFrame(renderLoop);
 };
 
@@ -871,6 +880,7 @@ const setMousePosition = (mouseOrTouchEvent, isTouch) => {
 
   mousePosition.x = eventClientX || Math.min(x, vw);
   mousePosition.y = eventClientY || Math.min(y, vh);
+  mousePosition.hasMoved = true;
 
   setCursorSizeAndPosition();
 };
@@ -1015,6 +1025,7 @@ const updateLoadingPercentage = async () => {
     loadingScreenPercentageValue.innerHTML = displayedTotalLoadingPercentage;
 
     if (displayedTotalLoadingPercentage === MAX_PERCENTAGE) {
+      onMouseMove(undefined, true);
       break;
     }
 
@@ -1473,8 +1484,10 @@ const resumeEmailCarouselScroll = () => {
 const revealInfoPopup = () => {
   infoPopupWaitStatus = "started";
 
-  infoPopup = updatedScreenContent.querySelector(".info-popup");
-  infoPopupText = infoPopup.querySelector(".text");
+  if (!IS_TOUCH_DEVICE) {
+    infoPopup = updatedScreenContent.querySelector(".info-popup");
+    infoPopupText = infoPopup.querySelector(".text");
+  }
 
   setTimeout(() => {
     // show info popup
@@ -1646,8 +1659,12 @@ const onReadyStateChange = async (event) => {
   }
 };
 
-const onMouseMove = (mouseEvent) => {
-  setMousePosition(mouseEvent);
+const onMouseMove = (mouseEvent, isManuallyCalled) => {
+  if (isManuallyCalled) {
+    mousePosition.hasMoved = true;
+  } else {
+    setMousePosition(mouseEvent);
+  }
   if (isLoadingComplete()) {
     updateAsciiLogoRotation();
     updateLaptopRotation();
