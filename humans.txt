@@ -13,4 +13,4 @@ CSS Accessibility: https://kittygiraudel.com/
 Version: 1
 Launched: February 25, 2024
 Last update: February 25, 2024
-Tools and tech stack: HTML5, CSS3, JavaScript, Three.js, GitHub Pages, VSCode, Figma, Blender
+Tools and tech stack: HTML5, CSS3, JavaScript, Three.js, GitHub Pages, VSCode, Figma, Blender, Terser
