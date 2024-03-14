@@ -9,6 +9,7 @@ import { CSS3DRenderer, CSS3DObject } from "three-css-3d-renderer";
 // ------------- elements -------------
 // ------------------------------------
 
+const CURSOR_ACTION_SELECTOR = "#cursor-action";
 const JUMBOTRON_DESCRIPTION_LINK_SELECTOR = "#jumbotron .description a";
 const SCROLL_DOWN_INDICATOR_SELECTOR = "#jumbotron .scroll-down";
 const SELECTED_WORK_BUTTONS_SELECTOR = "#selected-work .slide .button";
@@ -18,7 +19,7 @@ const FOOTER_SOCIAL_LINKS_SELECTOR = "#footer .social-media";
 
 const html = document.documentElement;
 const cursor = document.getElementById("cursor");
-const cursorAction = document.getElementById("cursor-action");
+const cursorAction = document.querySelector(CURSOR_ACTION_SELECTOR);
 const loadingScreen = document.getElementById("loading-screen");
 const loadingScreenPercentageValue = loadingScreen.querySelector(".value");
 const loadingScreenMobileStartButton = loadingScreen.querySelector(
@@ -101,6 +102,7 @@ const mousePosition = {
   y: window.innerHeight / 2,
   action: null,
   clicked: false,
+  hoveredLink: undefined,
   hoveredProject: undefined,
   hasMoved: false,
 };
@@ -195,6 +197,22 @@ const MouseActions = {
 const SceneType = {
   ASCII_LOGO: "ASCII_LOGO",
   LAPTOP: "LAPTOP",
+};
+
+const EMAIL_ADDRESS = "matt@bierman.io";
+
+const Links = {
+  LIDO: "LIDO",
+  LINKEDIN: "LINKEDIN",
+  GITHUB: "GITHUB",
+  WORKING_NOT_WORKING: "WORKING_NOT_WORKING",
+};
+
+const LinkDestinations = {
+  [Links.GITHUB]: "https://github.com/BiermanM",
+  [Links.LIDO]: "https://lido.app",
+  [Links.LINKEDIN]: "https://linkedin.com/in/biermanm",
+  [Links.WORKING_NOT_WORKING]: "https://workingnotworking.com/108158-matthew",
 };
 
 // ------------------------------------
@@ -885,10 +903,11 @@ const setMousePosition = (mouseOrTouchEvent, isTouch) => {
   setCursorSizeAndPosition();
 };
 
-const updateMouseAction = (action, hoveredProject) => {
+const updateMouseAction = (action, hoveredProject, hoveredLink) => {
   const { action: prevMouseAction } = mousePosition;
   mousePosition.action = action || null;
   mousePosition.hoveredProject = hoveredProject;
+  mousePosition.hoveredLink = hoveredLink;
 
   if (action && !prevMouseAction) {
     if (action === MouseActions.VIEW_SITE && hoveredProject) {
@@ -1482,12 +1501,14 @@ const resumeEmailCarouselScroll = () => {
 };
 
 const revealInfoPopup = () => {
+  if (IS_TOUCH_DEVICE) {
+    return;
+  }
+
   infoPopupWaitStatus = "started";
 
-  if (!IS_TOUCH_DEVICE) {
-    infoPopup = updatedScreenContent.querySelector(".info-popup");
-    infoPopupText = infoPopup.querySelector(".text");
-  }
+  infoPopup = updatedScreenContent.querySelector(".info-popup");
+  infoPopupText = infoPopup.querySelector(".text");
 
   setTimeout(() => {
     // show info popup
@@ -1792,11 +1813,12 @@ const onTouch = () => {
     hasMoved = true;
   });
   document.addEventListener("touchend", (e) => {
-    const prevClickAction = mousePosition.action;
-    const hasClickedScrollDownIndicator = !!e.target.closest(
-      SCROLL_DOWN_INDICATOR_SELECTOR
-    );
-    const hasClickedFooterLogo = !!e.target.closest(FOOTER_LOGO_SELECTOR);
+    const {
+      action: prevClickAction,
+      hoveredLink: prevHoveredLink,
+      hoveredProject: prevHoveredProject,
+    } = mousePosition;
+    const hasClickedCursorAction = !!e.target.closest(CURSOR_ACTION_SELECTOR);
 
     if (hasMoved) {
       updateMouseAction();
@@ -1804,18 +1826,36 @@ const onTouch = () => {
     }
 
     if (prevClickAction) {
+      if (
+        hasClickedCursorAction &&
+        prevClickAction === MouseActions.VIEW_SITE
+      ) {
+        window.open(ProjectUrls[prevHoveredProject], "_blank");
+      } else if (
+        hasClickedCursorAction &&
+        prevClickAction === MouseActions.COPY_EMAIL
+      ) {
+        window.open(`mailto:${EMAIL_ADDRESS}`);
+      } else if (
+        hasClickedCursorAction &&
+        prevClickAction === MouseActions.OPEN_LINK
+      ) {
+        window.open(LinkDestinations[prevHoveredLink], "_blank");
+      }
+
+      e.preventDefault();
       resumeEmailCarouselScroll();
       updateMouseAction();
       setCursorSizeAndPosition();
       setTimeout(() => setMousePosition(e, true), 300);
 
       if (
-        hasClickedScrollDownIndicator &&
+        hasClickedCursorAction &&
         prevClickAction === MouseActions.SCROLL_DOWN
       ) {
         onScrollDownIndicatorClick();
       } else if (
-        hasClickedFooterLogo &&
+        hasClickedCursorAction &&
         prevClickAction === MouseActions.SCROLL_TO_TOP
       ) {
         onFooterLogoClick();
@@ -1824,15 +1864,19 @@ const onTouch = () => {
       setMousePosition(e, true);
       e.preventDefault();
 
+      const linkElement =
+        e.target.closest(JUMBOTRON_DESCRIPTION_LINK_SELECTOR) ||
+        e.target.closest(FOOTER_SOCIAL_LINKS_SELECTOR);
+
       if (e.target.closest(FOOTER_EMAIL_LINKS_SELECTOR)) {
         toggleEmailCarouselScroll();
         updateMouseAction(MouseActions.COPY_EMAIL);
-      } else if (
-        e.target.closest(JUMBOTRON_DESCRIPTION_LINK_SELECTOR) ||
-        e.target.closest(FOOTER_SOCIAL_LINKS_SELECTOR) ||
-        e.target.closest(SELECTED_WORK_BUTTONS_SELECTOR)
-      ) {
-        updateMouseAction(MouseActions.OPEN_LINK);
+      } else if (e.target.closest(SELECTED_WORK_BUTTONS_SELECTOR)) {
+        const hoveredProject = getCurrentHoverableProject();
+        updateMouseAction(MouseActions.VIEW_SITE, hoveredProject);
+      } else if (linkElement) {
+        const hoveredLink = linkElement.dataset.link;
+        updateMouseAction(MouseActions.OPEN_LINK, undefined, hoveredLink);
       } else if (e.target.closest(SCROLL_DOWN_INDICATOR_SELECTOR)) {
         updateMouseAction(MouseActions.SCROLL_DOWN);
       } else if (e.target.closest(FOOTER_LOGO_SELECTOR)) {

@@ -216,6 +216,10 @@ body.is-touch-device #cursor {
   pointer-events: auto;
 }
 
+body.is-touch-device #cursor-action {
+  pointer-events: all;
+}
+
 /* button */
 
 .button {
