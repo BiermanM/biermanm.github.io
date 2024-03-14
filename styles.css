@@ -936,27 +936,27 @@ body.is-touch-device #cursor-action {
   }
 }
 
-/* placeholders */
+/* scrollable content */
 
-#placeholders {
+#scrollable-content {
   position: relative;
   width: 100%;
   pointer-events: none;
 }
 
-#placeholders .jumbotron {
+#scrollable-content .jumbotron {
   height: 500vh;
   background-color: var(--white);
   pointer-events: auto;
 }
 
-#placeholders .selected-work {
+#scrollable-content .selected-work {
   --slide-count: 7;
   height: calc(100vh * var(--slide-count));
   pointer-events: auto;
 }
 
-#placeholders .selected-work.with-shadow {
+#scrollable-content .selected-work.with-shadow {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 4px 20px 4px;
 }
 
@@ -988,7 +988,7 @@ body.is-touch-device #cursor-action {
   z-index: 2;
 }
 
-#placeholders {
+#scrollable-content {
   z-index: 1;
 }
 

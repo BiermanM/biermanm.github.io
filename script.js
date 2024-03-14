@@ -51,10 +51,10 @@ const footerEmailLinks = document.querySelectorAll(FOOTER_EMAIL_LINKS_SELECTOR);
 const footerSocialLinks = document.querySelectorAll(
   FOOTER_SOCIAL_LINKS_SELECTOR
 );
-const placeholders = {
-  jumbotron: document.querySelector("#placeholders .jumbotron"),
-  selectedWork: document.querySelector("#placeholders .selected-work"),
-  footer: document.querySelector("#placeholders .footer"),
+const scrollableContentSections = {
+  jumbotron: document.querySelector("#scrollable-content .jumbotron"),
+  selectedWork: document.querySelector("#scrollable-content .selected-work"),
+  footer: document.querySelector("#scrollable-content .footer"),
 };
 
 // ------------------------------------
@@ -571,7 +571,7 @@ const updateRendererAndCameraSize = (scene, cameraFromOtherScene) => {
 
 const getJumbotronScolledPercentage = () => {
   const jumbotronPlaceholderHeight = getElementSize(
-    placeholders.jumbotron
+    scrollableContentSections.jumbotron
   ).height;
 
   return clampWithinRange(scrollPosition / jumbotronPlaceholderHeight, [0, 1]);
@@ -579,20 +579,20 @@ const getJumbotronScolledPercentage = () => {
 
 const getSelectedWorkSlideCount = () =>
   Math.round(
-    getElementSize(placeholders.selectedWork).height /
+    getElementSize(scrollableContentSections.selectedWork).height /
       getElementSize(selectedWork).height
   );
 
 const getScrolledPercentageWithinCurrentSlide = (slideIndex) => {
   const slideCount = getSelectedWorkSlideCount();
-  const sectionStartPos = placeholders.selectedWork.offsetTop;
+  const sectionStartPos = scrollableContentSections.selectedWork.offsetTop;
   const startPos =
     sectionStartPos +
-    getElementSize(placeholders.selectedWork).height *
+    getElementSize(scrollableContentSections.selectedWork).height *
       (slideIndex / slideCount);
   const endPos =
     sectionStartPos +
-    getElementSize(placeholders.selectedWork).height *
+    getElementSize(scrollableContentSections.selectedWork).height *
       ((slideIndex + 1) / slideCount);
   const scrolledPercentage = getPercentageInRangeFromValue(scrollPosition, [
     startPos,
@@ -1108,25 +1108,25 @@ const zoomTransitionJumbotronToSelectedWork = () => {
   const backgroundColor = `color-mix(in srgb, var(--white), var(--light-gray) ${
     percentageScrolled * 100
   }%)`;
-  applyStyles(placeholders.jumbotron, { backgroundColor });
-  applyStyles(placeholders.selectedWork, { backgroundColor });
+  applyStyles(scrollableContentSections.jumbotron, { backgroundColor });
+  applyStyles(scrollableContentSections.selectedWork, { backgroundColor });
 
   if (
     percentageScrolled === 1 &&
-    !placeholders.selectedWork.classList.contains("with-shadow")
+    !scrollableContentSections.selectedWork.classList.contains("with-shadow")
   ) {
-    placeholders.selectedWork.classList.add("with-shadow");
+    scrollableContentSections.selectedWork.classList.add("with-shadow");
   } else if (
     percentageScrolled < 1 &&
-    placeholders.selectedWork.classList.contains("with-shadow")
+    scrollableContentSections.selectedWork.classList.contains("with-shadow")
   ) {
-    placeholders.selectedWork.classList.remove("with-shadow");
+    scrollableContentSections.selectedWork.classList.remove("with-shadow");
   }
 };
 
 // keep laptop lid closed when selected work section has not been reached
 const closeLaptopLid = () => {
-  const sectionStartPosition = placeholders.selectedWork.offsetTop;
+  const sectionStartPosition = scrollableContentSections.selectedWork.offsetTop;
   const { lid } = laptopScene.mesh;
 
   if (scrollPosition < sectionStartPosition) {
@@ -1489,7 +1489,7 @@ const showScrollDownIndicator = () => {
 
 const syncFooterSize = () => {
   const { height } = getElementSize(footer);
-  applyStyles(placeholders.footer, { height: `${height}px` });
+  applyStyles(scrollableContentSections.footer, { height: `${height}px` });
 };
 
 const toggleEmailCarouselScroll = () => {
@@ -1578,6 +1578,7 @@ const laptopHover = () => {
     }
   } else if (mouseAction === MouseActions.VIEW_SITE) {
     updateMouseAction();
+    setCursorSizeAndPosition();
     if (laptopMeshHovering) {
       laptopMeshHovering = false;
     }
@@ -1768,13 +1769,13 @@ const onScrollDownIndicatorMouseLeave = () => {
 };
 
 const onScrollDownIndicatorClick = () => {
-  const distance = placeholders.jumbotron.offsetHeight;
+  const distance = scrollableContentSections.jumbotron.offsetHeight;
   window.scrollTo({ left: 0, top: distance, behavior: "smooth" });
 };
 
 const onGlobalMouseDown = () => {
   mousePosition.clicked = true;
-  setCursorSizeAndPosition(true);
+  setCursorSizeAndPosition();
 };
 
 const onGlobalMouseUp = () => {
