@@ -1632,6 +1632,8 @@ const initEventListeners = () => {
       onScrollDownIndicatorMouseLeave
     );
     scrollDownIndicator.addEventListener("click", onScrollDownIndicatorClick);
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("keyup", onKeyUp);
   }
 
   window.addEventListener("resize", onWindowResize);
@@ -1893,6 +1895,119 @@ const onTouch = () => {
       await hideLoadingScreen();
     }
   });
+};
+
+const onKeyDown = (e) => {
+  // prevents native scrolling via arrow key press
+  if (e.key.startsWith("Arrow")) {
+    e.preventDefault();
+  }
+};
+
+const onKeyUp = (e) => {
+  if (!isLoadingComplete()) {
+    return;
+  }
+
+  const scrollUp = e.key === "ArrowUp";
+  const scrollDown = e.key === "ArrowDown";
+  const currentSlide = getCurrentSlide();
+  const slidesStartPos = scrollableContentSections.selectedWork.offsetTop;
+  const slideHeight = getWindowSize().height;
+  const scrollToPosition = {
+    "-1": 0,
+    0: slidesStartPos + slideHeight * 0,
+    1: slidesStartPos + slideHeight * 1,
+    2: slidesStartPos + slideHeight * 2,
+    3: slidesStartPos + slideHeight * 3,
+    4: slidesStartPos + slideHeight * 4,
+    5: slidesStartPos + slideHeight * 5,
+    6: slidesStartPos + slideHeight * 6,
+    7: slidesStartPos + slideHeight * 7,
+  };
+  let scrollPos;
+
+  if (currentSlide.index === 0 && currentSlide.percentage === 0) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["-1"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["1"];
+    }
+  } else if (
+    (currentSlide.index === 0 && currentSlide.percentage === 1) ||
+    (currentSlide.index === 1 && currentSlide.percentage === 0)
+  ) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["0"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["2"];
+    }
+  } else if (
+    (currentSlide.index === 1 && currentSlide.percentage === 1) ||
+    (currentSlide.index === 2 && currentSlide.percentage === 0)
+  ) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["1"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["4"];
+    }
+  } else if (
+    (currentSlide.index === 3 && currentSlide.percentage === 1) ||
+    (currentSlide.index === 4 && currentSlide.percentage === 0)
+  ) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["2"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["6"];
+    }
+  } else if (
+    (currentSlide.index === 5 && currentSlide.percentage === 1) ||
+    (currentSlide.index === 6 && currentSlide.percentage === 0)
+  ) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["4"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["7"];
+    }
+  } else if (currentSlide.index === -1) {
+    if (scrollUp) {
+      scrollPos = 0;
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["0"];
+    }
+  } else if (currentSlide.index === 0) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["0"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["1"];
+    }
+  } else if (currentSlide.index === 1) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["1"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["2"];
+    }
+  } else if (currentSlide.index === 2 || currentSlide.index === 3) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["2"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["4"];
+    }
+  } else if (currentSlide.index === 4 || currentSlide.index === 5) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["4"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["6"];
+    }
+  } else if (currentSlide.index === 6) {
+    if (scrollUp) {
+      scrollPos = scrollToPosition["6"];
+    } else if (scrollDown) {
+      scrollPos = scrollToPosition["7"];
+    }
+  }
+
+  window.scrollTo({ left: 0, top: scrollPos, behavior: "smooth" });
 };
 
 // ------------------------------------
