@@ -657,6 +657,15 @@ const shouldRenderAsciiLogoScene = () =>
 const shouldRenderLaptopScene = () =>
   isLoadingComplete() && getJumbotronScolledPercentage() > 0.5;
 
+const smoothScrollToSlide = (slideIndex) => {
+  const slidesStartPos = scrollableContentSections.selectedWork.offsetTop;
+  const slideHeight = getWindowSize().height;
+  const scrollPos =
+    slideIndex === -1 ? 0 : slidesStartPos + slideHeight * slideIndex;
+
+  window.scrollTo({ left: 0, top: scrollPos, behavior: "smooth" });
+};
+
 // ------------------------------------
 // ---------- main functions ----------
 // ------------------------------------
@@ -1595,8 +1604,6 @@ const generateFooterBackground = () => {
   footerBackground.innerText = ".".repeat(numDotRows * numDotColumns);
 };
 
-const scrollToTop = () => window.scroll({ top: 0, behavior: "smooth" });
-
 const initEventListeners = () => {
   if (IS_TOUCH_DEVICE) {
     onTouch();
@@ -1604,32 +1611,32 @@ const initEventListeners = () => {
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mousedown", onGlobalMouseDown);
     document.addEventListener("mouseup", onGlobalMouseUp);
-    jumbotronDescriptionLink.addEventListener(
-      "mouseenter",
-      onJumbotronDescriptionLinkMouseEnter
+    jumbotronDescriptionLink.addEventListener("mouseenter", () =>
+      updateMouseAction(MouseActions.OPEN_LINK)
     );
-    jumbotronDescriptionLink.addEventListener(
-      "mouseleave",
-      onJumbotronDescriptionLinkMouseLeave
+    jumbotronDescriptionLink.addEventListener("mouseleave", () =>
+      updateMouseAction()
     );
     footerEmailLinks.forEach((link) => {
       link.addEventListener("mouseenter", onFooterEmailLinkMouseEnter);
       link.addEventListener("mouseleave", onFooterEmailLinkMouseLeave);
     });
-    footerLogo.addEventListener("click", onFooterLogoClick);
-    footerLogo.addEventListener("mouseenter", onFooterLogoMouseEnter);
-    footerLogo.addEventListener("mouseleave", onFooterLogoMouseLeave);
-    footerSocialLinks.forEach((link) => {
-      link.addEventListener("mouseenter", onFooterSocialLinkMouseEnter);
-      link.addEventListener("mouseleave", onFooterSocialLinkMouseLeave);
-    });
-    scrollDownIndicator.addEventListener(
-      "mouseenter",
-      onScrollDownIndicatorMouseEnter
+    footerLogo.addEventListener("click", smoothScrollToSlide(-1));
+    footerLogo.addEventListener("mouseenter", () =>
+      updateMouseAction(MouseActions.SCROLL_TO_TOP)
     );
-    scrollDownIndicator.addEventListener(
-      "mouseleave",
-      onScrollDownIndicatorMouseLeave
+    footerLogo.addEventListener("mouseleave", () => updateMouseAction());
+    footerSocialLinks.forEach((link) => {
+      link.addEventListener("mouseenter", () =>
+        updateMouseAction(MouseActions.OPEN_LINK)
+      );
+      link.addEventListener("mouseleave", () => updateMouseAction());
+    });
+    scrollDownIndicator.addEventListener("mouseenter", () =>
+      updateMouseAction(MouseActions.SCROLL_DOWN)
+    );
+    scrollDownIndicator.addEventListener("mouseleave", () =>
+      updateMouseAction()
     );
     scrollDownIndicator.addEventListener("click", onScrollDownIndicatorClick);
     document.addEventListener("keydown", onKeyDown);
@@ -1724,14 +1731,6 @@ const onScroll = () => {
   updateInfoPopupVisibility();
 };
 
-const onJumbotronDescriptionLinkMouseEnter = () => {
-  updateMouseAction(MouseActions.OPEN_LINK);
-};
-
-const onJumbotronDescriptionLinkMouseLeave = () => {
-  updateMouseAction();
-};
-
 const onFooterEmailLinkMouseEnter = () => {
   toggleEmailCarouselScroll();
   updateMouseAction(MouseActions.COPY_EMAIL);
@@ -1739,34 +1738,6 @@ const onFooterEmailLinkMouseEnter = () => {
 
 const onFooterEmailLinkMouseLeave = () => {
   toggleEmailCarouselScroll();
-  updateMouseAction();
-};
-
-const onFooterLogoClick = () => {
-  scrollToTop();
-};
-
-const onFooterLogoMouseEnter = () => {
-  updateMouseAction(MouseActions.SCROLL_TO_TOP);
-};
-
-const onFooterLogoMouseLeave = () => {
-  updateMouseAction();
-};
-
-const onFooterSocialLinkMouseEnter = () => {
-  updateMouseAction(MouseActions.OPEN_LINK);
-};
-
-const onFooterSocialLinkMouseLeave = () => {
-  updateMouseAction();
-};
-
-const onScrollDownIndicatorMouseEnter = () => {
-  updateMouseAction(MouseActions.SCROLL_DOWN);
-};
-
-const onScrollDownIndicatorMouseLeave = () => {
   updateMouseAction();
 };
 
@@ -1861,7 +1832,7 @@ const onTouch = () => {
         hasClickedCursorAction &&
         prevClickAction === MouseActions.SCROLL_TO_TOP
       ) {
-        onFooterLogoClick();
+        smoothScrollToSlide(-1);
       }
     } else {
       setMousePosition(e, true);
@@ -1912,102 +1883,86 @@ const onKeyUp = (e) => {
   const scrollUp = e.key === "ArrowUp";
   const scrollDown = e.key === "ArrowDown";
   const currentSlide = getCurrentSlide();
-  const slidesStartPos = scrollableContentSections.selectedWork.offsetTop;
-  const slideHeight = getWindowSize().height;
-  const scrollToPosition = {
-    "-1": 0,
-    0: slidesStartPos + slideHeight * 0,
-    1: slidesStartPos + slideHeight * 1,
-    2: slidesStartPos + slideHeight * 2,
-    3: slidesStartPos + slideHeight * 3,
-    4: slidesStartPos + slideHeight * 4,
-    5: slidesStartPos + slideHeight * 5,
-    6: slidesStartPos + slideHeight * 6,
-    7: slidesStartPos + slideHeight * 7,
-  };
-  let scrollPos;
 
   if (currentSlide.index === 0 && currentSlide.percentage === 0) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["-1"];
+      smoothScrollToSlide(-1);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["1"];
+      smoothScrollToSlide(1);
     }
   } else if (
     (currentSlide.index === 0 && currentSlide.percentage === 1) ||
     (currentSlide.index === 1 && currentSlide.percentage === 0)
   ) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["0"];
+      smoothScrollToSlide(0);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["2"];
+      smoothScrollToSlide(2);
     }
   } else if (
     (currentSlide.index === 1 && currentSlide.percentage === 1) ||
     (currentSlide.index === 2 && currentSlide.percentage === 0)
   ) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["1"];
+      smoothScrollToSlide(1);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["4"];
+      smoothScrollToSlide(4);
     }
   } else if (
     (currentSlide.index === 3 && currentSlide.percentage === 1) ||
     (currentSlide.index === 4 && currentSlide.percentage === 0)
   ) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["2"];
+      smoothScrollToSlide(2);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["6"];
+      smoothScrollToSlide(6);
     }
   } else if (
     (currentSlide.index === 5 && currentSlide.percentage === 1) ||
     (currentSlide.index === 6 && currentSlide.percentage === 0)
   ) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["4"];
+      smoothScrollToSlide(4);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["7"];
+      smoothScrollToSlide(7);
     }
   } else if (currentSlide.index === -1) {
     if (scrollUp) {
-      scrollPos = 0;
+      smoothScrollToSlide(-1);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["0"];
+      smoothScrollToSlide(0);
     }
   } else if (currentSlide.index === 0) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["0"];
+      smoothScrollToSlide(0);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["1"];
+      smoothScrollToSlide(1);
     }
   } else if (currentSlide.index === 1) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["1"];
+      smoothScrollToSlide(1);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["2"];
+      smoothScrollToSlide(2);
     }
   } else if (currentSlide.index === 2 || currentSlide.index === 3) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["2"];
+      smoothScrollToSlide(2);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["4"];
+      smoothScrollToSlide(4);
     }
   } else if (currentSlide.index === 4 || currentSlide.index === 5) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["4"];
+      smoothScrollToSlide(4);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["6"];
+      smoothScrollToSlide(6);
     }
   } else if (currentSlide.index === 6) {
     if (scrollUp) {
-      scrollPos = scrollToPosition["6"];
+      smoothScrollToSlide(6);
     } else if (scrollDown) {
-      scrollPos = scrollToPosition["7"];
+      smoothScrollToSlide(7);
     }
   }
-
-  window.scrollTo({ left: 0, top: scrollPos, behavior: "smooth" });
 };
 
 // ------------------------------------

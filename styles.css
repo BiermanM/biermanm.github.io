@@ -945,7 +945,7 @@ body.is-touch-device #cursor-action {
 }
 
 #scrollable-content .jumbotron {
-  height: 500vh;
+  height: 200vh;
   background-color: var(--white);
   pointer-events: auto;
 }
