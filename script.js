@@ -1194,6 +1194,7 @@ const slideLaptop = (slideIndex, origin, destination) => {
   const TRANSLATE_X_SCALAR = 0.325;
   const LAPTOP_3D_MODEL_WIDTH = 100;
   const SLIDE_TEXT_TRANSFORM_SCALAR = 20;
+  const SLIDE_DISTANCE_DAMPEN_SCALAR = 0.05;
 
   const { height: vh, width: vw } = getWindowSize();
   const percentageScrolledThroughSection =
@@ -1344,8 +1345,15 @@ const slideLaptop = (slideIndex, origin, destination) => {
     LAPTOP_INIT.rotation.y = ROTATION_Y_SCALAR * percentage * direction;
     updateLaptopRotation();
 
+    const dampenAmount =
+      maxDist *
+      SLIDE_DISTANCE_DAMPEN_SCALAR *
+      Math.pow(
+        Math.max(0, getPercentageInRangeFromValue(percentage, [0.75, 1])),
+        3
+      );
     const translation = `translateX(${
-      maxDist * percentage * direction * -1
+      (maxDist - dampenAmount) * percentage * direction * -1
     }px)`;
     applyStyles(laptopContainer, { transform: translation });
     applyStyles(laptopScreen, { transform: translation });
