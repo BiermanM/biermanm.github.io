@@ -375,7 +375,7 @@ body.is-touch-device #cursor-action {
 
 #jumbotron .description {
   position: absolute;
-  top: 40px;
+  top: 44px;
   right: var(--container-padding);
   display: flex;
   flex-direction: column;
@@ -386,6 +386,7 @@ body.is-touch-device #cursor-action {
   font-size: 16px;
   font-weight: 400;
   line-height: 150%;
+  text-align: right;
 }
 
 #jumbotron .description > * {
@@ -502,7 +503,7 @@ body.is-touch-device #cursor-action {
   }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 700px) {
   #jumbotron .description {
     top: calc(calc(50vw * 0.3) + 24px);
   }

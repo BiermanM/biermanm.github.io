@@ -202,16 +202,16 @@ const SceneType = {
 const EMAIL_ADDRESS = "matt@bierman.io";
 
 const Links = {
-  LIDO: "LIDO",
   LINKEDIN: "LINKEDIN",
   GITHUB: "GITHUB",
+  SIGMA_COMPUTING: "SIGMA_COMPUTING",
   WORKING_NOT_WORKING: "WORKING_NOT_WORKING",
 };
 
 const LinkDestinations = {
   [Links.GITHUB]: "https://github.com/BiermanM",
-  [Links.LIDO]: "https://lido.app",
   [Links.LINKEDIN]: "https://linkedin.com/in/biermanm",
+  [Links.SIGMA_COMPUTING]: "https://sigmacomputing.com",
   [Links.WORKING_NOT_WORKING]: "https://workingnotworking.com/108158-matthew",
 };
 
