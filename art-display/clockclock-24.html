@@ -1,565 +1,625 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ClockClock 24</title>
-<style>
-  :root {
-    --bg: #141413;
-    --ink: #e8e6e1;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
-    overflow: hidden;
-  }
-  #stage {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-  }
-  canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  .chrome {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 20px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--ink);
-    pointer-events: none;
-    transition: opacity 200ms ease;
-  }
-  .chrome.hidden { opacity: 0; pointer-events: none; }
-  .chrome .group {
-    display: flex;
-    gap: 24px;
-    pointer-events: auto;
-  }
-  .chrome .brand { pointer-events: auto; }
-  .chrome .brand .muted { opacity: 0.5; }
-  .btn-group { display: flex; gap: 2px; }
-  .btn {
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--ink);
-    padding: 6px 12px;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-family: inherit;
-    cursor: pointer;
-  }
-  .btn.active {
-    background: var(--ink);
-    color: var(--bg);
-  }
-  .hint {
-    position: fixed;
-    bottom: 18px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: var(--ink);
-    opacity: 0.4;
-    pointer-events: none;
-    transition: opacity 200ms ease;
-  }
-  .hint.hidden { opacity: 0; }
-</style>
-</head>
-<body>
-
-<div id="stage">
-  <canvas id="canvas"></canvas>
-</div>
-
-<div class="chrome" id="chrome">
-  <div class="brand">
-    <span class="muted">ClockClock&nbsp;24&nbsp;/&nbsp;</span>
-    <span id="modeLabel">minimal</span>
-  </div>
-  <div class="group">
-    <div class="btn-group" data-control="mode">
-      <button class="btn active" data-value="minimal">minimal</button>
-      <button class="btn" data-value="medium">medium</button>
-      <button class="btn" data-value="elaborate">elaborate</button>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>ClockClock 24</title>
+    <style>
+      :root {
+        --bg: #141413;
+        --ink: #e8e6e1;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+        overflow: hidden;
+      }
+      #stage {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .chrome {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 20px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--ink);
+        pointer-events: none;
+        transition: opacity 200ms ease;
+      }
+      .chrome.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .chrome .group {
+        display: flex;
+        gap: 24px;
+        pointer-events: auto;
+      }
+      .chrome .brand {
+        pointer-events: auto;
+      }
+      .chrome .brand .muted {
+        opacity: 0.5;
+      }
+      .btn-group {
+        display: flex;
+        gap: 2px;
+      }
+      .btn {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid var(--ink);
+        padding: 6px 12px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .btn.active {
+        background: var(--ink);
+        color: var(--bg);
+      }
+      .hint {
+        position: fixed;
+        bottom: 18px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        color: var(--ink);
+        opacity: 0.4;
+        pointer-events: none;
+        transition: opacity 200ms ease;
+      }
+      .hint.hidden {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <canvas id="canvas"></canvas>
     </div>
-    <div class="btn-group" data-control="hour">
-      <button class="btn active" data-value="12">12H</button>
-      <button class="btn" data-value="24">24H</button>
+
+    <div class="chrome" id="chrome">
+      <div class="brand">
+        <span class="muted">ClockClock&nbsp;24&nbsp;/&nbsp;</span>
+        <span id="modeLabel">minimal</span>
+      </div>
+      <div class="group">
+        <div class="btn-group" data-control="mode">
+          <button class="btn active" data-value="minimal">minimal</button>
+          <button class="btn" data-value="medium">medium</button>
+          <button class="btn" data-value="elaborate">elaborate</button>
+        </div>
+        <div class="btn-group" data-control="hour">
+          <button class="btn active" data-value="12">12H</button>
+          <button class="btn" data-value="24">24H</button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="hint" id="hint">Click anywhere to hide controls</div>
+    <div class="hint" id="hint">Click anywhere to hide controls</div>
 
-<script>
-(() => {
-  "use strict";
+    <script>
+      (() => {
+        "use strict";
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // EASING
-  // ─────────────────────────────────────────────────────────────────────────
-  const easeInOutCubic = (t) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  const easeInOutQuint = (t) =>
-    t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+        // ─────────────────────────────────────────────────────────────────────────
+        // EASING
+        // ─────────────────────────────────────────────────────────────────────────
+        const easeInOutCubic = (t) =>
+          t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const easeInOutQuint = (t) =>
+          t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // DIGIT MAP (identical to React version)
-  // ─────────────────────────────────────────────────────────────────────────
-  const U = 0;
-  const R = Math.PI / 2;
-  const D = Math.PI;
-  const L = -Math.PI / 2;
-  const OFF = (5 * Math.PI) / 4;
+        // ─────────────────────────────────────────────────────────────────────────
+        // DIGIT MAP (identical to React version)
+        // ─────────────────────────────────────────────────────────────────────────
+        const U = 0;
+        const R = Math.PI / 2;
+        const D = Math.PI;
+        const L = -Math.PI / 2;
+        const OFF = (5 * Math.PI) / 4;
 
-  const DIGITS = {
-    "0": [
-      [R, D], [L, D],
-      [U, D], [U, D],
-      [U, R], [U, L],
-    ],
-    "1": [
-      [D, D], [D, D],
-      [U, D], [U, D],
-      [U, U], [U, U],
-    ],
-    "2": [
-      [R, D], [L, D],
-      [U, R], [L, D],
-      [U, R], [L, L],
-    ],
-    "3": [
-      [R, D], [L, D],
-      [R, D], [L, D],
-      [U, R], [L, L],
-    ],
-    "4": [
-      [U, D], [U, D],
-      [U, R], [L, D],
-      [U, U], [U, U],
-    ],
-    "5": [
-      [R, D], [L, L],
-      [U, R], [L, D],
-      [U, R], [L, L],
-    ],
-    "6": [
-      [R, D], [L, L],
-      [U, R], [L, D],
-      [U, R], [U, L],
-    ],
-    "7": [
-      [R, D], [L, D],
-      [U, U], [U, U],
-      [U, U], [U, U],
-    ],
-    "8": [
-      [R, D], [L, D],
-      [U, R], [U, L],
-      [U, R], [U, L],
-    ],
-    "9": [
-      [R, D], [L, D],
-      [U, R], [U, L],
-      [U, R], [L, L],
-    ],
-    " ": [
-      [OFF, OFF], [OFF, OFF],
-      [OFF, OFF], [OFF, OFF],
-      [OFF, OFF], [OFF, OFF],
-    ],
-  };
+        const DIGITS = {
+          0: [
+            [R, D],
+            [L, D],
+            [U, D],
+            [U, D],
+            [U, R],
+            [U, L],
+          ],
+          1: [
+            [D, D],
+            [D, D],
+            [U, D],
+            [U, D],
+            [U, U],
+            [U, U],
+          ],
+          2: [
+            [R, D],
+            [L, D],
+            [U, R],
+            [L, D],
+            [U, R],
+            [L, L],
+          ],
+          3: [
+            [R, D],
+            [L, D],
+            [R, D],
+            [L, D],
+            [U, R],
+            [L, L],
+          ],
+          4: [
+            [U, D],
+            [U, D],
+            [U, R],
+            [L, D],
+            [U, U],
+            [U, U],
+          ],
+          5: [
+            [R, D],
+            [L, L],
+            [U, R],
+            [L, D],
+            [U, R],
+            [L, L],
+          ],
+          6: [
+            [R, D],
+            [L, L],
+            [U, R],
+            [L, D],
+            [U, R],
+            [U, L],
+          ],
+          7: [
+            [R, D],
+            [L, D],
+            [U, U],
+            [U, U],
+            [U, U],
+            [U, U],
+          ],
+          8: [
+            [R, D],
+            [L, D],
+            [U, R],
+            [U, L],
+            [U, R],
+            [U, L],
+          ],
+          9: [
+            [R, D],
+            [L, D],
+            [U, R],
+            [U, L],
+            [U, R],
+            [L, L],
+          ],
+          " ": [
+            [OFF, OFF],
+            [OFF, OFF],
+            [OFF, OFF],
+            [OFF, OFF],
+            [OFF, OFF],
+            [OFF, OFF],
+          ],
+        };
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // GRID CONFIG — 4 cols × 6 rows = 24 clocks (portrait: HH over MM)
-  // ─────────────────────────────────────────────────────────────────────────
-  const COLS = 4;
-  const ROWS = 6;
-  const TOTAL_CLOCKS = COLS * ROWS;
-  const TOTAL_HANDS = TOTAL_CLOCKS * 2;
+        // ─────────────────────────────────────────────────────────────────────────
+        // GRID CONFIG — 4 cols × 6 rows = 24 clocks (portrait: HH over MM)
+        // ─────────────────────────────────────────────────────────────────────────
+        const COLS = 4;
+        const ROWS = 6;
+        const TOTAL_CLOCKS = COLS * ROWS;
+        const TOTAL_HANDS = TOTAL_CLOCKS * 2;
 
-  function timeToTargets(hh, mm) {
-    const digits = [hh[0], hh[1], mm[0], mm[1]];
-    const targets = new Array(TOTAL_HANDS);
-    for (let d = 0; d < 4; d++) {
-      const shape = DIGITS[digits[d]] || DIGITS[" "];
-      const rowBand = d < 2 ? 0 : 1;
-      const colBand = d % 2;
-      for (let localRow = 0; localRow < 3; localRow++) {
-        for (let localCol = 0; localCol < 2; localCol++) {
-          const localIdx = localRow * 2 + localCol;
-          const gridRow = rowBand * 3 + localRow;
-          const gridCol = colBand * 2 + localCol;
-          const clockIdx = gridRow * COLS + gridCol;
-          const [a, b] = shape[localIdx];
-          targets[clockIdx * 2] = a;
-          targets[clockIdx * 2 + 1] = b;
+        function timeToTargets(hh, mm) {
+          const digits = [hh[0], hh[1], mm[0], mm[1]];
+          const targets = new Array(TOTAL_HANDS);
+          for (let d = 0; d < 4; d++) {
+            const shape = DIGITS[digits[d]] || DIGITS[" "];
+            const rowBand = d < 2 ? 0 : 1;
+            const colBand = d % 2;
+            for (let localRow = 0; localRow < 3; localRow++) {
+              for (let localCol = 0; localCol < 2; localCol++) {
+                const localIdx = localRow * 2 + localCol;
+                const gridRow = rowBand * 3 + localRow;
+                const gridCol = colBand * 2 + localCol;
+                const clockIdx = gridRow * COLS + gridCol;
+                const [a, b] = shape[localIdx];
+                targets[clockIdx * 2] = a;
+                targets[clockIdx * 2 + 1] = b;
+              }
+            }
+          }
+          return targets;
         }
-      }
-    }
-    return targets;
-  }
 
-  function shortestDelta(from, to) {
-    let d = (to - from) % (2 * Math.PI);
-    if (d > Math.PI) d -= 2 * Math.PI;
-    if (d < -Math.PI) d += 2 * Math.PI;
-    return d;
-  }
+        function shortestDelta(from, to) {
+          let d = (to - from) % (2 * Math.PI);
+          if (d > Math.PI) d -= 2 * Math.PI;
+          if (d < -Math.PI) d += 2 * Math.PI;
+          return d;
+        }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // CHOREOGRAPHER
-  // ─────────────────────────────────────────────────────────────────────────
-  function applyChoreography(hands, targets, mode, now) {
-    for (let i = 0; i < hands.length; i++) {
-      const h = hands[i];
-      const clockIdx = Math.floor(i / 2);
-      const col = clockIdx % COLS;
-      const row = Math.floor(clockIdx / COLS);
+        // ─────────────────────────────────────────────────────────────────────────
+        // CHOREOGRAPHER
+        // ─────────────────────────────────────────────────────────────────────────
+        function applyChoreography(hands, targets, mode, now) {
+          for (let i = 0; i < hands.length; i++) {
+            const h = hands[i];
+            const clockIdx = Math.floor(i / 2);
+            const col = clockIdx % COLS;
+            const row = Math.floor(clockIdx / COLS);
 
-      let duration, delay, easing, extraRotations, direction;
-      if (mode === "minimal") {
-        duration = 1800;
-        delay = 0;
-        easing = easeInOutCubic;
-        extraRotations = 0;
-        direction = 0;
-      } else if (mode === "medium") {
-        duration = 2400;
-        delay = row * 110 + col * 40;
-        easing = easeInOutCubic;
-        extraRotations = 1;
-        direction = i % 2 === 0 ? 1 : -1;
-      } else {
-        duration = 3600;
-        delay = (row * 2 + col) * 80 + (i % 2) * 30;
-        easing = easeInOutQuint;
-        extraRotations = 2;
-        direction = i % 2 === 0 ? 1 : -1;
-      }
+            let duration, delay, easing, extraRotations, direction;
+            if (mode === "minimal") {
+              duration = 1800;
+              delay = 0;
+              easing = easeInOutCubic;
+              extraRotations = 0;
+              direction = 0;
+            } else if (mode === "medium") {
+              duration = 2400;
+              delay = row * 110 + col * 40;
+              easing = easeInOutCubic;
+              extraRotations = 1;
+              direction = i % 2 === 0 ? 1 : -1;
+            } else {
+              duration = 3600;
+              delay = (row * 2 + col) * 80 + (i % 2) * 30;
+              easing = easeInOutQuint;
+              extraRotations = 2;
+              direction = i % 2 === 0 ? 1 : -1;
+            }
 
-      const shortest = shortestDelta(h.current, targets[i]);
-      let totalDelta;
-      if (direction === 0) {
-        totalDelta = shortest;
-      } else {
-        const base = direction === 1
-          ? (shortest > 0 ? shortest : shortest + 2 * Math.PI)
-          : (shortest < 0 ? shortest : shortest - 2 * Math.PI);
-        totalDelta = base + direction * extraRotations * 2 * Math.PI;
-      }
+            const shortest = shortestDelta(h.current, targets[i]);
+            let totalDelta;
+            if (direction === 0) {
+              totalDelta = shortest;
+            } else {
+              const base =
+                direction === 1
+                  ? shortest > 0
+                    ? shortest
+                    : shortest + 2 * Math.PI
+                  : shortest < 0
+                    ? shortest
+                    : shortest - 2 * Math.PI;
+              totalDelta = base + direction * extraRotations * 2 * Math.PI;
+            }
 
-      h.start = h.current;
-      h.target = h.current + totalDelta;
-      h.t0 = now + delay;
-      h.duration = duration;
-      h.easing = easing;
-    }
-  }
+            h.start = h.current;
+            h.target = h.current + totalDelta;
+            h.t0 = now + delay;
+            h.duration = duration;
+            h.easing = easing;
+          }
+        }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // RENDER (canvas — identical logic to React version)
-  // ─────────────────────────────────────────────────────────────────────────
-  const FACE_COLOR = "#050504";
-  const BG = "#141413";
-  const HAND_COLOR = "#e8e6e1";
-  const PIVOT_COLOR = "#e8e6e1";
-  const WELL_SHADOW = "rgba(0, 0, 0, 0.98)";
-  const HAND_SHADOW_INNER = "rgba(0, 0, 0, 0.9)";
+        // ─────────────────────────────────────────────────────────────────────────
+        // RENDER (canvas — identical logic to React version)
+        // ─────────────────────────────────────────────────────────────────────────
+        const FACE_COLOR = "#050504";
+        const BG = "#141413";
+        const HAND_COLOR = "#e8e6e1";
+        const PIVOT_COLOR = "#e8e6e1";
+        const WELL_SHADOW = "rgba(0, 0, 0, 0.98)";
+        const HAND_SHADOW_INNER = "rgba(0, 0, 0, 0.9)";
 
-  const WELL_SHADOW_DX_RATIO = -0.055;
-  const WELL_SHADOW_DY_RATIO = -0.075;
-  const WELL_SHADOW_BLUR_RATIO = 0.13;
-  const HAND_SHADOW_DX_RATIO = 0.03;
-  const HAND_SHADOW_DY_RATIO = 0.045;
-  const HAND_SHADOW_BLUR_RATIO = 0.05;
+        const WELL_SHADOW_DX_RATIO = -0.055;
+        const WELL_SHADOW_DY_RATIO = -0.075;
+        const WELL_SHADOW_BLUR_RATIO = 0.13;
+        const HAND_SHADOW_DX_RATIO = 0.03;
+        const HAND_SHADOW_DY_RATIO = 0.045;
+        const HAND_SHADOW_BLUR_RATIO = 0.05;
 
-  function render(ctx, size, hands) {
-    const { w, h, dpr } = size;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        function render(ctx, size, hands) {
+          const { w, h, dpr } = size;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    ctx.fillStyle = BG;
-    ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = BG;
+          ctx.fillRect(0, 0, w, h);
 
-    const marginRatio = 0.08;
-    const availW = w * (1 - marginRatio * 2);
-    const availH = h * (1 - marginRatio * 2);
-    const cellW = availW / COLS;
-    const cellH = availH / ROWS;
-    const cell = Math.min(cellW, cellH);
-    const gridW = cell * COLS;
-    const gridH = cell * ROWS;
-    const originX = (w - gridW) / 2;
-    const originY = (h - gridH) / 2;
+          const marginRatio = 0.08;
+          const availW = w * (1 - marginRatio * 2);
+          const availH = h * (1 - marginRatio * 2);
+          const cellW = availW / COLS;
+          const cellH = availH / ROWS;
+          const cell = Math.min(cellW, cellH);
+          const gridW = cell * COLS;
+          const gridH = cell * ROWS;
+          const originX = (w - gridW) / 2;
+          const originY = (h - gridH) / 2;
 
-    const radius = cell * 0.42;
-    const handLen = radius * 0.90;
-    const handWidth = Math.max(4, cell * 0.09);
-    const pivotR = Math.max(2, cell * 0.055);
+          const radius = cell * 0.42;
+          const handLen = radius * 0.9;
+          const handWidth = Math.max(4, cell * 0.09);
+          const pivotR = Math.max(2, cell * 0.055);
 
-    const wellShadowDx = cell * WELL_SHADOW_DX_RATIO;
-    const wellShadowDy = cell * WELL_SHADOW_DY_RATIO;
-    const wellShadowBlur = cell * WELL_SHADOW_BLUR_RATIO;
-    const handShadowDx = cell * HAND_SHADOW_DX_RATIO;
-    const handShadowDy = cell * HAND_SHADOW_DY_RATIO;
-    const handShadowBlur = cell * HAND_SHADOW_BLUR_RATIO;
+          const wellShadowDx = cell * WELL_SHADOW_DX_RATIO;
+          const wellShadowDy = cell * WELL_SHADOW_DY_RATIO;
+          const wellShadowBlur = cell * WELL_SHADOW_BLUR_RATIO;
+          const handShadowDx = cell * HAND_SHADOW_DX_RATIO;
+          const handShadowDy = cell * HAND_SHADOW_DY_RATIO;
+          const handShadowBlur = cell * HAND_SHADOW_BLUR_RATIO;
 
-    ctx.lineCap = "butt";
-    ctx.lineJoin = "miter";
+          ctx.lineCap = "butt";
+          ctx.lineJoin = "miter";
 
-    // Pass 1: disc faces
-    for (let i = 0; i < TOTAL_CLOCKS; i++) {
-      const row = Math.floor(i / COLS);
-      const col = i % COLS;
-      const cx = originX + col * cell + cell / 2;
-      const cy = originY + row * cell + cell / 2;
+          // Pass 1: disc faces
+          for (let i = 0; i < TOTAL_CLOCKS; i++) {
+            const row = Math.floor(i / COLS);
+            const col = i % COLS;
+            const cx = originX + col * cell + cell / 2;
+            const cy = originY + row * cell + cell / 2;
 
-      ctx.fillStyle = FACE_COLOR;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fill();
-    }
+            ctx.fillStyle = FACE_COLOR;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
 
-    // Pass 2: well shadow (inner shadow, upper-left)
-    for (let i = 0; i < TOTAL_CLOCKS; i++) {
-      const row = Math.floor(i / COLS);
-      const col = i % COLS;
-      const cx = originX + col * cell + cell / 2;
-      const cy = originY + row * cell + cell / 2;
+          // Pass 2: well shadow (inner shadow, upper-left)
+          for (let i = 0; i < TOTAL_CLOCKS; i++) {
+            const row = Math.floor(i / COLS);
+            const col = i % COLS;
+            const cx = originX + col * cell + cell / 2;
+            const cy = originY + row * cell + cell / 2;
 
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.clip();
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.clip();
 
-      ctx.shadowColor = WELL_SHADOW;
-      ctx.shadowBlur = wellShadowBlur;
-      const OFFSCREEN = 100000;
-      ctx.shadowOffsetX = wellShadowDx + OFFSCREEN;
-      ctx.shadowOffsetY = wellShadowDy;
+            ctx.shadowColor = WELL_SHADOW;
+            ctx.shadowBlur = wellShadowBlur;
+            const OFFSCREEN = 100000;
+            ctx.shadowOffsetX = wellShadowDx + OFFSCREEN;
+            ctx.shadowOffsetY = wellShadowDy;
 
-      ctx.fillStyle = BG;
-      ctx.beginPath();
-      ctx.arc(cx - OFFSCREEN, cy, radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
+            ctx.fillStyle = BG;
+            ctx.beginPath();
+            ctx.arc(cx - OFFSCREEN, cy, radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
 
-    // Pass 3: hand shadows (clipped to face)
-    for (let i = 0; i < TOTAL_CLOCKS; i++) {
-      const row = Math.floor(i / COLS);
-      const col = i % COLS;
-      const cx = originX + col * cell + cell / 2;
-      const cy = originY + row * cell + cell / 2;
+          // Pass 3: hand shadows (clipped to face)
+          for (let i = 0; i < TOTAL_CLOCKS; i++) {
+            const row = Math.floor(i / COLS);
+            const col = i % COLS;
+            const cx = originX + col * cell + cell / 2;
+            const cy = originY + row * cell + cell / 2;
 
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.clip();
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.clip();
 
-      ctx.shadowColor = HAND_SHADOW_INNER;
-      ctx.shadowBlur = handShadowBlur;
-      const OFFSCREEN = 100000;
-      ctx.strokeStyle = HAND_COLOR;
-      ctx.lineWidth = handWidth;
-      ctx.shadowOffsetX = handShadowDx + OFFSCREEN;
-      ctx.shadowOffsetY = handShadowDy;
+            ctx.shadowColor = HAND_SHADOW_INNER;
+            ctx.shadowBlur = handShadowBlur;
+            const OFFSCREEN = 100000;
+            ctx.strokeStyle = HAND_COLOR;
+            ctx.lineWidth = handWidth;
+            ctx.shadowOffsetX = handShadowDx + OFFSCREEN;
+            ctx.shadowOffsetY = handShadowDy;
 
-      for (let j = 0; j < 2; j++) {
-        const a = hands[i * 2 + j].current;
-        const dx = Math.sin(a) * handLen;
-        const dy = -Math.cos(a) * handLen;
-        ctx.beginPath();
-        ctx.moveTo(cx - OFFSCREEN, cy);
-        ctx.lineTo(cx - OFFSCREEN + dx, cy + dy);
-        ctx.stroke();
-      }
+            for (let j = 0; j < 2; j++) {
+              const a = hands[i * 2 + j].current;
+              const dx = Math.sin(a) * handLen;
+              const dy = -Math.cos(a) * handLen;
+              ctx.beginPath();
+              ctx.moveTo(cx - OFFSCREEN, cy);
+              ctx.lineTo(cx - OFFSCREEN + dx, cy + dy);
+              ctx.stroke();
+            }
 
-      ctx.restore();
-    }
+            ctx.restore();
+          }
 
-    // Pass 4: hands + pivots
-    ctx.strokeStyle = HAND_COLOR;
-    ctx.lineWidth = handWidth;
-    for (let i = 0; i < TOTAL_CLOCKS; i++) {
-      const row = Math.floor(i / COLS);
-      const col = i % COLS;
-      const cx = originX + col * cell + cell / 2;
-      const cy = originY + row * cell + cell / 2;
+          // Pass 4: hands + pivots
+          ctx.strokeStyle = HAND_COLOR;
+          ctx.lineWidth = handWidth;
+          for (let i = 0; i < TOTAL_CLOCKS; i++) {
+            const row = Math.floor(i / COLS);
+            const col = i % COLS;
+            const cx = originX + col * cell + cell / 2;
+            const cy = originY + row * cell + cell / 2;
 
-      for (let j = 0; j < 2; j++) {
-        const a = hands[i * 2 + j].current;
-        const dx = Math.sin(a) * handLen;
-        const dy = -Math.cos(a) * handLen;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(cx + dx, cy + dy);
-        ctx.stroke();
-      }
+            for (let j = 0; j < 2; j++) {
+              const a = hands[i * 2 + j].current;
+              const dx = Math.sin(a) * handLen;
+              const dy = -Math.cos(a) * handLen;
+              ctx.beginPath();
+              ctx.moveTo(cx, cy);
+              ctx.lineTo(cx + dx, cy + dy);
+              ctx.stroke();
+            }
 
-      ctx.fillStyle = PIVOT_COLOR;
-      ctx.beginPath();
-      ctx.arc(cx, cy, pivotR, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
+            ctx.fillStyle = PIVOT_COLOR;
+            ctx.beginPath();
+            ctx.arc(cx, cy, pivotR, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // TIME
-  // ─────────────────────────────────────────────────────────────────────────
-  function currentTimeKey(hour24) {
-    const d = new Date();
-    let h = d.getHours();
-    const m = d.getMinutes();
-    if (!hour24) {
-      h = h % 12;
-      if (h === 0) h = 12;
-    }
-    return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
-  }
+        // ─────────────────────────────────────────────────────────────────────────
+        // TIME
+        // ─────────────────────────────────────────────────────────────────────────
+        function currentTimeKey(hour24) {
+          const d = new Date();
+          let h = d.getHours();
+          const m = d.getMinutes();
+          if (!hour24) {
+            h = h % 12;
+            if (h === 0) h = 12;
+          }
+          return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+        }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // INIT
-  // ─────────────────────────────────────────────────────────────────────────
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d", { alpha: false });
+        // ─────────────────────────────────────────────────────────────────────────
+        // INIT
+        // ─────────────────────────────────────────────────────────────────────────
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d", { alpha: false });
 
-  const state = {
-    mode: "minimal",
-    hour24: false,
-    hands: Array.from({ length: TOTAL_HANDS }, () => ({
-      current: OFF,
-      start: OFF,
-      target: OFF,
-      t0: 0,
-      duration: 1,
-      easing: easeInOutCubic,
-    })),
-    lastTimeKey: "",
-    size: { w: 0, h: 0, dpr: 1 },
-    rafId: null,
-  };
+        const state = {
+          mode: "minimal",
+          hour24: false,
+          hands: Array.from({ length: TOTAL_HANDS }, () => ({
+            current: OFF,
+            start: OFF,
+            target: OFF,
+            t0: 0,
+            duration: 1,
+            easing: easeInOutCubic,
+          })),
+          lastTimeKey: "",
+          size: { w: 0, h: 0, dpr: 1 },
+          rafId: null,
+        };
 
-  function resize() {
-    const dpr = window.devicePixelRatio || 1;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
-    state.size = { w, h, dpr };
-  }
-  resize();
-  window.addEventListener("resize", resize);
+        function resize() {
+          const dpr = window.devicePixelRatio || 1;
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          canvas.width = Math.floor(w * dpr);
+          canvas.height = Math.floor(h * dpr);
+          canvas.style.width = w + "px";
+          canvas.style.height = h + "px";
+          state.size = { w, h, dpr };
+        }
+        resize();
+        window.addEventListener("resize", resize);
 
-  // Initial choreography: from OFF to current time
-  (() => {
-    const now = performance.now();
-    const key = currentTimeKey(state.hour24);
-    state.lastTimeKey = key;
-    const [hh, mm] = key.split(":");
-    const targets = timeToTargets(hh, mm);
-    applyChoreography(state.hands, targets, state.mode, now + 400);
-  })();
+        // Initial choreography: from OFF to current time
+        (() => {
+          const now = performance.now();
+          const key = currentTimeKey(state.hour24);
+          state.lastTimeKey = key;
+          const [hh, mm] = key.split(":");
+          const targets = timeToTargets(hh, mm);
+          applyChoreography(state.hands, targets, state.mode, now + 400);
+        })();
 
-  function tick(now) {
-    const key = currentTimeKey(state.hour24);
-    if (key !== state.lastTimeKey) {
-      state.lastTimeKey = key;
-      const [hh, mm] = key.split(":");
-      const targets = timeToTargets(hh, mm);
-      applyChoreography(state.hands, targets, state.mode, now);
-    }
+        function tick(now) {
+          const key = currentTimeKey(state.hour24);
+          if (key !== state.lastTimeKey) {
+            state.lastTimeKey = key;
+            const [hh, mm] = key.split(":");
+            const targets = timeToTargets(hh, mm);
+            applyChoreography(state.hands, targets, state.mode, now);
+          }
 
-    for (let i = 0; i < state.hands.length; i++) {
-      const h = state.hands[i];
-      const elapsed = now - h.t0;
-      if (elapsed <= 0) {
-        h.current = h.start;
-      } else if (elapsed >= h.duration) {
-        h.current = h.target;
-      } else {
-        const p = h.easing(elapsed / h.duration);
-        h.current = h.start + (h.target - h.start) * p;
-      }
-    }
+          for (let i = 0; i < state.hands.length; i++) {
+            const h = state.hands[i];
+            const elapsed = now - h.t0;
+            if (elapsed <= 0) {
+              h.current = h.start;
+            } else if (elapsed >= h.duration) {
+              h.current = h.target;
+            } else {
+              const p = h.easing(elapsed / h.duration);
+              h.current = h.start + (h.target - h.start) * p;
+            }
+          }
 
-    render(ctx, state.size, state.hands);
-    state.rafId = requestAnimationFrame(tick);
-  }
-  state.rafId = requestAnimationFrame(tick);
+          render(ctx, state.size, state.hands);
+          state.rafId = requestAnimationFrame(tick);
+        }
+        state.rafId = requestAnimationFrame(tick);
 
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      if (state.rafId) cancelAnimationFrame(state.rafId);
-    } else {
-      for (const h of state.hands) h.current = h.target;
-      state.lastTimeKey = "";
-      state.rafId = requestAnimationFrame(tick);
-    }
-  });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) {
+            if (state.rafId) cancelAnimationFrame(state.rafId);
+          } else {
+            for (const h of state.hands) h.current = h.target;
+            state.lastTimeKey = "";
+            state.rafId = requestAnimationFrame(tick);
+          }
+        });
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // CHROME
-  // ─────────────────────────────────────────────────────────────────────────
-  const chrome = document.getElementById("chrome");
-  const hint = document.getElementById("hint");
-  const modeLabel = document.getElementById("modeLabel");
+        // ─────────────────────────────────────────────────────────────────────────
+        // CHROME
+        // ─────────────────────────────────────────────────────────────────────────
+        const chrome = document.getElementById("chrome");
+        const hint = document.getElementById("hint");
+        const modeLabel = document.getElementById("modeLabel");
 
-  function setActive(groupEl, value) {
-    groupEl.querySelectorAll(".btn").forEach((b) => {
-      b.classList.toggle("active", b.dataset.value === value);
-    });
-  }
+        function setActive(groupEl, value) {
+          groupEl.querySelectorAll(".btn").forEach((b) => {
+            b.classList.toggle("active", b.dataset.value === value);
+          });
+        }
 
-  document.querySelectorAll('[data-control="mode"] .btn').forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      state.mode = btn.dataset.value;
-      modeLabel.textContent = state.mode;
-      setActive(btn.parentElement, state.mode);
-    });
-  });
+        document
+          .querySelectorAll('[data-control="mode"] .btn')
+          .forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              state.mode = btn.dataset.value;
+              modeLabel.textContent = state.mode;
+              setActive(btn.parentElement, state.mode);
+            });
+          });
 
-  document.querySelectorAll('[data-control="hour"] .btn').forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      state.hour24 = btn.dataset.value === "24";
-      setActive(btn.parentElement, btn.dataset.value);
-      state.lastTimeKey = ""; // force re-trigger on next tick
-    });
-  });
+        document
+          .querySelectorAll('[data-control="hour"] .btn')
+          .forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              state.hour24 = btn.dataset.value === "24";
+              setActive(btn.parentElement, btn.dataset.value);
+              state.lastTimeKey = ""; // force re-trigger on next tick
+            });
+          });
 
-  document.body.addEventListener("click", () => {
-    const hidden = chrome.classList.toggle("hidden");
-    hint.classList.toggle("hidden", hidden);
-  });
-})();
-</script>
-
-</body>
+        document.body.addEventListener("click", () => {
+          const hidden = chrome.classList.toggle("hidden");
+          hint.classList.toggle("hidden", hidden);
+        });
+      })();
+    </script>
+  </body>
 </html>
