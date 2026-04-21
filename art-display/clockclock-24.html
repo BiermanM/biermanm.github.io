@@ -618,6 +618,22 @@
         document.body.addEventListener("click", () => {
           const hidden = chrome.classList.toggle("hidden");
           hint.classList.toggle("hidden", hidden);
+          if (hidden) {
+            if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen?.().catch(() => {});
+            }
+          } else {
+            if (document.fullscreenElement) {
+              document.exitFullscreen?.().catch(() => {});
+            }
+          }
+        });
+
+        document.addEventListener("fullscreenchange", () => {
+          if (!document.fullscreenElement && chrome.classList.contains("hidden")) {
+            chrome.classList.remove("hidden");
+            hint.classList.remove("hidden");
+          }
         });
       })();
     </script>
