@@ -11,7 +11,7 @@
       :root {
         --bg: #000000;
         --ink: #e8e6e1;
-        --face: #1d1b18;
+        --face: #242220;
       }
       *,
       *::before,
@@ -54,12 +54,10 @@
         border-radius: 50%;
         background: var(--face);
         overflow: hidden;
-        /* two-layer inset shadow: vignette darkens edges all-round (depth in a well),
-           directional layer adds upper-left shadow from the light source */
-        box-shadow:
-          inset 0 0 var(--vignette-blur, 20px) rgba(0, 0, 0, 0.7),
-          inset var(--well-dx, -4px) var(--well-dy, -6px)
-            var(--well-blur, 14px) rgba(0, 0, 0, 0.97);
+        /* single large directional shadow — simulates thick panel rim casting
+           shadow onto a disc sitting deep inside the hole */
+        box-shadow: inset var(--well-dx, -14px) var(--well-dy, -12px)
+          var(--well-blur, 20px) rgba(0, 0, 0, 0.97);
       }
       .hand {
         position: absolute;
@@ -387,9 +385,9 @@
         // ─────────────────────────────────────────────────────────────────────────
         // SHADOW RATIOS (same values as canvas version)
         // ─────────────────────────────────────────────────────────────────────────
-        const WELL_SHADOW_DX_RATIO = -0.07;
-        const WELL_SHADOW_DY_RATIO = -0.10;
-        const WELL_SHADOW_BLUR_RATIO = 0.22;
+        const WELL_SHADOW_DX_RATIO = -0.20;
+        const WELL_SHADOW_DY_RATIO = -0.18;
+        const WELL_SHADOW_BLUR_RATIO = 0.30;
         const HAND_SHADOW_DX_RATIO = 0.03;
         const HAND_SHADOW_DY_RATIO = 0.045;
         const HAND_SHADOW_BLUR_RATIO = 0.05;
@@ -492,10 +490,6 @@
           root.style.setProperty(
             "--well-blur",
             `${cell * WELL_SHADOW_BLUR_RATIO}px`,
-          );
-          root.style.setProperty(
-            "--vignette-blur",
-            `${radius * 0.65}px`,
           );
           root.style.setProperty(
             "--hand-sdx",
