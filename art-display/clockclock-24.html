@@ -11,6 +11,7 @@
       :root {
         --bg: #141413;
         --ink: #e8e6e1;
+        --face: #050504;
       }
       *,
       *::before,
@@ -31,13 +32,56 @@
       #stage {
         position: fixed;
         inset: 0;
-        width: 100vw;
-        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      canvas {
-        display: block;
-        width: 100%;
-        height: 100%;
+      #grid {
+        display: grid;
+        grid-template-columns: repeat(4, var(--cell, 80px));
+        grid-template-rows: repeat(6, var(--cell, 80px));
+      }
+      .clock-cell {
+        position: relative;
+      }
+      .clock-face {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: var(--face-d, 67px);
+        height: var(--face-d, 67px);
+        border-radius: 50%;
+        background: var(--face);
+        overflow: hidden;
+        /* well shadow — inset, upper-left darkness simulating a recessed disc */
+        box-shadow: inset var(--well-dx, -4px) var(--well-dy, -6px)
+          var(--well-blur, 10px) rgba(0, 0, 0, 0.98);
+      }
+      .hand {
+        position: absolute;
+        width: var(--hand-w, 7px);
+        height: var(--hand-len, 30px);
+        background: var(--ink);
+        bottom: 50%;
+        left: 50%;
+        margin-left: calc(var(--hand-w, 7px) / -2);
+        transform-origin: 50% 100%;
+        /* hand shadow clipped to face via parent overflow:hidden */
+        box-shadow: var(--hand-sdx, 2px) var(--hand-sdy, 4px)
+          var(--hand-sblur, 4px) rgba(0, 0, 0, 0.9);
+        will-change: transform;
+      }
+      .pivot {
+        position: absolute;
+        width: var(--pivot-d, 9px);
+        height: var(--pivot-d, 9px);
+        border-radius: 50%;
+        background: var(--ink);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
       }
       .chrome {
         position: fixed;
@@ -110,7 +154,7 @@
   </head>
   <body>
     <div id="stage">
-      <canvas id="canvas"></canvas>
+      <div id="grid"></div>
     </div>
 
     <div class="chrome" id="chrome">
@@ -146,7 +190,7 @@
           t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
 
         // ─────────────────────────────────────────────────────────────────────────
-        // DIGIT MAP (identical to React version)
+        // DIGIT MAP
         // ─────────────────────────────────────────────────────────────────────────
         const U = 0;
         const R = Math.PI / 2;
@@ -338,15 +382,8 @@
         }
 
         // ─────────────────────────────────────────────────────────────────────────
-        // RENDER (canvas — identical logic to React version)
+        // SHADOW RATIOS (same values as canvas version)
         // ─────────────────────────────────────────────────────────────────────────
-        const FACE_COLOR = "#050504";
-        const BG = "#141413";
-        const HAND_COLOR = "#e8e6e1";
-        const PIVOT_COLOR = "#e8e6e1";
-        const WELL_SHADOW = "rgba(0, 0, 0, 0.98)";
-        const HAND_SHADOW_INNER = "rgba(0, 0, 0, 0.9)";
-
         const WELL_SHADOW_DX_RATIO = -0.055;
         const WELL_SHADOW_DY_RATIO = -0.075;
         const WELL_SHADOW_BLUR_RATIO = 0.13;
@@ -354,134 +391,37 @@
         const HAND_SHADOW_DY_RATIO = 0.045;
         const HAND_SHADOW_BLUR_RATIO = 0.05;
 
-        function render(ctx, size, hands) {
-          const { w, h, dpr } = size;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        // ─────────────────────────────────────────────────────────────────────────
+        // DOM SETUP
+        // ─────────────────────────────────────────────────────────────────────────
+        const grid = document.getElementById("grid");
+        const handEls = [];
 
-          ctx.fillStyle = BG;
-          ctx.fillRect(0, 0, w, h);
+        for (let i = 0; i < TOTAL_CLOCKS; i++) {
+          const cellEl = document.createElement("div");
+          cellEl.className = "clock-cell";
 
-          const marginRatio = 0.08;
-          const availW = w * (1 - marginRatio * 2);
-          const availH = h * (1 - marginRatio * 2);
-          const cellW = availW / COLS;
-          const cellH = availH / ROWS;
-          const cell = Math.min(cellW, cellH);
-          const gridW = cell * COLS;
-          const gridH = cell * ROWS;
-          const originX = (w - gridW) / 2;
-          const originY = (h - gridH) / 2;
+          const faceEl = document.createElement("div");
+          faceEl.className = "clock-face";
 
-          const radius = cell * 0.42;
-          const handLen = radius * 0.9;
-          const handWidth = Math.max(4, cell * 0.09);
-          const pivotR = Math.max(2, cell * 0.055);
-
-          const wellShadowDx = cell * WELL_SHADOW_DX_RATIO;
-          const wellShadowDy = cell * WELL_SHADOW_DY_RATIO;
-          const wellShadowBlur = cell * WELL_SHADOW_BLUR_RATIO;
-          const handShadowDx = cell * HAND_SHADOW_DX_RATIO;
-          const handShadowDy = cell * HAND_SHADOW_DY_RATIO;
-          const handShadowBlur = cell * HAND_SHADOW_BLUR_RATIO;
-
-          ctx.lineCap = "butt";
-          ctx.lineJoin = "miter";
-
-          // Pass 1: disc faces
-          for (let i = 0; i < TOTAL_CLOCKS; i++) {
-            const row = Math.floor(i / COLS);
-            const col = i % COLS;
-            const cx = originX + col * cell + cell / 2;
-            const cy = originY + row * cell + cell / 2;
-
-            ctx.fillStyle = FACE_COLOR;
-            ctx.beginPath();
-            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-            ctx.fill();
+          for (let j = 0; j < 2; j++) {
+            const handEl = document.createElement("div");
+            handEl.className = "hand";
+            faceEl.appendChild(handEl);
+            handEls.push(handEl);
           }
 
-          // Pass 2: well shadow (inner shadow, upper-left)
-          for (let i = 0; i < TOTAL_CLOCKS; i++) {
-            const row = Math.floor(i / COLS);
-            const col = i % COLS;
-            const cx = originX + col * cell + cell / 2;
-            const cy = originY + row * cell + cell / 2;
+          const pivotEl = document.createElement("div");
+          pivotEl.className = "pivot";
+          faceEl.appendChild(pivotEl);
 
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-            ctx.clip();
+          cellEl.appendChild(faceEl);
+          grid.appendChild(cellEl);
+        }
 
-            ctx.shadowColor = WELL_SHADOW;
-            ctx.shadowBlur = wellShadowBlur;
-            const OFFSCREEN = 100000;
-            ctx.shadowOffsetX = wellShadowDx + OFFSCREEN;
-            ctx.shadowOffsetY = wellShadowDy;
-
-            ctx.fillStyle = BG;
-            ctx.beginPath();
-            ctx.arc(cx - OFFSCREEN, cy, radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-          }
-
-          // Pass 3: hand shadows (clipped to face)
-          for (let i = 0; i < TOTAL_CLOCKS; i++) {
-            const row = Math.floor(i / COLS);
-            const col = i % COLS;
-            const cx = originX + col * cell + cell / 2;
-            const cy = originY + row * cell + cell / 2;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-            ctx.clip();
-
-            ctx.shadowColor = HAND_SHADOW_INNER;
-            ctx.shadowBlur = handShadowBlur;
-            const OFFSCREEN = 100000;
-            ctx.strokeStyle = HAND_COLOR;
-            ctx.lineWidth = handWidth;
-            ctx.shadowOffsetX = handShadowDx + OFFSCREEN;
-            ctx.shadowOffsetY = handShadowDy;
-
-            for (let j = 0; j < 2; j++) {
-              const a = hands[i * 2 + j].current;
-              const dx = Math.sin(a) * handLen;
-              const dy = -Math.cos(a) * handLen;
-              ctx.beginPath();
-              ctx.moveTo(cx - OFFSCREEN, cy);
-              ctx.lineTo(cx - OFFSCREEN + dx, cy + dy);
-              ctx.stroke();
-            }
-
-            ctx.restore();
-          }
-
-          // Pass 4: hands + pivots
-          ctx.strokeStyle = HAND_COLOR;
-          ctx.lineWidth = handWidth;
-          for (let i = 0; i < TOTAL_CLOCKS; i++) {
-            const row = Math.floor(i / COLS);
-            const col = i % COLS;
-            const cx = originX + col * cell + cell / 2;
-            const cy = originY + row * cell + cell / 2;
-
-            for (let j = 0; j < 2; j++) {
-              const a = hands[i * 2 + j].current;
-              const dx = Math.sin(a) * handLen;
-              const dy = -Math.cos(a) * handLen;
-              ctx.beginPath();
-              ctx.moveTo(cx, cy);
-              ctx.lineTo(cx + dx, cy + dy);
-              ctx.stroke();
-            }
-
-            ctx.fillStyle = PIVOT_COLOR;
-            ctx.beginPath();
-            ctx.arc(cx, cy, pivotR, 0, Math.PI * 2);
-            ctx.fill();
-          }
+        // Set initial OFF position so there's no flash before the first rAF tick
+        for (const el of handEls) {
+          el.style.transform = `rotate(${OFF}rad)`;
         }
 
         // ─────────────────────────────────────────────────────────────────────────
@@ -501,9 +441,6 @@
         // ─────────────────────────────────────────────────────────────────────────
         // INIT
         // ─────────────────────────────────────────────────────────────────────────
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d", { alpha: false });
-
         const state = {
           mode: "minimal",
           hour24: false,
@@ -516,20 +453,57 @@
             easing: easeInOutCubic,
           })),
           lastTimeKey: "",
-          size: { w: 0, h: 0, dpr: 1 },
           rafId: null,
         };
 
         function resize() {
-          const dpr = window.devicePixelRatio || 1;
           const w = window.innerWidth;
           const h = window.innerHeight;
-          canvas.width = Math.floor(w * dpr);
-          canvas.height = Math.floor(h * dpr);
-          canvas.style.width = w + "px";
-          canvas.style.height = h + "px";
-          state.size = { w, h, dpr };
+          const margin = 0.08;
+          const cell = Math.min(
+            (w * (1 - margin * 2)) / COLS,
+            (h * (1 - margin * 2)) / ROWS,
+          );
+          const radius = cell * 0.42;
+
+          const root = document.documentElement;
+          root.style.setProperty("--cell", `${cell}px`);
+          root.style.setProperty("--face-d", `${radius * 2}px`);
+          root.style.setProperty(
+            "--hand-w",
+            `${Math.max(4, cell * 0.09)}px`,
+          );
+          root.style.setProperty("--hand-len", `${radius * 0.9}px`);
+          root.style.setProperty(
+            "--pivot-d",
+            `${Math.max(2, cell * 0.055) * 2}px`,
+          );
+          root.style.setProperty(
+            "--well-dx",
+            `${cell * WELL_SHADOW_DX_RATIO}px`,
+          );
+          root.style.setProperty(
+            "--well-dy",
+            `${cell * WELL_SHADOW_DY_RATIO}px`,
+          );
+          root.style.setProperty(
+            "--well-blur",
+            `${cell * WELL_SHADOW_BLUR_RATIO}px`,
+          );
+          root.style.setProperty(
+            "--hand-sdx",
+            `${cell * HAND_SHADOW_DX_RATIO}px`,
+          );
+          root.style.setProperty(
+            "--hand-sdy",
+            `${cell * HAND_SHADOW_DY_RATIO}px`,
+          );
+          root.style.setProperty(
+            "--hand-sblur",
+            `${cell * HAND_SHADOW_BLUR_RATIO}px`,
+          );
         }
+
         resize();
         window.addEventListener("resize", resize);
 
@@ -563,9 +537,9 @@
               const p = h.easing(elapsed / h.duration);
               h.current = h.start + (h.target - h.start) * p;
             }
+            handEls[i].style.transform = `rotate(${h.current}rad)`;
           }
 
-          render(ctx, state.size, state.hands);
           state.rafId = requestAnimationFrame(tick);
         }
         state.rafId = requestAnimationFrame(tick);
@@ -630,7 +604,10 @@
         });
 
         document.addEventListener("fullscreenchange", () => {
-          if (!document.fullscreenElement && chrome.classList.contains("hidden")) {
+          if (
+            !document.fullscreenElement &&
+            chrome.classList.contains("hidden")
+          ) {
             chrome.classList.remove("hidden");
             hint.classList.remove("hidden");
           }
