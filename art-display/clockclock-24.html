@@ -11,7 +11,8 @@
       :root {
         --bg: #000000;
         --ink: #e8e6e1;
-        --face: #242220;
+        --face: #0c0c0c;
+        --face-border: #0f0f0f;
       }
       *,
       *::before,
@@ -54,10 +55,8 @@
         border-radius: 50%;
         background: var(--face);
         overflow: hidden;
-        /* single large directional shadow — simulates thick panel rim casting
-           shadow onto a disc sitting deep inside the hole */
-        box-shadow: inset var(--well-dx, -14px) var(--well-dy, -12px)
-          var(--well-blur, 20px) rgba(0, 0, 0, 0.97);
+        box-shadow: inset -10px -4px 8px rgba(0, 0, 0, 0.97);
+        border: 2px solid var(--face-border);
       }
       .hand {
         position: absolute;
@@ -385,9 +384,9 @@
         // ─────────────────────────────────────────────────────────────────────────
         // SHADOW RATIOS (same values as canvas version)
         // ─────────────────────────────────────────────────────────────────────────
-        const WELL_SHADOW_DX_RATIO = -0.20;
+        const WELL_SHADOW_DX_RATIO = -0.2;
         const WELL_SHADOW_DY_RATIO = -0.18;
-        const WELL_SHADOW_BLUR_RATIO = 0.30;
+        const WELL_SHADOW_BLUR_RATIO = 0.3;
         const HAND_SHADOW_DX_RATIO = 0.03;
         const HAND_SHADOW_DY_RATIO = 0.045;
         const HAND_SHADOW_BLUR_RATIO = 0.05;
@@ -470,10 +469,7 @@
           const root = document.documentElement;
           root.style.setProperty("--cell", `${cell}px`);
           root.style.setProperty("--face-d", `${radius * 2}px`);
-          root.style.setProperty(
-            "--hand-w",
-            `${Math.max(4, cell * 0.09)}px`,
-          );
+          root.style.setProperty("--hand-w", `${Math.max(4, cell * 0.09)}px`);
           root.style.setProperty("--hand-len", `${radius * 0.9}px`);
           root.style.setProperty(
             "--pivot-d",
