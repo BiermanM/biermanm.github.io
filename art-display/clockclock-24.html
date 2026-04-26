@@ -208,35 +208,35 @@
             [U, L],
           ],
           1: [
+            [OFF, OFF],
             [D, D],
-            [D, D],
+            [OFF, OFF],
             [U, D],
-            [U, D],
-            [U, U],
+            [OFF, OFF],
             [U, U],
           ],
           2: [
+            [R, R],
+            [L, D],
             [R, D],
-            [L, D],
-            [U, R],
-            [L, D],
+            [U, L],
             [U, R],
             [L, L],
           ],
           3: [
-            [R, D],
+            [R, R],
             [L, D],
-            [R, D],
-            [L, D],
-            [U, R],
-            [L, L],
+            [R, R],
+            [U, D],
+            [R, R],
+            [U, L],
           ],
           4: [
-            [U, D],
-            [U, D],
+            [D, D],
+            [D, D],
             [U, R],
-            [L, D],
-            [U, U],
+            [U, D],
+            [OFF, OFF],
             [U, U],
           ],
           5: [
@@ -244,23 +244,23 @@
             [L, L],
             [U, R],
             [L, D],
-            [U, R],
-            [L, L],
+            [R, R],
+            [U, L],
           ],
           6: [
             [R, D],
             [L, L],
-            [U, R],
+            [U, D],
             [L, D],
             [U, R],
             [U, L],
           ],
           7: [
-            [R, D],
+            [R, R],
             [L, D],
-            [U, U],
-            [U, U],
-            [U, U],
+            [OFF, OFF],
+            [U, D],
+            [OFF, OFF],
             [U, U],
           ],
           8: [
@@ -275,9 +275,9 @@
             [R, D],
             [L, D],
             [U, R],
+            [U, D],
+            [R, R],
             [U, L],
-            [U, R],
-            [L, L],
           ],
           " ": [
             [OFF, OFF],
@@ -428,6 +428,9 @@
         // TIME
         // ─────────────────────────────────────────────────────────────────────────
         function currentTimeKey(hour24) {
+          if (debugDigits) {
+            return debugDigits.slice(0, 2) + ":" + debugDigits.slice(2, 4);
+          }
           const d = new Date();
           let h = d.getHours();
           const m = d.getMinutes();
@@ -441,6 +444,12 @@
         // ─────────────────────────────────────────────────────────────────────────
         // INIT
         // ─────────────────────────────────────────────────────────────────────────
+        const debugParam = new URLSearchParams(window.location.search).get(
+          "debug",
+        );
+        const debugDigits =
+          debugParam && debugParam.length === 4 ? debugParam : null;
+
         const state = {
           mode: "minimal",
           hour24: false,
