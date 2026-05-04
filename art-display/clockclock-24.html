@@ -11,8 +11,8 @@
       :root {
         --bg: #000000;
         --ink: #bbbbbb;
-        --face: #101010;
-        --face-border: #131313;
+        --face: #0f0f0f;
+        --face-border: #161616;
       }
       *,
       *::before,
@@ -195,6 +195,8 @@
         const easeInOutQuint = (t) =>
           t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        const easeOutQuint = (t) => 1 - Math.pow(1 - t, 7);
+        const linear = (t) => t;
 
         // ─────────────────────────────────────────────────────────────────────────
         // DIGIT MAP
@@ -336,39 +338,26 @@
         // ─────────────────────────────────────────────────────────────────────────
         // CHOREOGRAPHER
         // ─────────────────────────────────────────────────────────────────────────
-        const REALISTIC_HOUR_MS_PER_RAD = 24000 / (2 * Math.PI);
+        const REALISTIC_HOUR_MS_PER_RAD = 18973 / (2 * Math.PI);
+        const REALISTIC_TAIL_EASE_MS = 1000;
+
+        function makeLinearWithTailEase(duration) {
+          if (duration <= REALISTIC_TAIL_EASE_MS) return easeOutCubic;
+          const tEase = 1 - REALISTIC_TAIL_EASE_MS / duration;
+          return (t) => {
+            if (t <= tEase) return t;
+            const u = (t - tEase) / (1 - tEase);
+            return tEase + (1 - tEase) * (u + u * u - u * u * u);
+          };
+        }
         const REALISTIC_MINUTE_RATIO = 12;
 
         function applyChoreography(hands, targets, mode, now) {
           const realistic = mode === "realistic";
 
           if (realistic) {
-            const hourDeltas = new Array(TOTAL_CLOCKS);
-            const minuteBases = new Array(TOTAL_CLOCKS);
-            let maxHourDelta = 0;
-            for (let c = 0; c < TOTAL_CLOCKS; c++) {
-              const hourShortest = shortestDelta(
-                hands[c * 2].current,
-                targets[c * 2],
-              );
-              const minuteShortest = shortestDelta(
-                hands[c * 2 + 1].current,
-                targets[c * 2 + 1],
-              );
-              hourDeltas[c] =
-                hourShortest >= 0 ? hourShortest : hourShortest + 2 * Math.PI;
-              minuteBases[c] =
-                minuteShortest >= 0
-                  ? minuteShortest
-                  : minuteShortest + 2 * Math.PI;
-              if (hourDeltas[c] > maxHourDelta) maxHourDelta = hourDeltas[c];
-            }
-
-            const duration = Math.max(
-              600,
-              maxHourDelta * REALISTIC_HOUR_MS_PER_RAD,
-            );
-            const desiredMinuteAngle = maxHourDelta * REALISTIC_MINUTE_RATIO;
+            const minuteMsPerRad =
+              REALISTIC_HOUR_MS_PER_RAD / REALISTIC_MINUTE_RATIO;
 
             for (let c = 0; c < TOTAL_CLOCKS; c++) {
               const hourIdx = c * 2;
@@ -376,31 +365,46 @@
               const hourHand = hands[hourIdx];
               const minuteHand = hands[minuteIdx];
 
-              const hourScale =
-                maxHourDelta > 0 ? hourDeltas[c] / maxHourDelta : 0;
-              const hourDelta = hourDeltas[c];
+              const hourShortest = shortestDelta(
+                hourHand.current,
+                targets[hourIdx],
+              );
+              const hourDelta =
+                hourShortest >= 0 ? hourShortest : hourShortest + 2 * Math.PI;
 
-              const targetMinuteAngle = desiredMinuteAngle * hourScale;
+              const minuteShortest = shortestDelta(
+                minuteHand.current,
+                targets[minuteIdx],
+              );
+              const minuteBase =
+                minuteShortest >= 0
+                  ? minuteShortest
+                  : minuteShortest + 2 * Math.PI;
+              const desiredMinuteAngle = hourDelta * REALISTIC_MINUTE_RATIO;
               const extraTurns = Math.max(
                 0,
-                Math.round(
-                  (targetMinuteAngle - minuteBases[c]) / (2 * Math.PI),
-                ),
+                Math.round((desiredMinuteAngle - minuteBase) / (2 * Math.PI)),
               );
-              const minuteDelta = minuteBases[c] + extraTurns * 2 * Math.PI;
+              const minuteDelta = minuteBase + extraTurns * 2 * Math.PI;
 
               hourHand.start = hourHand.current;
               hourHand.target = hourHand.current + hourDelta;
               hourHand.t0 = now;
-              hourHand.duration = duration;
-              hourHand.easing = easeOutCubic;
+              hourHand.duration = Math.max(
+                600,
+                hourDelta * REALISTIC_HOUR_MS_PER_RAD,
+              );
+              hourHand.easing = makeLinearWithTailEase(hourHand.duration);
               hourHand.next = null;
 
               minuteHand.start = minuteHand.current;
               minuteHand.target = minuteHand.current + minuteDelta;
               minuteHand.t0 = now;
-              minuteHand.duration = duration;
-              minuteHand.easing = easeOutCubic;
+              minuteHand.duration = Math.max(
+                600,
+                minuteDelta * minuteMsPerRad,
+              );
+              minuteHand.easing = makeLinearWithTailEase(minuteHand.duration);
               minuteHand.next = null;
             }
           } else {
@@ -411,7 +415,7 @@
               h.target = h.current + shortest;
               h.t0 = now;
               h.duration = 1800;
-              h.easing = easeOutCubic;
+              h.easing = linear;
               h.next = null;
             }
           }
@@ -488,7 +492,7 @@
         function startDemoInterval(mode) {
           if (!demoMode) return;
           if (demoIntervalId) clearInterval(demoIntervalId);
-          const ms = mode === "realistic" ? 30000 : 5000;
+          const ms = mode === "realistic" ? 15000 : 5000;
           demoIntervalId = setInterval(() => {
             demoDigits = String(Math.floor(Math.random() * 10000)).padStart(
               4,
