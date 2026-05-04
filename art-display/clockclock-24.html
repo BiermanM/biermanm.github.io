@@ -10,9 +10,9 @@
     <style>
       :root {
         --bg: #000000;
-        --ink: #e8e6e1;
-        --face: #0c0c0c;
-        --face-border: #0f0f0f;
+        --ink: #bbbbbb;
+        --face: #101010;
+        --face-border: #131313;
       }
       *,
       *::before,
@@ -55,22 +55,29 @@
         border-radius: 50%;
         background: var(--face);
         overflow: hidden;
-        box-shadow: inset -10px -4px 8px rgba(0, 0, 0, 0.97);
+        box-shadow: inset -10px -4px 8px rgba(0, 0, 0, 0.5);
         border: 2px solid var(--face-border);
       }
       .hand {
         position: absolute;
-        width: var(--hand-w, 7px);
-        height: var(--hand-len, 30px);
         background: var(--ink);
         bottom: 50%;
         left: 50%;
-        margin-left: calc(var(--hand-w, 7px) / -2);
         transform-origin: 50% 100%;
         /* hand shadow clipped to face via parent overflow:hidden */
         box-shadow: var(--hand-sdx, 2px) var(--hand-sdy, 4px)
           var(--hand-sblur, 4px) rgba(0, 0, 0, 0.9);
         will-change: transform;
+      }
+      .hand.hour {
+        width: var(--hour-hand-w, 7px);
+        height: var(--hour-hand-len, 22px);
+        margin-left: calc(var(--hour-hand-w, 7px) / -2);
+      }
+      .hand.minute {
+        width: var(--minute-hand-w, 5px);
+        height: var(--minute-hand-len, 30px);
+        margin-left: calc(var(--minute-hand-w, 5px) / -2);
       }
       .pivot {
         position: absolute;
@@ -406,7 +413,7 @@
 
           for (let j = 0; j < 2; j++) {
             const handEl = document.createElement("div");
-            handEl.className = "hand";
+            handEl.className = "hand " + (j === 0 ? "hour" : "minute");
             faceEl.appendChild(handEl);
             handEls.push(handEl);
           }
@@ -478,8 +485,14 @@
           const root = document.documentElement;
           root.style.setProperty("--cell", `${cell}px`);
           root.style.setProperty("--face-d", `${radius * 2}px`);
-          root.style.setProperty("--hand-w", `${Math.max(4, cell * 0.09)}px`);
-          root.style.setProperty("--hand-len", `${radius * 0.9}px`);
+          const baseHandW = Math.max(3, cell * 0.07);
+          root.style.setProperty("--hour-hand-w", `${baseHandW}px`);
+          root.style.setProperty("--hour-hand-len", `${radius * 0.65}px`);
+          root.style.setProperty(
+            "--minute-hand-w",
+            `${Math.max(2.5, baseHandW * 0.72)}px`,
+          );
+          root.style.setProperty("--minute-hand-len", `${radius * 0.9}px`);
           root.style.setProperty(
             "--pivot-d",
             `${Math.max(2, cell * 0.055) * 2}px`,
