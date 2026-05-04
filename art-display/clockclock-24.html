@@ -194,6 +194,7 @@
           t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         const easeInOutQuint = (t) =>
           t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
         // ─────────────────────────────────────────────────────────────────────────
         // DIGIT MAP
@@ -335,23 +336,84 @@
         // ─────────────────────────────────────────────────────────────────────────
         // CHOREOGRAPHER
         // ─────────────────────────────────────────────────────────────────────────
+        const REALISTIC_HOUR_MS_PER_RAD = 24000 / (2 * Math.PI);
+        const REALISTIC_MINUTE_RATIO = 12;
+
         function applyChoreography(hands, targets, mode, now) {
           const realistic = mode === "realistic";
 
-          for (let i = 0; i < hands.length; i++) {
-            const h = hands[i];
-            const shortest = shortestDelta(h.current, targets[i]);
-            let delta = shortest;
-            if (realistic && shortest < 0) {
-              delta = shortest + 2 * Math.PI;
+          if (realistic) {
+            const hourDeltas = new Array(TOTAL_CLOCKS);
+            const minuteBases = new Array(TOTAL_CLOCKS);
+            let maxHourDelta = 0;
+            for (let c = 0; c < TOTAL_CLOCKS; c++) {
+              const hourShortest = shortestDelta(
+                hands[c * 2].current,
+                targets[c * 2],
+              );
+              const minuteShortest = shortestDelta(
+                hands[c * 2 + 1].current,
+                targets[c * 2 + 1],
+              );
+              hourDeltas[c] =
+                hourShortest >= 0 ? hourShortest : hourShortest + 2 * Math.PI;
+              minuteBases[c] =
+                minuteShortest >= 0
+                  ? minuteShortest
+                  : minuteShortest + 2 * Math.PI;
+              if (hourDeltas[c] > maxHourDelta) maxHourDelta = hourDeltas[c];
             }
 
-            h.start = h.current;
-            h.target = h.current + delta;
-            h.t0 = now;
-            h.duration = realistic ? 2400 : 1800;
-            h.easing = easeInOutCubic;
-            h.next = null;
+            const duration = Math.max(
+              600,
+              maxHourDelta * REALISTIC_HOUR_MS_PER_RAD,
+            );
+            const desiredMinuteAngle = maxHourDelta * REALISTIC_MINUTE_RATIO;
+
+            for (let c = 0; c < TOTAL_CLOCKS; c++) {
+              const hourIdx = c * 2;
+              const minuteIdx = c * 2 + 1;
+              const hourHand = hands[hourIdx];
+              const minuteHand = hands[minuteIdx];
+
+              const hourScale =
+                maxHourDelta > 0 ? hourDeltas[c] / maxHourDelta : 0;
+              const hourDelta = hourDeltas[c];
+
+              const targetMinuteAngle = desiredMinuteAngle * hourScale;
+              const extraTurns = Math.max(
+                0,
+                Math.round(
+                  (targetMinuteAngle - minuteBases[c]) / (2 * Math.PI),
+                ),
+              );
+              const minuteDelta = minuteBases[c] + extraTurns * 2 * Math.PI;
+
+              hourHand.start = hourHand.current;
+              hourHand.target = hourHand.current + hourDelta;
+              hourHand.t0 = now;
+              hourHand.duration = duration;
+              hourHand.easing = easeOutCubic;
+              hourHand.next = null;
+
+              minuteHand.start = minuteHand.current;
+              minuteHand.target = minuteHand.current + minuteDelta;
+              minuteHand.t0 = now;
+              minuteHand.duration = duration;
+              minuteHand.easing = easeOutCubic;
+              minuteHand.next = null;
+            }
+          } else {
+            for (let i = 0; i < hands.length; i++) {
+              const h = hands[i];
+              const shortest = shortestDelta(h.current, targets[i]);
+              h.start = h.current;
+              h.target = h.current + shortest;
+              h.t0 = now;
+              h.duration = 1800;
+              h.easing = easeOutCubic;
+              h.next = null;
+            }
           }
         }
 
@@ -402,8 +464,8 @@
         // TIME
         // ─────────────────────────────────────────────────────────────────────────
         function currentTimeKey(hour24) {
-          if (debugDigits) {
-            return debugDigits.slice(0, 2) + ":" + debugDigits.slice(2, 4);
+          if (demoMode) {
+            return demoDigits.slice(0, 2) + ":" + demoDigits.slice(2, 4);
           }
           const d = new Date();
           let h = d.getHours();
@@ -418,11 +480,22 @@
         // ─────────────────────────────────────────────────────────────────────────
         // INIT
         // ─────────────────────────────────────────────────────────────────────────
-        const debugParam = new URLSearchParams(window.location.search).get(
+        const demoMode = new URLSearchParams(window.location.search).has(
           "debug",
         );
-        const debugDigits =
-          debugParam && debugParam.length === 4 ? debugParam : null;
+        let demoDigits = "1234";
+        let demoIntervalId = null;
+        function startDemoInterval(mode) {
+          if (!demoMode) return;
+          if (demoIntervalId) clearInterval(demoIntervalId);
+          const ms = mode === "realistic" ? 30000 : 5000;
+          demoIntervalId = setInterval(() => {
+            demoDigits = String(Math.floor(Math.random() * 10000)).padStart(
+              4,
+              "0",
+            );
+          }, ms);
+        }
 
         const state = {
           mode: "minimal",
@@ -503,6 +576,8 @@
           applyChoreography(state.hands, targets, state.mode, now + 400);
         })();
 
+        startDemoInterval(state.mode);
+
         function tick(now) {
           const key = currentTimeKey(state.hour24);
           if (key !== state.lastTimeKey) {
@@ -561,6 +636,7 @@
               state.mode = btn.dataset.value;
               modeLabel.textContent = state.mode;
               setActive(btn.parentElement, state.mode);
+              startDemoInterval(state.mode);
             });
           });
 
