@@ -9,7 +9,7 @@
     <title>Sun &amp; Mountains</title>
     <style>
       :root {
-        --ink: #f3ede2;
+        --ink: #ffffff;
       }
       *,
       *::before,
@@ -22,7 +22,7 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        background: #0b1130;
+        background: #1b1a35;
         overflow: hidden;
       }
       #stage {
@@ -48,7 +48,6 @@
         text-transform: uppercase;
         letter-spacing: 0.18em;
         color: var(--ink);
-        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
         pointer-events: none;
         transition: opacity 200ms ease;
         mix-blend-mode: difference;
@@ -95,9 +94,9 @@
         gap: 10px;
         font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
         font-size: 10px;
-        color: var(--ink);
+        color: #fff;
         letter-spacing: 0.12em;
-        background: rgba(0, 0, 0, 0.28);
+        background: rgba(0, 0, 0, 0.32);
         padding: 8px 14px;
         border-radius: 20px;
         backdrop-filter: blur(4px);
@@ -116,235 +115,37 @@
     <div id="stage">
       <svg
         id="art"
-        viewBox="0 0 1600 900"
+        viewBox="0 0 1000 1300"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
           <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-            <stop id="skyStopTop" offset="0%" stop-color="#0b1130" />
-            <stop id="skyStopMid" offset="55%" stop-color="#101a45" />
-            <stop id="skyStopHorizon" offset="100%" stop-color="#151b3d" />
+            <stop id="skyStopTop" offset="0%" stop-color="#1b1a35" />
+            <stop id="skyStopBottom" offset="100%" stop-color="#262048" />
           </linearGradient>
-
-          <radialGradient id="sunFill" cx="42%" cy="38%" r="65%">
-            <stop offset="0%" stop-color="#fff3d6" />
-            <stop offset="55%" stop-color="#ffd889" />
-            <stop offset="100%" stop-color="#ff9d5c" />
-          </radialGradient>
-          <radialGradient id="sunHalo" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#ffdf9e" stop-opacity="0.85" />
-            <stop offset="100%" stop-color="#ffdf9e" stop-opacity="0" />
-          </radialGradient>
-
-          <radialGradient id="moonFill" cx="40%" cy="36%" r="65%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="60%" stop-color="#e6ecf6" />
-            <stop offset="100%" stop-color="#c3ceE0" />
-          </radialGradient>
-          <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#c9d7f2" stop-opacity="0.75" />
-            <stop offset="100%" stop-color="#c9d7f2" stop-opacity="0" />
-          </radialGradient>
-
-          <filter
-            id="wobble"
-            x="-20%"
-            y="-20%"
-            width="140%"
-            height="140%"
-            color-interpolation-filters="sRGB"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.012 0.045"
-              numOctaves="2"
-              seed="7"
-              result="noise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="16"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-
-          <filter
-            id="wobbleSoft"
-            x="-30%"
-            y="-30%"
-            width="160%"
-            height="160%"
-            color-interpolation-filters="sRGB"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.03 0.07"
-              numOctaves="2"
-              seed="3"
-              result="noise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="7"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-
-          <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="14" />
-          </filter>
-
-          <filter id="softBlur" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="4" />
-          </filter>
-
-          <filter id="paperGrain" x="0" y="0" width="100%" height="100%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.85"
-              numOctaves="2"
-              stitchTiles="stitch"
-              result="grain"
-            />
-            <feColorMatrix
-              in="grain"
-              type="matrix"
-              values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.6 0.6 0.6 0 0"
-            />
-          </filter>
         </defs>
 
-        <!-- sky wash -->
-        <rect x="0" y="0" width="1600" height="900" fill="url(#sky)" />
+        <!-- flat gradient sky -->
+        <rect x="0" y="0" width="1000" height="1300" fill="url(#sky)" />
 
-        <!-- stars -->
+        <!-- simple flat stars -->
         <g id="stars"></g>
 
-        <!-- horizon color wash (sunrise / sunset glow) -->
-        <ellipse
-          id="horizonGlow"
-          cx="800"
-          cy="660"
-          rx="420"
-          ry="90"
-          fill="#ff9d5c"
-          opacity="0"
-          filter="url(#bleed)"
-          style="mix-blend-mode: screen"
+        <!-- the celestial body: one flat circle plays sun by day, moon by
+             night, travelling the same arc either way -->
+        <circle id="body" cx="500" cy="800" r="72" fill="#eee3cf" />
+
+        <!-- two-tone flat mountains, far then near -->
+        <path
+          id="mountainFar"
+          d="M0,830 C160,760 300,800 480,750 C650,790 820,730 1000,780 L1000,1300 L0,1300 Z"
+          fill="#4b4570"
         />
-
-        <!-- moon -->
-        <g id="moonGroup">
-          <circle
-            id="moonHaloEl"
-            cx="800"
-            cy="500"
-            r="140"
-            fill="url(#moonHalo)"
-            style="mix-blend-mode: screen"
-          />
-          <circle
-            id="moonBody"
-            cx="800"
-            cy="500"
-            r="46"
-            fill="url(#moonFill)"
-            filter="url(#wobbleSoft)"
-          />
-        </g>
-
-        <!-- sun -->
-        <g id="sunGroup">
-          <circle
-            id="sunHaloEl"
-            cx="800"
-            cy="500"
-            r="160"
-            fill="url(#sunHalo)"
-            style="mix-blend-mode: screen"
-          />
-          <circle
-            id="sunBody"
-            cx="800"
-            cy="500"
-            r="52"
-            fill="url(#sunFill)"
-            filter="url(#wobbleSoft)"
-          />
-        </g>
-
-        <!-- mountains: back to front, simple watercolor washes -->
-        <g style="mix-blend-mode: multiply">
-          <polygon
-            points="0,650 150,480 320,560 520,410 760,560 980,450 1220,580 1400,490 1600,610 1600,900 0,900"
-            fill="#aab7dd"
-            opacity="0.55"
-            filter="url(#wobble)"
-          />
-          <polygon
-            points="0,650 150,480 320,560 520,410 760,560 980,450 1220,580 1400,490 1600,610 1600,900 0,900"
-            fill="#aab7dd"
-            opacity="0.28"
-            filter="url(#bleed)"
-          />
-        </g>
-
-        <g style="mix-blend-mode: multiply">
-          <polygon
-            points="0,700 200,560 400,660 650,500 900,650 1150,540 1350,660 1600,580 1600,900 0,900"
-            fill="#8090c2"
-            opacity="0.65"
-            filter="url(#wobble)"
-          />
-          <polygon
-            points="0,700 200,560 400,660 650,500 900,650 1150,540 1350,660 1600,580 1600,900 0,900"
-            fill="#8090c2"
-            opacity="0.3"
-            filter="url(#bleed)"
-          />
-        </g>
-
-        <g style="mix-blend-mode: multiply">
-          <polygon
-            points="0,780 180,620 380,720 600,600 850,740 1100,640 1350,750 1600,660 1600,900 0,900"
-            fill="#565c8c"
-            opacity="0.85"
-            filter="url(#wobble)"
-          />
-          <polygon
-            points="0,780 180,620 380,720 600,600 850,740 1100,640 1350,750 1600,660 1600,900 0,900"
-            fill="#3f4468"
-            opacity="0.35"
-            filter="url(#bleed)"
-          />
-        </g>
-
-        <!-- time-of-day tint over the whole scene -->
-        <rect
-          id="nightOverlay"
-          x="0"
-          y="0"
-          width="1600"
-          height="900"
-          fill="#050a24"
-          opacity="0"
-          style="mix-blend-mode: multiply"
-        />
-
-        <!-- paper texture -->
-        <rect
-          x="0"
-          y="0"
-          width="1600"
-          height="900"
-          filter="url(#paperGrain)"
-          opacity="0.05"
-          style="mix-blend-mode: multiply"
+        <path
+          id="mountainNear"
+          d="M0,960 C180,880 340,930 520,860 C700,910 860,850 1000,900 L1000,1300 L0,1300 Z"
+          fill="#322c54"
         />
       </svg>
     </div>
@@ -379,8 +180,9 @@
         // ─────────────────────────────────────────────────────────────────
         // TIME-OF-DAY MODEL
         // ─────────────────────────────────────────────────────────────────
-        // Sunrise / sunset kept fixed and symmetric so the piece reads
-        // clearly at any time of year: sun is up 06:00–18:00, moon 18:00–06:00.
+        // Sun is up 06:00–18:00, moon 18:00–06:00. Both are rendered with
+        // the same single circle, travelling the same arc function — the
+        // only thing that changes is which half of the day is active.
         const DAY_START = 6;
         const DAY_END = 18;
         const DAY_LEN = DAY_END - DAY_START;
@@ -410,59 +212,54 @@
           ]);
         }
 
-        // Sky keyframes across a 24h day. `night` drives the atmospheric
-        // tint over the whole painting (mountains included).
-        const SKY_KEYS = [
-          { h: 0, top: "#0b1130", mid: "#0e1440", horizon: "#151b3d", night: 1 },
-          { h: 4, top: "#141a3f", mid: "#161f4c", horizon: "#20244f", night: 1 },
-          { h: 5.5, top: "#232853", mid: "#33366a", horizon: "#4a3f6b", night: 0.7 },
-          { h: 6.5, top: "#3a5480", mid: "#6d7fa0", horizon: "#f2a25c", night: 0.22 },
-          { h: 8, top: "#5fa3d6", mid: "#8ec6e4", horizon: "#dceaf0", night: 0.05 },
-          { h: 12, top: "#4a9bd1", mid: "#7fc2e6", horizon: "#cfe9f2", night: 0 },
-          { h: 16, top: "#4a93c9", mid: "#82bfe0", horizon: "#f3cf87", night: 0.05 },
-          { h: 17.5, top: "#3f6ea0", mid: "#7d7fa8", horizon: "#f28a56", night: 0.3 },
-          { h: 19, top: "#262a55", mid: "#3c3a6e", horizon: "#7a5588", night: 0.7 },
-          { h: 21, top: "#141636", mid: "#1c1e46", horizon: "#241f47", night: 0.92 },
-          { h: 24, top: "#0b1130", mid: "#0e1440", horizon: "#151b3d", night: 1 },
+        // A single flat-color palette across the 24h cycle. `body` covers
+        // both the sun (warm, daytime) and the moon (pale, nighttime) —
+        // it crossfades smoothly through the sunrise/sunset hours.
+        const PALETTE_KEYS = [
+          { h: 0, sky0: "#1b1a35", sky1: "#262048", body: "#eee3cf", far: "#4b4570", near: "#322c54", night: 1 },
+          { h: 3, sky0: "#1e1c3c", sky1: "#2b2350", body: "#e9dfcb", far: "#4e4772", near: "#342c55", night: 0.97 },
+          { h: 5, sky0: "#262041", sky1: "#3a2c52", body: "#e6ddca", far: "#5a4d74", near: "#3a2f58", night: 0.75 },
+          { h: 6.2, sky0: "#f6b8c6", sky1: "#f8d2b8", body: "#f6b23a", far: "#e79a7d", near: "#d97a4c", night: 0.22 },
+          { h: 9, sky0: "#fbdcae", sky1: "#fdebd2", body: "#f2b93e", far: "#e7ae94", near: "#dd8f66", night: 0.04 },
+          { h: 12, sky0: "#fdeec0", sky1: "#fff6df", body: "#e8862f", far: "#e6b8cf", near: "#d98fb0", night: 0 },
+          { h: 15, sky0: "#fbdca0", sky1: "#fdead0", body: "#ef9a3a", far: "#e6aa9a", near: "#da8062", night: 0.02 },
+          { h: 17.8, sky0: "#f6a8bd", sky1: "#f8c9ab", body: "#ef7a3c", far: "#d97a5c", near: "#b8543a", night: 0.32 },
+          { h: 19.5, sky0: "#4a3766", sky1: "#5c3f66", body: "#e7dcc9", far: "#6a4f75", near: "#4a3358", night: 0.68 },
+          { h: 21, sky0: "#26223f", sky1: "#332752", body: "#eadfcb", far: "#524a70", near: "#362d55", night: 0.88 },
+          { h: 24, sky0: "#1b1a35", sky1: "#262048", body: "#eee3cf", far: "#4b4570", near: "#322c54", night: 1 },
         ];
 
-        function skyAt(hour) {
+        function paletteAt(hour) {
           let i = 0;
-          while (i < SKY_KEYS.length - 1 && SKY_KEYS[i + 1].h < hour) i++;
-          const a = SKY_KEYS[i];
-          const b = SKY_KEYS[Math.min(i + 1, SKY_KEYS.length - 1)];
+          while (i < PALETTE_KEYS.length - 1 && PALETTE_KEYS[i + 1].h < hour) i++;
+          const a = PALETTE_KEYS[i];
+          const b = PALETTE_KEYS[Math.min(i + 1, PALETTE_KEYS.length - 1)];
           const span = b.h - a.h || 1;
           const t = clamp01((hour - a.h) / span);
           return {
-            top: lerpColor(a.top, b.top, t),
-            mid: lerpColor(a.mid, b.mid, t),
-            horizon: lerpColor(a.horizon, b.horizon, t),
+            sky0: lerpColor(a.sky0, b.sky0, t),
+            sky1: lerpColor(a.sky1, b.sky1, t),
+            body: lerpColor(a.body, b.body, t),
+            far: lerpColor(a.far, b.far, t),
+            near: lerpColor(a.near, b.near, t),
             night: lerp(a.night, b.night, t),
           };
         }
 
-        // Progress (0..1) of `hour` within a window starting at `start`
-        // and lasting `len` hours, wrapping across midnight.
-        function windowProgress(hour, start, len) {
-          let h = hour - start;
-          if (h < 0) h += 24;
-          return h / len;
-        }
-
-        // Fade in/out near the horizon edges of a body's visible window.
+        // Fade the body in/out near the horizon edges of its visible window.
         function edgeFade(progress) {
           if (progress <= 0 || progress >= 1) return 0;
-          const fade = 0.05;
+          const fade = 0.06;
           return clamp01(
             Math.min(progress / fade, (1 - progress) / fade, 1),
           );
         }
 
         // Shared arc used by both the sun and the moon.
-        const ARC_LEFT_X = 150;
-        const ARC_RIGHT_X = 1450;
-        const ARC_BASE_Y = 700;
-        const ARC_PEAK_Y = 190;
+        const ARC_LEFT_X = 120;
+        const ARC_RIGHT_X = 880;
+        const ARC_BASE_Y = 800;
+        const ARC_PEAK_Y = 260;
 
         function arcPosition(progress) {
           const p = clamp01(progress);
@@ -475,24 +272,15 @@
         // DOM
         // ─────────────────────────────────────────────────────────────────
         const skyStopTop = document.getElementById("skyStopTop");
-        const skyStopMid = document.getElementById("skyStopMid");
-        const skyStopHorizon = document.getElementById("skyStopHorizon");
-        const nightOverlay = document.getElementById("nightOverlay");
-        const horizonGlow = document.getElementById("horizonGlow");
-
-        const sunGroup = document.getElementById("sunGroup");
-        const sunBody = document.getElementById("sunBody");
-        const sunHaloEl = document.getElementById("sunHaloEl");
-
-        const moonGroup = document.getElementById("moonGroup");
-        const moonBody = document.getElementById("moonBody");
-        const moonHaloEl = document.getElementById("moonHaloEl");
-
+        const skyStopBottom = document.getElementById("skyStopBottom");
+        const mountainFar = document.getElementById("mountainFar");
+        const mountainNear = document.getElementById("mountainNear");
+        const body = document.getElementById("body");
         const starsGroup = document.getElementById("stars");
         const clockLabel = document.getElementById("clockLabel");
         const dateLabel = document.getElementById("dateLabel");
 
-        // Scatter a fixed field of simple stars once.
+        // Scatter a fixed field of simple flat-dot stars once.
         (() => {
           let seed = 42;
           const rand = () => {
@@ -500,30 +288,20 @@
             return (seed / 0x7fffffff) % 1;
           };
           const frag = document.createDocumentFragment();
-          for (let i = 0; i < 60; i++) {
+          for (let i = 0; i < 45; i++) {
             const c = document.createElementNS(
               "http://www.w3.org/2000/svg",
               "circle",
             );
-            c.setAttribute("cx", (rand() * 1600).toFixed(1));
-            c.setAttribute("cy", (rand() * 560).toFixed(1));
-            c.setAttribute("r", (0.8 + rand() * 1.6).toFixed(2));
+            c.setAttribute("cx", (rand() * 1000).toFixed(1));
+            c.setAttribute("cy", (rand() * 620).toFixed(1));
+            c.setAttribute("r", (1.4 + rand() * 2).toFixed(2));
             c.setAttribute("fill", "#f4efe0");
-            c.setAttribute("opacity", (0.3 + rand() * 0.6).toFixed(2));
+            c.setAttribute("opacity", (0.4 + rand() * 0.5).toFixed(2));
             frag.appendChild(c);
           }
           starsGroup.appendChild(frag);
         })();
-
-        function setBody(groupEl, bodyEl, haloEl, pos, opacity, haloR, bodyR) {
-          groupEl.setAttribute("opacity", opacity.toFixed(3));
-          bodyEl.setAttribute("cx", pos.x.toFixed(1));
-          bodyEl.setAttribute("cy", pos.y.toFixed(1));
-          bodyEl.setAttribute("r", bodyR);
-          haloEl.setAttribute("cx", pos.x.toFixed(1));
-          haloEl.setAttribute("cy", pos.y.toFixed(1));
-          haloEl.setAttribute("r", haloR);
-        }
 
         function render(date) {
           const hour =
@@ -531,34 +309,28 @@
             date.getMinutes() / 60 +
             date.getSeconds() / 3600;
 
-          const sky = skyAt(hour);
-          skyStopTop.setAttribute("stop-color", sky.top);
-          skyStopMid.setAttribute("stop-color", sky.mid);
-          skyStopHorizon.setAttribute("stop-color", sky.horizon);
-          nightOverlay.setAttribute("opacity", (sky.night * 0.55).toFixed(3));
+          const p = paletteAt(hour);
+          skyStopTop.setAttribute("stop-color", p.sky0);
+          skyStopBottom.setAttribute("stop-color", p.sky1);
+          mountainFar.setAttribute("fill", p.far);
+          mountainNear.setAttribute("fill", p.near);
+          starsGroup.setAttribute("opacity", p.night.toFixed(3));
 
-          const sunProgress = windowProgress(hour, DAY_START, DAY_LEN);
-          const moonProgress = windowProgress(hour, DAY_END, NIGHT_LEN);
-          const sunOpacity = edgeFade(sunProgress);
-          const moonOpacity = edgeFade(moonProgress);
+          const isDay = hour >= DAY_START && hour < DAY_END;
+          let progress;
+          if (isDay) {
+            progress = (hour - DAY_START) / DAY_LEN;
+          } else {
+            const h = hour < DAY_START ? hour + 24 - DAY_END : hour - DAY_END;
+            progress = h / NIGHT_LEN;
+          }
 
-          const sunPos = arcPosition(sunProgress);
-          const moonPos = arcPosition(moonProgress);
-
-          setBody(sunGroup, sunBody, sunHaloEl, sunPos, sunOpacity, 160, 52);
-          setBody(moonGroup, moonBody, moonHaloEl, moonPos, moonOpacity, 130, 42);
-
-          starsGroup.setAttribute("opacity", sky.night.toFixed(3));
-
-          const activePos = sunOpacity >= moonOpacity ? sunPos : moonPos;
-          const activeOpacity = Math.max(sunOpacity, moonOpacity);
-          const glowColor = sunOpacity >= moonOpacity ? "#ff9d5c" : "#bcd0f2";
-          horizonGlow.setAttribute("cx", activePos.x.toFixed(1));
-          horizonGlow.setAttribute("fill", glowColor);
-          horizonGlow.setAttribute(
-            "opacity",
-            (activeOpacity * 0.32).toFixed(3),
-          );
+          const pos = arcPosition(progress);
+          const opacity = edgeFade(progress);
+          body.setAttribute("cx", pos.x.toFixed(1));
+          body.setAttribute("cy", pos.y.toFixed(1));
+          body.setAttribute("fill", p.body);
+          body.setAttribute("opacity", opacity.toFixed(3));
 
           const hh = String(date.getHours()).padStart(2, "0");
           const mm = String(date.getMinutes()).padStart(2, "0");
