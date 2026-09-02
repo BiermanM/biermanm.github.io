@@ -6,10 +6,17 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Sun &amp; Mountains</title>
+    <title>One Day At A Time</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         --ink: #ffffff;
+        --paper: #efe6d3;
       }
       *,
       *::before,
@@ -22,7 +29,7 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        background: #1b1a35;
+        background: var(--paper);
         overflow: hidden;
       }
       #stage {
@@ -33,6 +40,11 @@
         display: block;
         width: 100%;
         height: 100%;
+      }
+      #caption {
+        font-family: "Permanent Marker", cursive;
+        font-size: 44px;
+        letter-spacing: 0.04em;
       }
       .chrome {
         position: fixed;
@@ -115,44 +127,100 @@
     <div id="stage">
       <svg
         id="art"
-        viewBox="0 0 1000 1300"
+        viewBox="0 0 900 1300"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-            <stop id="skyStopTop" offset="0%" stop-color="#1b1a35" />
-            <stop id="skyStopBottom" offset="100%" stop-color="#262048" />
-          </linearGradient>
+          <clipPath id="panelClip">
+            <rect x="130" y="150" width="640" height="980" rx="18" />
+          </clipPath>
+          <filter
+            id="inkWobble"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+            color-interpolation-filters="sRGB"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.012 0.03"
+              numOctaves="2"
+              seed="4"
+              result="noise"
+            >
+              <animate
+                attributeName="seed"
+                values="2;5;8;3;6;2"
+                dur="40s"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="6"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+          <filter id="shadowBlur" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="10" />
+          </filter>
         </defs>
 
-        <!-- flat gradient sky -->
-        <rect x="0" y="0" width="1000" height="1300" fill="url(#sky)" />
+        <!-- paper background -->
+        <rect x="0" y="0" width="900" height="1300" fill="var(--paper)" />
 
-        <!-- simple flat stars -->
-        <g id="stars"></g>
-
-        <!-- the celestial body: one flat circle plays sun by day, moon by
-             night, travelling the same arc either way -->
-        <circle id="body" cx="500" cy="800" r="72" fill="#eee3cf" />
-
-        <!-- two-tone flat mountains, far then near -->
-        <path
-          id="mountainFar"
-          d="M0,830 C160,760 300,800 480,750 C650,790 820,730 1000,780 L1000,1300 L0,1300 Z"
-          fill="#4b4570"
+        <!-- soft card shadow -->
+        <rect
+          x="140"
+          y="166"
+          width="640"
+          height="980"
+          rx="18"
+          fill="#000000"
+          opacity="0.14"
+          filter="url(#shadowBlur)"
         />
-        <path
-          id="mountainNear"
-          d="M0,960 C180,880 340,930 520,860 C700,910 860,850 1000,900 L1000,1300 L0,1300 Z"
-          fill="#322c54"
+
+        <g clip-path="url(#panelClip)">
+          <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
+          <g id="stars"></g>
+          <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
+          <rect id="seaRect" x="130" y="718" width="640" height="412" fill="#c2933a" />
+          <g id="waves" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></g>
+        </g>
+
+        <!-- hand-drawn ink border -->
+        <rect
+          x="130"
+          y="150"
+          width="640"
+          height="980"
+          rx="18"
+          fill="none"
+          stroke="#241a10"
+          stroke-width="12"
+          filter="url(#inkWobble)"
         />
+
+        <text
+          id="caption"
+          x="450"
+          y="1200"
+          text-anchor="middle"
+          fill="#241a10"
+        >
+          ONE DAY AT A TIME
+        </text>
       </svg>
     </div>
 
     <div class="chrome" id="chrome">
       <div class="group">
-        <span class="muted">Sun&nbsp;&amp;&nbsp;Mountains&nbsp;/&nbsp;</span>
+        <span class="muted">One&nbsp;Day&nbsp;At&nbsp;A&nbsp;Time&nbsp;/&nbsp;</span>
         <span id="clockLabel">00:00</span>
       </div>
       <div class="group"><span id="dateLabel" class="muted"></span></div>
@@ -178,11 +246,8 @@
         "use strict";
 
         // ─────────────────────────────────────────────────────────────────
-        // TIME-OF-DAY MODEL
+        // TIME-OF-DAY MODEL — real wall clock, four anchor states
         // ─────────────────────────────────────────────────────────────────
-        // Sun is up 06:00–18:00, moon 18:00–06:00. Both are rendered with
-        // the same single circle, travelling the same arc function — the
-        // only thing that changes is which half of the day is active.
         const DAY_START = 6;
         const DAY_END = 18;
         const DAY_LEN = DAY_END - DAY_START;
@@ -212,21 +277,13 @@
           ]);
         }
 
-        // A single flat-color palette across the 24h cycle. `body` covers
-        // both the sun (warm, daytime) and the moon (pale, nighttime) —
-        // it crossfades smoothly through the sunrise/sunset hours.
+        // The four reference states, smoothly cross-faded across the day.
         const PALETTE_KEYS = [
-          { h: 0, sky0: "#1b1a35", sky1: "#262048", body: "#eee3cf", far: "#4b4570", near: "#322c54", night: 1 },
-          { h: 3, sky0: "#1e1c3c", sky1: "#2b2350", body: "#e9dfcb", far: "#4e4772", near: "#342c55", night: 0.97 },
-          { h: 5, sky0: "#262041", sky1: "#3a2c52", body: "#e6ddca", far: "#5a4d74", near: "#3a2f58", night: 0.75 },
-          { h: 6.2, sky0: "#f6b8c6", sky1: "#f8d2b8", body: "#f6b23a", far: "#e79a7d", near: "#d97a4c", night: 0.22 },
-          { h: 9, sky0: "#fbdcae", sky1: "#fdebd2", body: "#f2b93e", far: "#e7ae94", near: "#dd8f66", night: 0.04 },
-          { h: 12, sky0: "#fdeec0", sky1: "#fff6df", body: "#e8862f", far: "#e6b8cf", near: "#d98fb0", night: 0 },
-          { h: 15, sky0: "#fbdca0", sky1: "#fdead0", body: "#ef9a3a", far: "#e6aa9a", near: "#da8062", night: 0.02 },
-          { h: 17.8, sky0: "#f6a8bd", sky1: "#f8c9ab", body: "#ef7a3c", far: "#d97a5c", near: "#b8543a", night: 0.32 },
-          { h: 19.5, sky0: "#4a3766", sky1: "#5c3f66", body: "#e7dcc9", far: "#6a4f75", near: "#4a3358", night: 0.68 },
-          { h: 21, sky0: "#26223f", sky1: "#332752", body: "#eadfcb", far: "#524a70", near: "#362d55", night: 0.88 },
-          { h: 24, sky0: "#1b1a35", sky1: "#262048", body: "#eee3cf", far: "#4b4570", near: "#322c54", night: 1 },
+          { h: 0, sky: "#14171f", sea: "#163640", body: "#f5efe0", night: 1 },
+          { h: 6, sky: "#e7c15f", sea: "#c2933a", body: "#f0c351", night: 0 },
+          { h: 12, sky: "#8fc9b6", sea: "#1f6d5c", body: "#f0c351", night: 0 },
+          { h: 18, sky: "#dd7a34", sea: "#a8461f", body: "#f0c351", night: 0 },
+          { h: 24, sky: "#14171f", sea: "#163640", body: "#f5efe0", night: 1 },
         ];
 
         function paletteAt(hour) {
@@ -237,29 +294,21 @@
           const span = b.h - a.h || 1;
           const t = clamp01((hour - a.h) / span);
           return {
-            sky0: lerpColor(a.sky0, b.sky0, t),
-            sky1: lerpColor(a.sky1, b.sky1, t),
+            sky: lerpColor(a.sky, b.sky, t),
+            sea: lerpColor(a.sea, b.sea, t),
             body: lerpColor(a.body, b.body, t),
-            far: lerpColor(a.far, b.far, t),
-            near: lerpColor(a.near, b.near, t),
             night: lerp(a.night, b.night, t),
           };
         }
 
-        // Fade the body in/out near the horizon edges of its visible window.
-        function edgeFade(progress) {
-          if (progress <= 0 || progress >= 1) return 0;
-          const fade = 0.06;
-          return clamp01(
-            Math.min(progress / fade, (1 - progress) / fade, 1),
-          );
-        }
-
-        // Shared arc used by both the sun and the moon.
-        const ARC_LEFT_X = 120;
-        const ARC_RIGHT_X = 880;
-        const ARC_BASE_Y = 800;
-        const ARC_PEAK_Y = 260;
+        // Shared arc used by both the sun and the moon. It dips below the
+        // horizon at both ends so the sea panel (drawn on top) clips it
+        // into the classic "peeking over the horizon" sliver.
+        const ARC_LEFT_X = 190;
+        const ARC_RIGHT_X = 710;
+        const HORIZON_Y = 718;
+        const ARC_BASE_Y = HORIZON_Y + 26;
+        const ARC_PEAK_Y = 240;
 
         function arcPosition(progress) {
           const p = clamp01(progress);
@@ -269,51 +318,81 @@
         }
 
         // ─────────────────────────────────────────────────────────────────
+        // SEA LINES — animate on their own clock, independent of the
+        // real-time sun/moon, and much faster.
+        // ─────────────────────────────────────────────────────────────────
+        const SEA_TOP = 718;
+        const SEA_BOTTOM = 1130;
+        const PANEL_LEFT = 130;
+        const PANEL_RIGHT = 770;
+        const LINE_COUNT = 6;
+        const WAVE_OMEGA = (2 * Math.PI) / 22; // one full cycle every 22s
+        const K1 = (2 * Math.PI * 2.1) / (PANEL_RIGHT - PANEL_LEFT);
+        const K2 = K1 * 2.3;
+        const SAMPLE_STEP = 16;
+
+        const wavesGroup = document.getElementById("waves");
+        const wavePaths = [];
+        for (let i = 0; i < LINE_COUNT; i++) {
+          const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          wavesGroup.appendChild(p);
+          wavePaths.push(p);
+        }
+
+        function updateWaves(t) {
+          const spacing = (SEA_BOTTOM - SEA_TOP) / (LINE_COUNT + 1);
+          for (let i = 0; i < LINE_COUNT; i++) {
+            const yBase = SEA_TOP + spacing * (i + 1);
+            const seed = i * 1.7;
+            const phase = t * WAVE_OMEGA;
+            let d = "";
+            for (let x = PANEL_LEFT; x <= PANEL_RIGHT; x += SAMPLE_STEP) {
+              const y =
+                yBase +
+                9 * Math.sin(K1 * x + phase + seed) +
+                4 * Math.sin(K2 * x - phase * 1.3 + seed);
+              d += (x === PANEL_LEFT ? "M" : "L") + x.toFixed(1) + "," + y.toFixed(1) + " ";
+            }
+            wavePaths[i].setAttribute("d", d);
+          }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
         // DOM
         // ─────────────────────────────────────────────────────────────────
-        const skyStopTop = document.getElementById("skyStopTop");
-        const skyStopBottom = document.getElementById("skyStopBottom");
-        const mountainFar = document.getElementById("mountainFar");
-        const mountainNear = document.getElementById("mountainNear");
+        const skyRect = document.getElementById("skyRect");
+        const seaRect = document.getElementById("seaRect");
         const body = document.getElementById("body");
         const starsGroup = document.getElementById("stars");
         const clockLabel = document.getElementById("clockLabel");
         const dateLabel = document.getElementById("dateLabel");
 
-        // Scatter a fixed field of simple flat-dot stars once.
+        // A couple of fixed stars near the moon, fading in with night.
         (() => {
-          let seed = 42;
-          const rand = () => {
-            seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-            return (seed / 0x7fffffff) % 1;
-          };
-          const frag = document.createDocumentFragment();
-          for (let i = 0; i < 45; i++) {
-            const c = document.createElementNS(
-              "http://www.w3.org/2000/svg",
-              "circle",
-            );
-            c.setAttribute("cx", (rand() * 1000).toFixed(1));
-            c.setAttribute("cy", (rand() * 620).toFixed(1));
-            c.setAttribute("r", (1.4 + rand() * 2).toFixed(2));
+          const positions = [
+            [560, 300],
+            [605, 340],
+            [260, 260],
+          ];
+          for (const [x, y] of positions) {
+            const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            c.setAttribute("cx", x);
+            c.setAttribute("cy", y);
+            c.setAttribute("r", 4);
             c.setAttribute("fill", "#f4efe0");
-            c.setAttribute("opacity", (0.4 + rand() * 0.5).toFixed(2));
-            frag.appendChild(c);
+            starsGroup.appendChild(c);
           }
-          starsGroup.appendChild(frag);
         })();
 
-        function render(date) {
+        function render(date, animT) {
           const hour =
             date.getHours() +
             date.getMinutes() / 60 +
             date.getSeconds() / 3600;
 
           const p = paletteAt(hour);
-          skyStopTop.setAttribute("stop-color", p.sky0);
-          skyStopBottom.setAttribute("stop-color", p.sky1);
-          mountainFar.setAttribute("fill", p.far);
-          mountainNear.setAttribute("fill", p.near);
+          skyRect.setAttribute("fill", p.sky);
+          seaRect.setAttribute("fill", p.sea);
           starsGroup.setAttribute("opacity", p.night.toFixed(3));
 
           const isDay = hour >= DAY_START && hour < DAY_END;
@@ -326,11 +405,11 @@
           }
 
           const pos = arcPosition(progress);
-          const opacity = edgeFade(progress);
           body.setAttribute("cx", pos.x.toFixed(1));
           body.setAttribute("cy", pos.y.toFixed(1));
           body.setAttribute("fill", p.body);
-          body.setAttribute("opacity", opacity.toFixed(3));
+
+          updateWaves(animT);
 
           const hh = String(date.getHours()).padStart(2, "0");
           const mm = String(date.getMinutes()).padStart(2, "0");
@@ -359,8 +438,9 @@
           return d;
         }
 
-        function loop() {
-          render(currentDate());
+        const start = performance.now();
+        function loop(now) {
+          render(currentDate(), (now - start) / 1000);
           requestAnimationFrame(loop);
         }
         requestAnimationFrame(loop);
