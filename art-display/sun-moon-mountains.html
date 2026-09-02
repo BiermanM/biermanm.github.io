@@ -127,6 +127,36 @@
           <filter id="shadowBlur" x="-40%" y="-40%" width="180%" height="180%">
             <feGaussianBlur stdDeviation="10" />
           </filter>
+          <filter
+            id="inkWobble"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+            color-interpolation-filters="sRGB"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.015 0.035"
+              numOctaves="2"
+              seed="4"
+              result="noise"
+            >
+              <animate
+                attributeName="seed"
+                values="2;5;8;3;6;2"
+                dur="50s"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="6"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
         </defs>
 
         <!-- paper background -->
@@ -145,11 +175,13 @@
         />
 
         <g clip-path="url(#panelClip)">
-          <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
-          <g id="stars"></g>
-          <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
-          <rect id="seaRect" x="130" y="718" width="640" height="412" fill="#c2933a" />
-          <g id="waves" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g filter="url(#inkWobble)">
+            <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
+            <g id="stars"></g>
+            <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
+            <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
+          </g>
+          <g id="waves" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#inkWobble)"></g>
         </g>
 
         <!-- panel border -->
@@ -255,7 +287,7 @@
         const ARC_LEFT_X = 190;
         const ARC_RIGHT_X = 710;
         const HORIZON_Y = 718;
-        const ARC_BASE_Y = HORIZON_Y + 26;
+        const ARC_BASE_Y = HORIZON_Y + 12; // sea rect overlaps the sky slightly to avoid a wobble seam
         const ARC_PEAK_Y = 240;
 
         function arcPosition(progress) {
