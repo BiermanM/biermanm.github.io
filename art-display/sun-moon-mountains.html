@@ -285,11 +285,15 @@
         // pure black at night so the display isn't a bright box in a dark
         // room. Ramps quickly around sunrise/sunset rather than gradually
         // over the whole day/night span.
+        // A warm dim amber sits between eggshell and black at both ends
+        // (real dusk/dawn light on a wall skews orange, not neutral gray).
         const BG_KEYS = [
           { h: 0, bg: "#000000" },
           { h: 5, bg: "#000000" },
+          { h: 5.75, bg: "#3a2210" },
           { h: 6.5, bg: "#efe6d3" },
           { h: 17.5, bg: "#efe6d3" },
+          { h: 18.25, bg: "#4a2a12" },
           { h: 19, bg: "#000000" },
           { h: 24, bg: "#000000" },
         ];
