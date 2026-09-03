@@ -258,11 +258,19 @@
         }
 
         // The four reference states, smoothly cross-faded across the day.
+        // Straight-line RGB blending between, say, dusk orange and night
+        // navy desaturates into a muddy brown at the midpoint. A dusty
+        // violet "twilight" waypoint on each side of night routes the
+        // transition through a color a real sky actually passes through,
+        // instead of relying on hue-wheel math (which looked great for the
+        // sky but swung the sea through an unwanted olive green).
         const PALETTE_KEYS = [
           { h: 0, sky: "#14171f", sea: "#163640", body: "#f5efe0", night: 1 },
+          { h: 3, sky: "#5c3f66", sea: "#4a2f42", body: "#f0e6d2", night: 0.85 },
           { h: 6, sky: "#e7c15f", sea: "#c2933a", body: "#f0c351", night: 0 },
           { h: 12, sky: "#8fc9b6", sea: "#1f6d5c", body: "#f0c351", night: 0 },
           { h: 18, sky: "#dd7a34", sea: "#a8461f", body: "#f0c351", night: 0 },
+          { h: 21, sky: "#5c3f66", sea: "#4a2f42", body: "#f0e6d2", night: 0.85 },
           { h: 24, sky: "#14171f", sea: "#163640", body: "#f5efe0", night: 1 },
         ];
 
