@@ -281,6 +281,29 @@
           };
         }
 
+        // The wall behind the frame: eggshell white by day, but dimmed to
+        // pure black at night so the display isn't a bright box in a dark
+        // room. Ramps quickly around sunrise/sunset rather than gradually
+        // over the whole day/night span.
+        const BG_KEYS = [
+          { h: 0, bg: "#000000" },
+          { h: 5, bg: "#000000" },
+          { h: 6.5, bg: "#efe6d3" },
+          { h: 17.5, bg: "#efe6d3" },
+          { h: 19, bg: "#000000" },
+          { h: 24, bg: "#000000" },
+        ];
+
+        function bgAt(hour) {
+          let i = 0;
+          while (i < BG_KEYS.length - 1 && BG_KEYS[i + 1].h < hour) i++;
+          const a = BG_KEYS[i];
+          const b = BG_KEYS[Math.min(i + 1, BG_KEYS.length - 1)];
+          const span = b.h - a.h || 1;
+          const t = clamp01((hour - a.h) / span);
+          return lerpColor(a.bg, b.bg, t);
+        }
+
         // Shared arc used by both the sun and the moon. It dips below the
         // horizon at both ends so the sea panel (drawn on top) clips it
         // into the classic "peeking over the horizon" sliver.
@@ -416,6 +439,8 @@
           skyRect.setAttribute("fill", p.sky);
           seaRect.setAttribute("fill", p.sea);
           updateStars(animT, p.night);
+
+          document.documentElement.style.setProperty("--paper", bgAt(hour));
 
           const isDay = hour >= DAY_START && hour < DAY_END;
           let progress;
