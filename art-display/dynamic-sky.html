@@ -333,7 +333,8 @@
         const SEA_BOTTOM = 1130;
         const PANEL_LEFT = 130;
         const PANEL_RIGHT = 770;
-        const LINE_COUNT = 4;
+        const LINE_COUNT = 6;
+        const LINE_GAP = 74; // vertical distance between adjacent lines
         const WAVE_OMEGA = (2 * Math.PI) / 36; // one full cycle every 36s
         const K1 = (2 * Math.PI * 2.1) / (PANEL_RIGHT - PANEL_LEFT);
         const K2 = K1 * 2.3;
@@ -348,9 +349,9 @@
         }
 
         function updateWaves(t) {
-          const spacing = (SEA_BOTTOM - SEA_TOP) / (LINE_COUNT + 1);
+          const margin = (SEA_BOTTOM - SEA_TOP - LINE_GAP * (LINE_COUNT - 1)) / 2;
           for (let i = 0; i < LINE_COUNT; i++) {
-            const yBase = SEA_TOP + spacing * (i + 1);
+            const yBase = SEA_TOP + margin + LINE_GAP * i;
             const seed = i * 1.7;
             const phase = t * WAVE_OMEGA;
             let d = "";
