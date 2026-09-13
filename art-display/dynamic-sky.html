@@ -283,28 +283,25 @@
 
         // The wall behind the frame: eggshell white by day, but dimmed to
         // pure black at night so the display isn't a bright box in a dark
-        // room. Ramps quickly around sunrise/sunset rather than gradually
-        // over the whole day/night span.
+        // room. Driven by the same `night` factor as the sky/sea palette
+        // (rather than its own hour anchors) so the wall can never go fully
+        // dark while the panel itself is still mid-sunset.
         // A warm dim amber sits between eggshell and black at both ends
         // (real dusk/dawn light on a wall skews orange, not neutral gray).
         const BG_KEYS = [
-          { h: 0, bg: "#000000" },
-          { h: 5, bg: "#000000" },
-          { h: 5.75, bg: "#3a2210" },
-          { h: 6.5, bg: "#efe6d3" },
-          { h: 17.5, bg: "#efe6d3" },
-          { h: 18.25, bg: "#4a2a12" },
-          { h: 19, bg: "#000000" },
-          { h: 24, bg: "#000000" },
+          { n: 0, bg: "#efe6d3" },
+          { n: 0.2, bg: "#4a2a12" },
+          { n: 0.5, bg: "#000000" },
+          { n: 1, bg: "#000000" },
         ];
 
-        function bgAt(hour) {
+        function bgForNight(night) {
           let i = 0;
-          while (i < BG_KEYS.length - 1 && BG_KEYS[i + 1].h < hour) i++;
+          while (i < BG_KEYS.length - 1 && BG_KEYS[i + 1].n < night) i++;
           const a = BG_KEYS[i];
           const b = BG_KEYS[Math.min(i + 1, BG_KEYS.length - 1)];
-          const span = b.h - a.h || 1;
-          const t = clamp01((hour - a.h) / span);
+          const span = b.n - a.n || 1;
+          const t = clamp01((night - a.n) / span);
           return lerpColor(a.bg, b.bg, t);
         }
 
@@ -445,7 +442,7 @@
           seaRect.setAttribute("fill", p.sea);
           updateStars(animT, p.night);
 
-          document.documentElement.style.setProperty("--paper", bgAt(hour));
+          document.documentElement.style.setProperty("--paper", bgForNight(p.night));
 
           const isDay = hour >= DAY_START && hour < DAY_END;
           let progress;
