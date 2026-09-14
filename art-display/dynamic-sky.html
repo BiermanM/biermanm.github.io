@@ -151,7 +151,14 @@
               yChannelSelector="G"
             />
           </filter>
-          <filter id="bodyGlow" x="-150%" y="-150%" width="400%" height="400%">
+          <filter
+            id="bodyGlowFilter"
+            filterUnits="userSpaceOnUse"
+            x="50"
+            y="80"
+            width="800"
+            height="770"
+          >
             <feGaussianBlur stdDeviation="14" />
           </filter>
         </defs>
@@ -174,7 +181,7 @@
         <g clip-path="url(#panelClip)" filter="url(#inkWobble)">
           <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
           <g id="stars"></g>
-          <circle id="bodyGlow" cx="450" cy="700" r="70" fill="#f0c351" filter="url(#bodyGlow)" />
+          <circle id="bodyGlow" cx="450" cy="700" r="70" fill="#f0c351" filter="url(#bodyGlowFilter)" />
           <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
           <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
         </g>
