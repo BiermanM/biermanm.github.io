@@ -151,6 +151,9 @@
               yChannelSelector="G"
             />
           </filter>
+          <filter id="bodyGlow" x="-150%" y="-150%" width="400%" height="400%">
+            <feGaussianBlur stdDeviation="14" />
+          </filter>
         </defs>
 
         <!-- paper background -->
@@ -171,6 +174,7 @@
         <g clip-path="url(#panelClip)" filter="url(#inkWobble)">
           <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
           <g id="stars"></g>
+          <circle id="bodyGlow" cx="450" cy="700" r="70" fill="#f0c351" filter="url(#bodyGlow)" />
           <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
           <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
         </g>
@@ -246,6 +250,19 @@
             lerp(a[0], b[0], t),
             lerp(a[1], b[1], t),
             lerp(a[2], b[2], t),
+          ]);
+        }
+        // Negative amount darkens toward black, positive lightens toward
+        // white — used to derive the sun/moon's outline from its own fill
+        // instead of a fixed ink color.
+        function shadeColor(hex, amount) {
+          const [r, g, b] = hexToRgb(hex);
+          const target = amount < 0 ? 0 : 255;
+          const k = Math.abs(amount);
+          return rgbToHex([
+            lerp(r, target, k),
+            lerp(g, target, k),
+            lerp(b, target, k),
           ]);
         }
 
@@ -368,6 +385,7 @@
         const skyRect = document.getElementById("skyRect");
         const seaRect = document.getElementById("seaRect");
         const body = document.getElementById("body");
+        const bodyGlow = document.getElementById("bodyGlow");
         const starsGroup = document.getElementById("stars");
         const clockLabel = document.getElementById("clockLabel");
         const dateLabel = document.getElementById("dateLabel");
@@ -457,6 +475,12 @@
           body.setAttribute("cx", pos.x.toFixed(1));
           body.setAttribute("cy", pos.y.toFixed(1));
           body.setAttribute("fill", p.body);
+          body.setAttribute("stroke", shadeColor(p.body, -0.45));
+
+          bodyGlow.setAttribute("cx", pos.x.toFixed(1));
+          bodyGlow.setAttribute("cy", pos.y.toFixed(1));
+          bodyGlow.setAttribute("fill", p.body);
+          bodyGlow.setAttribute("opacity", lerp(0.25, 0.6, p.night).toFixed(2));
 
           updateWaves(animT);
 
