@@ -486,8 +486,9 @@
 
           bodyGlow.setAttribute("cx", pos.x.toFixed(1));
           bodyGlow.setAttribute("cy", pos.y.toFixed(1));
+          bodyGlow.setAttribute("r", lerp(95, 65, p.night).toFixed(1));
           bodyGlow.setAttribute("fill", p.body);
-          bodyGlow.setAttribute("opacity", lerp(0.4, 0.55, p.night).toFixed(2));
+          bodyGlow.setAttribute("opacity", lerp(0.4, 0.18, p.night).toFixed(2));
 
           updateWaves(animT);
 
