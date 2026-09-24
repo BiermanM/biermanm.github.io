@@ -129,10 +129,11 @@
           </filter>
           <filter
             id="inkWobble"
-            x="-20%"
-            y="-20%"
-            width="140%"
-            height="140%"
+            filterUnits="userSpaceOnUse"
+            x="30"
+            y="50"
+            width="840"
+            height="1180"
             color-interpolation-filters="sRGB"
           >
             <feTurbulence
@@ -149,6 +150,16 @@
               xChannelSelector="R"
               yChannelSelector="G"
             />
+          </filter>
+          <filter
+            id="bodyGlowFilter"
+            filterUnits="userSpaceOnUse"
+            x="20"
+            y="70"
+            width="860"
+            height="830"
+          >
+            <feGaussianBlur stdDeviation="24" />
           </filter>
         </defs>
 
@@ -167,15 +178,14 @@
           filter="url(#shadowBlur)"
         />
 
-        <g clip-path="url(#panelClip)">
-          <g filter="url(#inkWobble)">
-            <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
-            <g id="stars"></g>
-            <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
-            <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
-          </g>
-          <g id="waves" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#inkWobble)"></g>
+        <g clip-path="url(#panelClip)" filter="url(#inkWobble)">
+          <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
+          <g id="stars"></g>
+          <circle id="bodyGlow" cx="450" cy="700" r="95" fill="#f0c351" filter="url(#bodyGlowFilter)" />
+          <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
+          <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
         </g>
+        <g id="waves" clip-path="url(#panelClip)" filter="url(#inkWobble)" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></g>
 
         <!-- panel border -->
         <rect
@@ -249,6 +259,19 @@
             lerp(a[2], b[2], t),
           ]);
         }
+        // Negative amount darkens toward black, positive lightens toward
+        // white — used to derive the sun/moon's outline from its own fill
+        // instead of a fixed ink color.
+        function shadeColor(hex, amount) {
+          const [r, g, b] = hexToRgb(hex);
+          const target = amount < 0 ? 0 : 255;
+          const k = Math.abs(amount);
+          return rgbToHex([
+            lerp(r, target, k),
+            lerp(g, target, k),
+            lerp(b, target, k),
+          ]);
+        }
 
         // The four reference states, smoothly cross-faded across the day.
         // Straight-line RGB blending between, say, dusk orange and night
@@ -258,13 +281,13 @@
         // instead of relying on hue-wheel math (which looked great for the
         // sky but swung the sea through an unwanted olive green).
         const PALETTE_KEYS = [
-          { h: 0, sky: "#14171f", sea: "#163640", body: "#f5efe0", night: 1 },
-          { h: 3, sky: "#5c3f66", sea: "#4a2f42", body: "#f0e6d2", night: 0.85 },
+          { h: 0, sky: "#14171f", sea: "#163640", body: "#fbf8f0", night: 1 },
+          { h: 3, sky: "#5c3f66", sea: "#4a2f42", body: "#f8f2e4", night: 0.85 },
           { h: 6, sky: "#e7c15f", sea: "#c2933a", body: "#f0c351", night: 0 },
           { h: 12, sky: "#8fc9b6", sea: "#1f6d5c", body: "#f0c351", night: 0 },
           { h: 18, sky: "#dd7a34", sea: "#a8461f", body: "#f0c351", night: 0 },
-          { h: 21, sky: "#5c3f66", sea: "#4a2f42", body: "#f0e6d2", night: 0.85 },
-          { h: 24, sky: "#14171f", sea: "#163640", body: "#f5efe0", night: 1 },
+          { h: 21, sky: "#5c3f66", sea: "#4a2f42", body: "#f8f2e4", night: 0.85 },
+          { h: 24, sky: "#14171f", sea: "#163640", body: "#fbf8f0", night: 1 },
         ];
 
         function paletteAt(hour) {
@@ -284,28 +307,25 @@
 
         // The wall behind the frame: eggshell white by day, but dimmed to
         // pure black at night so the display isn't a bright box in a dark
-        // room. Ramps quickly around sunrise/sunset rather than gradually
-        // over the whole day/night span.
+        // room. Driven by the same `night` factor as the sky/sea palette
+        // (rather than its own hour anchors) so the wall can never go fully
+        // dark while the panel itself is still mid-sunset.
         // A warm dim amber sits between eggshell and black at both ends
         // (real dusk/dawn light on a wall skews orange, not neutral gray).
         const BG_KEYS = [
-          { h: 0, bg: "#000000" },
-          { h: 5, bg: "#000000" },
-          { h: 5.75, bg: "#3a2210" },
-          { h: 6.5, bg: "#efe6d3" },
-          { h: 17.5, bg: "#efe6d3" },
-          { h: 18.25, bg: "#4a2a12" },
-          { h: 19, bg: "#000000" },
-          { h: 24, bg: "#000000" },
+          { n: 0, bg: "#efe6d3" },
+          { n: 0.2, bg: "#4a2a12" },
+          { n: 0.5, bg: "#000000" },
+          { n: 1, bg: "#000000" },
         ];
 
-        function bgAt(hour) {
+        function bgForNight(night) {
           let i = 0;
-          while (i < BG_KEYS.length - 1 && BG_KEYS[i + 1].h < hour) i++;
+          while (i < BG_KEYS.length - 1 && BG_KEYS[i + 1].n < night) i++;
           const a = BG_KEYS[i];
           const b = BG_KEYS[Math.min(i + 1, BG_KEYS.length - 1)];
-          const span = b.h - a.h || 1;
-          const t = clamp01((hour - a.h) / span);
+          const span = b.n - a.n || 1;
+          const t = clamp01((night - a.n) / span);
           return lerpColor(a.bg, b.bg, t);
         }
 
@@ -335,7 +355,7 @@
         const PANEL_RIGHT = 770;
         const LINE_COUNT = 6;
         const LINE_GAP = 64; // vertical distance between adjacent lines
-        const WAVE_OMEGA = (2 * Math.PI) / 36; // one full cycle every 36s
+        const WAVE_OMEGA = (2 * Math.PI) / 90; // one full cycle every 90s
         const K1 = (2 * Math.PI * 2.1) / (PANEL_RIGHT - PANEL_LEFT);
         const K2 = K1 * 2.3;
         const SAMPLE_STEP = 16;
@@ -372,6 +392,7 @@
         const skyRect = document.getElementById("skyRect");
         const seaRect = document.getElementById("seaRect");
         const body = document.getElementById("body");
+        const bodyGlow = document.getElementById("bodyGlow");
         const starsGroup = document.getElementById("stars");
         const clockLabel = document.getElementById("clockLabel");
         const dateLabel = document.getElementById("dateLabel");
@@ -446,7 +467,7 @@
           seaRect.setAttribute("fill", p.sea);
           updateStars(animT, p.night);
 
-          document.documentElement.style.setProperty("--paper", bgAt(hour));
+          document.documentElement.style.setProperty("--paper", bgForNight(p.night));
 
           const isDay = hour >= DAY_START && hour < DAY_END;
           let progress;
@@ -461,6 +482,12 @@
           body.setAttribute("cx", pos.x.toFixed(1));
           body.setAttribute("cy", pos.y.toFixed(1));
           body.setAttribute("fill", p.body);
+          body.setAttribute("stroke", shadeColor(p.body, -0.22));
+
+          bodyGlow.setAttribute("cx", pos.x.toFixed(1));
+          bodyGlow.setAttribute("cy", pos.y.toFixed(1));
+          bodyGlow.setAttribute("fill", p.body);
+          bodyGlow.setAttribute("opacity", lerp(0.4, 0.55, p.night).toFixed(2));
 
           updateWaves(animT);
 
