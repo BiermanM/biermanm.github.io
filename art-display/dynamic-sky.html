@@ -178,14 +178,18 @@
           filter="url(#shadowBlur)"
         />
 
-        <g clip-path="url(#panelClip)" filter="url(#inkWobble)">
-          <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
-          <g id="stars"></g>
-          <circle id="bodyGlow" cx="450" cy="700" r="95" fill="#f0c351" filter="url(#bodyGlowFilter)" />
-          <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
-          <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
+        <g clip-path="url(#panelClip)">
+          <g filter="url(#inkWobble)">
+            <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
+            <g id="stars"></g>
+            <circle id="bodyGlow" cx="450" cy="700" r="95" fill="#f0c351" filter="url(#bodyGlowFilter)" />
+            <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
+            <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
+          </g>
         </g>
-        <g id="waves" clip-path="url(#panelClip)" filter="url(#inkWobble)" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g clip-path="url(#panelClip)">
+          <g id="waves" filter="url(#inkWobble)" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></g>
+        </g>
 
         <!-- panel border -->
         <rect
