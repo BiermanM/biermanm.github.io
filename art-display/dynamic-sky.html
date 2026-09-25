@@ -178,14 +178,18 @@
           filter="url(#shadowBlur)"
         />
 
-        <g clip-path="url(#panelClip)" filter="url(#inkWobble)">
-          <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
-          <g id="stars"></g>
-          <circle id="bodyGlow" cx="450" cy="700" r="95" fill="#f0c351" filter="url(#bodyGlowFilter)" />
-          <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
-          <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
+        <g clip-path="url(#panelClip)">
+          <g id="skyInk" filter="url(#inkWobble)">
+            <rect id="skyRect" x="130" y="150" width="640" height="568" fill="#e7c15f" />
+            <g id="stars"></g>
+            <circle id="bodyGlow" cx="450" cy="700" r="95" fill="#f0c351" filter="url(#bodyGlowFilter)" />
+            <circle id="body" cx="450" cy="700" r="46" fill="#f0c351" stroke="#241a10" stroke-width="5" />
+            <rect id="seaRect" x="130" y="704" width="640" height="426" fill="#c2933a" />
+          </g>
         </g>
-        <g id="waves" clip-path="url(#panelClip)" filter="url(#inkWobble)" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g clip-path="url(#panelClip)">
+          <g id="waves" filter="url(#inkWobble)" fill="none" stroke="#241a10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></g>
+        </g>
 
         <!-- panel border -->
         <rect
@@ -360,7 +364,18 @@
         const K2 = K1 * 2.3;
         const SAMPLE_STEP = 16;
 
+        // Some mobile browser engines (notably Samsung Internet) cache the
+        // rendered output of an SVG filter and fail to repaint it when only
+        // a descendant's geometry changes, leaving filtered content (like
+        // the wobble filter here) frozen even though its source keeps
+        // updating every frame. Nudging the filtered element's own opacity
+        // by an imperceptible amount forces those engines to repaint it.
+        function forceFilterRepaint(el) {
+          el.style.opacity = el.style.opacity === "1" ? "0.999999" : "1";
+        }
+
         const wavesGroup = document.getElementById("waves");
+        const skyInk = document.getElementById("skyInk");
         const wavePaths = [];
         for (let i = 0; i < LINE_COUNT; i++) {
           const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -384,6 +399,7 @@
             }
             wavePaths[i].setAttribute("d", d);
           }
+          forceFilterRepaint(wavesGroup);
         }
 
         // ─────────────────────────────────────────────────────────────────
@@ -486,10 +502,12 @@
 
           bodyGlow.setAttribute("cx", pos.x.toFixed(1));
           bodyGlow.setAttribute("cy", pos.y.toFixed(1));
+          bodyGlow.setAttribute("r", lerp(95, 65, p.night).toFixed(1));
           bodyGlow.setAttribute("fill", p.body);
-          bodyGlow.setAttribute("opacity", lerp(0.4, 0.55, p.night).toFixed(2));
+          bodyGlow.setAttribute("opacity", lerp(0.4, 0.18, p.night).toFixed(2));
 
           updateWaves(animT);
+          forceFilterRepaint(skyInk);
 
           const hh = String(date.getHours()).padStart(2, "0");
           const mm = String(date.getMinutes()).padStart(2, "0");
